@@ -88,7 +88,16 @@ Work items:
 - status constants
 - priority constants
 - issue type constants
-- system label constants
+- system label constants:
+  - Needs Update
+  - Ready for Confirmation
+- source type constants if needed:
+  - Email
+  - Call
+  - Meeting
+  - Chat
+  - Internal
+  - Other
 - dependency type constants
 - Dexie initial schema
 - repository boundary placeholders
@@ -121,6 +130,7 @@ Implementation constraints for Phase 2A:
 
 - no backend
 - no real authentication
+- `Needs Update` and `Ready for Confirmation` remain system labels, not statuses and not tags
 - no issue CRUD UI yet
 - no dashboard metrics logic yet
 - no advanced permissions logic yet
