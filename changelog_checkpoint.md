@@ -2,7 +2,15 @@
 
 ## Current Phase
 
-Phase 1 — Foundation / Repository Setup
+Phase 1 — Foundation / Repository Setup: `Completed`
+
+Next active umbrella phase:
+
+- `Phase 2A — Domain and Demo Data Foundation`
+
+Next concrete micro-phase:
+
+- `Phase 2A.1 — Core Domain Model / Type Contracts`
 
 ## Completed Work
 
@@ -68,13 +76,31 @@ Phase 1 — Foundation / Repository Setup
 - Role switching is visual placeholder only; no permission or session behavior exists yet.
 - Persistence files are scaffolds only; Dexie schema and seed/reset logic are still TODO.
 
+## Roadmap Update
+
+- `BUILD_PLAN.md` was finalized as the practical implementation roadmap / implementation bible for the Portfolio MVP.
+- Future implementation must follow micro-phases rather than umbrella phases.
+- Codex work should proceed one micro-phase at a time, with review and commit checkpoints between slices.
+
 ## Next Recommended Task
 
-Phase 2 — Domain and demo data foundation:
+`Phase 2A` is the next active umbrella phase.
 
-- define core TypeScript entity models
-- define status/priority/type constants
-- implement initial Dexie schema
-- add first-load seed data bootstrap
-- add demo reset behavior
-- prepare lightweight Zustand app state for current user, UI state, and seeded app lifecycle
+Next concrete Codex task:
+
+- `Phase 2A.1 — Core Domain Model / Type Contracts`
+
+Scope for the next task only:
+
+- entity model types
+- roles
+- statuses
+- priorities
+- issue types
+- system labels
+- source types
+- dependency types
+- activity action types
+- central exports
+
+Do not implement the whole of `Phase 2A` in one task.

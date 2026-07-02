@@ -59,6 +59,23 @@ A more implicit Tailwind setup with fewer explicit config files.
 **Impact:**  
 The styling foundation is stable and easy to extend during layout and component work.
 
+### 2026-07-02 — Micro-phase roadmap control
+
+**Context:**  
+The implementation roadmap expanded from broad phases into explicit micro-phases so Codex work can stay reviewable and avoid uncontrolled scope growth.
+
+**Decision:**  
+Treat `BUILD_PLAN.md` as the practical implementation roadmap and execute only one micro-phase per Codex task.
+
+**Reasoning:**  
+This reduces scope creep, lowers the risk of hallucinated cross-phase implementation, and keeps commits aligned with narrow, verifiable slices.
+
+**Alternatives considered:**  
+Allowing umbrella phases such as `Phase 2A` or `Phase 3` to be implemented in a single task.
+
+**Impact:**  
+Future implementation should move slice by slice, with review, verification, checkpoint updates, and commit boundaries after each micro-phase.
+
 ---
 
 ## Implementation Notes
