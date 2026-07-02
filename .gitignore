@@ -9,3 +9,5 @@ dist/
 coverage/
 playwright-report/
 test-results/
+codex_prompt.txt
+GIT command for CODEX.txt
