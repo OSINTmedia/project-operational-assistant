@@ -8,6 +8,7 @@ import type {
   TeamRecord,
   UserRecord,
 } from './records'
+import { hasPersistedDemoData, readPersistedDemoData, writeDemoData } from './demoDataLifecycle'
 
 const demoUserIds = {
   managerMariam: 'user-mariam',
@@ -645,8 +646,17 @@ export const initialSeedState: SeedState = {
 }
 
 export async function loadSeedData(): Promise<SeedState> {
+  if (await hasPersistedDemoData()) {
+    return {
+      initialized: true,
+      data: await readPersistedDemoData(),
+    }
+  }
+
+  const persistedData = await writeDemoData(demoSeedData)
+
   return {
     initialized: true,
-    data: demoSeedData,
+    data: persistedData,
   }
 }

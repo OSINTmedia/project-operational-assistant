@@ -1,9 +1,12 @@
-import { db } from './db'
-import { initialSeedState, type SeedState } from './seedData'
+import { clearPersistedDemoData, writeDemoData } from './demoDataLifecycle'
+import { demoSeedData, type SeedState } from './seedData'
 
 export async function resetDemoData(): Promise<SeedState> {
-  await db.delete()
+  await clearPersistedDemoData()
+  const data = await writeDemoData(demoSeedData)
 
-  // TODO: recreate database records from seed data when persistence is implemented.
-  return initialSeedState
+  return {
+    initialized: true,
+    data,
+  }
 }
