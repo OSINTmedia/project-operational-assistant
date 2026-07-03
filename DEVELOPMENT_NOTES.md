@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Keep issue state updates structured and history-backed
+
+**Context:**  
+`Phase 2B.3` required status and priority update operations with `updatedAt` / `updatedBy` handling and activity-history writes, while the slice explicitly excluded UI quick actions, notifications, and later ownership behavior.
+
+**Decision:**  
+Implement status and priority updates as small domain/application helpers that update the issue through the repository boundary and write activity-history entries separately through the activity-history repository.
+
+**Reasoning:**  
+This preserves a clean separation between persistence, domain behavior, and UI, while ensuring structured issue-state changes produce an audit trail before any screen-level interactions are added.
+
+**Alternatives considered:**  
+Writing update behavior directly in future UI actions, or folding activity-history writes into the repository layer itself.
+
+**Impact:**  
+The next ownership/curator slice can build on consistent update metadata and history behavior without reworking status and priority operations.
+
 ### 2026-07-03 — Keep issue creation logic small and repository-backed
 
 **Context:**  

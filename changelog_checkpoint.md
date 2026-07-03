@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 2B — Issue Core Operations: `Next active phase`
+Phase 2B — Issue Core Operations: `In progress`
 
 Completed micro-phase:
 
-- `Phase 2B.2 — Issue Creation Service Foundation`
+- `Phase 2B.3 — Status and Priority Update Operations`
 
 Next concrete micro-phase:
 
-- `Phase 2B.3 — Status and Priority Update Operations`
+- `Phase 2B.4 — Ownership and Curator Operations`
 
 ## Completed Work
 
@@ -61,6 +61,9 @@ Next concrete micro-phase:
 - Encoded default creation rules for:
   owner, curator, status, priority, dependency type, and completion timestamp.
 - Added a basic validation boundary for required issue creation fields before repository writes.
+- Added structured issue state update operations for:
+  status, priority, `updatedAt`, `updatedBy`, and completion timestamp handling.
+- Added activity history writes for issue status and priority changes through repository-backed domain logic.
 
 ## Changed Files
 
@@ -135,6 +138,7 @@ Next concrete micro-phase:
 - `src/repositories/userRepository.ts`
 - `src/domain/issueRules/createIssue.ts`
 - `src/domain/issueRules/index.ts`
+- `src/domain/issueRules/updateIssueState.ts`
 - placeholder `.gitkeep` files across planned source folders
 
 ## Important Decisions
@@ -157,11 +161,11 @@ Next concrete micro-phase:
 - Demo identity remains app-state only in this slice:
   role switching and current-user context exist without introducing real auth, sessions, or protected routes.
 - `Phase 2A` is complete and the codebase is cleared to start `Phase 2B` issue operations.
+- Status and priority update behavior now lives in domain/application code and writes activity history through repositories rather than UI code.
 
 ## Known Issues
 
 - The frozen docs requested as `docs/*.md` currently exist in the repo as `docs/*.txt`.
-- `BUILD_PLAN.md` current-status header is stale relative to the live checkpoint; it still names `Phase 2A.1` as the next micro-phase.
 - `Project.status` currently reuses the shared status vocabulary because the frozen docs define a project status field but not a separate project-status taxonomy.
 - Group Issue participant membership and a source/reference field are described in product context, but they are not explicitly defined in the frozen technical field list, so they were not added in `Phase 2A.1`.
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
@@ -171,6 +175,9 @@ Next concrete micro-phase:
 - Issue repository updates currently throw a generic error for a missing issue id; higher-level domain error shaping is still deferred.
 - Group issue participants are still not modeled in creation logic because the frozen technical field list does not define participant storage yet.
 - Issue creation currently persists the created issue record but still does not write `activityHistory`; that remains deferred to later operation slices.
+- `BUILD_PLAN.md` phase-status labeling is stale relative to the live checkpoint; it still labels `Phase 2A` as `Next active phase` and `Phase 2B` as `Later`.
+- Activity history entries for status and priority changes currently store human-readable labels as `oldValue` / `newValue`, not ids.
+- Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 
 ## Verification Results
 
@@ -187,7 +194,8 @@ Next concrete micro-phase:
 - `Phase 2A.6 — Phase 2A Integration Audit` is now complete.
 - `Phase 2B.1 — Issue Repository Operations` is now complete.
 - `Phase 2B.2 — Issue Creation Service Foundation` is now complete.
-- The next allowed implementation slice is `Phase 2B.3 — Status and Priority Update Operations`.
+- `Phase 2B.3 — Status and Priority Update Operations` is now complete.
+- The next allowed implementation slice is `Phase 2B.4 — Ownership and Curator Operations`.
 
 ## Next Recommended Task
 
@@ -195,13 +203,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2B.3 — Status and Priority Update Operations`
+- `Phase 2B.4 — Ownership and Curator Operations`
 
 Scope for the next task only:
 
-- status update behavior
-- priority update behavior
-- `updatedAt` / `updatedBy` handling
+- owner transfer behavior
+- curator change behavior
+- group issue curator rules
 - activity history write behavior
 
 Do not implement the whole of `Phase 2B` in one task.
