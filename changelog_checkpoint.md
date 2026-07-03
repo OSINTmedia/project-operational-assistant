@@ -6,11 +6,11 @@ Phase 2B — Issue Core Operations: `Next active phase`
 
 Completed micro-phase:
 
-- `Phase 2B.1 — Issue Repository Operations`
+- `Phase 2B.2 — Issue Creation Service Foundation`
 
 Next concrete micro-phase:
 
-- `Phase 2B.2 — Issue Creation Service Foundation`
+- `Phase 2B.3 — Status and Priority Update Operations`
 
 ## Completed Work
 
@@ -57,6 +57,10 @@ Next concrete micro-phase:
   create, update, list by project, list by owner, list by team, and list by status.
 - Kept issue record updates activity-safe at the repository boundary:
   updates preserve `id`, `createdBy`, and `createdAt`, and do not write `activityHistory`.
+- Added an issue creation service foundation in the domain layer.
+- Encoded default creation rules for:
+  owner, curator, status, priority, dependency type, and completion timestamp.
+- Added a basic validation boundary for required issue creation fields before repository writes.
 
 ## Changed Files
 
@@ -129,6 +133,8 @@ Next concrete micro-phase:
 - `src/repositories/tagRepository.ts`
 - `src/repositories/teamRepository.ts`
 - `src/repositories/userRepository.ts`
+- `src/domain/issueRules/createIssue.ts`
+- `src/domain/issueRules/index.ts`
 - placeholder `.gitkeep` files across planned source folders
 
 ## Important Decisions
@@ -163,6 +169,8 @@ Next concrete micro-phase:
 - Demo role switching currently selects the first seeded user for a role. A richer per-user picker is intentionally deferred.
 - The roadmap file still describes `Phase 2A` as the next active phase even though the live checkpoint has moved into `Phase 2B`.
 - Issue repository updates currently throw a generic error for a missing issue id; higher-level domain error shaping is still deferred.
+- Group issue participants are still not modeled in creation logic because the frozen technical field list does not define participant storage yet.
+- Issue creation currently persists the created issue record but still does not write `activityHistory`; that remains deferred to later operation slices.
 
 ## Verification Results
 
@@ -178,7 +186,8 @@ Next concrete micro-phase:
 - `Phase 2A — Domain and Demo Data Foundation` is now complete.
 - `Phase 2A.6 — Phase 2A Integration Audit` is now complete.
 - `Phase 2B.1 — Issue Repository Operations` is now complete.
-- The next allowed implementation slice is `Phase 2B.2 — Issue Creation Service Foundation`.
+- `Phase 2B.2 — Issue Creation Service Foundation` is now complete.
+- The next allowed implementation slice is `Phase 2B.3 — Status and Priority Update Operations`.
 
 ## Next Recommended Task
 
@@ -186,13 +195,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2B.2 — Issue Creation Service Foundation`
+- `Phase 2B.3 — Status and Priority Update Operations`
 
 Scope for the next task only:
 
-- create issue domain / application function
-- default owner / curator rules
-- basic validation boundary
-- no UI form yet
+- status update behavior
+- priority update behavior
+- `updatedAt` / `updatedBy` handling
+- activity history write behavior
 
 Do not implement the whole of `Phase 2B` in one task.

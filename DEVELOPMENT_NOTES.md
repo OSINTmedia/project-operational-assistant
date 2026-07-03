@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Keep issue creation logic small and repository-backed
+
+**Context:**  
+`Phase 2B.2` required an issue creation service foundation with default owner/curator rules and basic validation, while the slice explicitly excluded UI forms and later workflow behaviors.
+
+**Decision:**  
+Implement issue creation as a small domain/application helper that builds a persistence-ready `IssueRecord`, applies default owner/curator/status/priority rules, validates required structured fields, and writes through the repository boundary.
+
+**Reasoning:**  
+This captures the frozen creation rules early without coupling them to UI forms, direct Dexie calls, or later activity-history behavior.
+
+**Alternatives considered:**  
+Writing issue creation directly in a future form layer, or mixing creation with activity-history writes before the later operation slices are defined.
+
+**Impact:**  
+The next status/priority and ownership slices can build on a stable creation path, while richer validation and workflow behavior remain explicitly deferred.
+
 ### 2026-07-03 — Keep issue repository operations persistence-only and activity-safe
 
 **Context:**  
