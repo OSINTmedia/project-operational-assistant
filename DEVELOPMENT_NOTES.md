@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Type-only domain contracts with explicit label/status separation
+
+**Context:**  
+`Phase 2A.1` required the typed operational vocabulary for later persistence and seed work, while the frozen docs distinguish statuses, tags, and labels and explicitly keep `Needs Update` separate from statuses.
+
+**Decision:**  
+Model the shared domain vocabulary as type-only literal unions plus exported label maps, and represent `Needs Update` / `Ready for Confirmation` as system labels rather than statuses or tags.
+
+**Reasoning:**  
+This keeps the phase inside the approved scope, makes later schema/seed work import from stable contracts, and preserves the frozen product semantics around attention signals versus workflow state.
+
+**Alternatives considered:**  
+Using runtime enums everywhere, or folding attention signals into the status model.
+
+**Impact:**  
+Later phases can build persistence and seed data on stable contracts without revisiting the core vocabulary, and the operational model remains aligned with the product freeze.
+
 ### 2026-07-02 — GitHub Pages-safe foundation routing
 
 **Context:**  
