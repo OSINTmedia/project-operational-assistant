@@ -6,11 +6,11 @@ Phase 2B — Issue Core Operations: `In progress`
 
 Completed micro-phase:
 
-- `Phase 2B.3 — Status and Priority Update Operations`
+- `Phase 2B.4 — Ownership and Curator Operations`
 
 Next concrete micro-phase:
 
-- `Phase 2B.4 — Ownership and Curator Operations`
+- `Phase 2B.5 — Tag and Label Operations`
 
 ## Completed Work
 
@@ -64,6 +64,11 @@ Next concrete micro-phase:
 - Added structured issue state update operations for:
   status, priority, `updatedAt`, `updatedBy`, and completion timestamp handling.
 - Added activity history writes for issue status and priority changes through repository-backed domain logic.
+- Added structured responsibility update operations for:
+  owner transfer, curator change, `updatedAt`, and `updatedBy`.
+- Added activity history writes for owner and curator changes through repository-backed domain logic.
+- Enforced the group-issue curator rule:
+  group issues cannot have a null curator.
 
 ## Changed Files
 
@@ -138,6 +143,7 @@ Next concrete micro-phase:
 - `src/repositories/userRepository.ts`
 - `src/domain/issueRules/createIssue.ts`
 - `src/domain/issueRules/index.ts`
+- `src/domain/issueRules/updateIssueResponsibility.ts`
 - `src/domain/issueRules/updateIssueState.ts`
 - placeholder `.gitkeep` files across planned source folders
 
@@ -162,10 +168,11 @@ Next concrete micro-phase:
   role switching and current-user context exist without introducing real auth, sessions, or protected routes.
 - `Phase 2A` is complete and the codebase is cleared to start `Phase 2B` issue operations.
 - Status and priority update behavior now lives in domain/application code and writes activity history through repositories rather than UI code.
+- Ownership and curator changes now live in domain/application code, stay repository-backed, and preserve group-issue curator rules without introducing UI or notification behavior.
 
 ## Known Issues
 
-- The frozen docs requested as `docs/*.md` currently exist in the repo as `docs/*.txt`.
+- Frozen docs are currently present in the worktree as `docs/*.md`, while parts of the roadmap/checkpoint and older task instructions still reference `docs/*.txt`.
 - `Project.status` currently reuses the shared status vocabulary because the frozen docs define a project status field but not a separate project-status taxonomy.
 - Group Issue participant membership and a source/reference field are described in product context, but they are not explicitly defined in the frozen technical field list, so they were not added in `Phase 2A.1`.
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
@@ -177,6 +184,7 @@ Next concrete micro-phase:
 - Issue creation currently persists the created issue record but still does not write `activityHistory`; that remains deferred to later operation slices.
 - `BUILD_PLAN.md` phase-status labeling is stale relative to the live checkpoint; it still labels `Phase 2A` as `Next active phase` and `Phase 2B` as `Later`.
 - Activity history entries for status and priority changes currently store human-readable labels as `oldValue` / `newValue`, not ids.
+- Activity history entries for owner and curator changes currently store ids in `oldValue` / `newValue`, not display names.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 
 ## Verification Results
@@ -195,7 +203,8 @@ Next concrete micro-phase:
 - `Phase 2B.1 — Issue Repository Operations` is now complete.
 - `Phase 2B.2 — Issue Creation Service Foundation` is now complete.
 - `Phase 2B.3 — Status and Priority Update Operations` is now complete.
-- The next allowed implementation slice is `Phase 2B.4 — Ownership and Curator Operations`.
+- `Phase 2B.4 — Ownership and Curator Operations` is now complete.
+- The next allowed implementation slice is `Phase 2B.5 — Tag and Label Operations`.
 
 ## Next Recommended Task
 
@@ -204,12 +213,13 @@ Next concrete micro-phase:
 Next concrete Codex task:
 
 - `Phase 2B.4 — Ownership and Curator Operations`
+- `Phase 2B.5 — Tag and Label Operations`
 
 Scope for the next task only:
 
-- owner transfer behavior
-- curator change behavior
-- group issue curator rules
-- activity history write behavior
+- tag add / remove behavior
+- duplicate tag prevention
+- system label handling
+- keep `Needs Update` / `Ready for Confirmation` as labels
 
 Do not implement the whole of `Phase 2B` in one task.

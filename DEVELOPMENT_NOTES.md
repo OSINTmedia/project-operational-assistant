@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Keep ownership and curator changes repository-backed
+
+**Context:**  
+`Phase 2B.4` required owner transfer behavior, curator change behavior, group-issue curator rules, and activity-history writes, while the slice explicitly excluded notifications, advanced permissions, and UI behavior.
+
+**Decision:**  
+Implement owner and curator changes as small domain/application helpers that update the issue through the repository boundary and write separate activity-history entries, while enforcing that group issues cannot lose their curator.
+
+**Reasoning:**  
+This keeps responsibility-transfer logic explicit and auditable without leaking workflow behavior into UI code or turning the slice into a permissions or notification system.
+
+**Alternatives considered:**  
+Handling responsibility changes directly in UI actions, or allowing curator removal on group issues and correcting it later in screen-level validation.
+
+**Impact:**  
+The next tag/label slice can build on stable owner/curator operations, and later UI actions can call a narrow responsibility API instead of re-implementing these rules.
+
 ### 2026-07-03 — Keep issue state updates structured and history-backed
 
 **Context:**  
