@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Seed dataset follows role breakdown over conflicting total user count
+
+**Context:**  
+`Phase 2A.3` required a typed demo dataset, but the frozen technical planning contains an internal inconsistency between the stated total number of demo users and the listed role breakdown.
+
+**Decision:**  
+Use a demo dataset that matches the role breakdown needed by the product and user-journey docs, rather than the contradictory total count line.
+
+**Reasoning:**  
+The role-based journeys and seed coverage requirements are more operationally important than the single conflicting total-count statement, and they provide enough structure to build a realistic demo dataset without inventing unsupported product behavior.
+
+**Alternatives considered:**  
+Reducing the dataset to fit the smaller total user count, or blocking the seed slice until the frozen docs are rewritten.
+
+**Impact:**  
+The seed dataset now supports Manager, Project Manager, and User scenarios across multiple teams and projects, but the doc inconsistency should still be corrected later at the source.
+
 ### 2026-07-03 — Generic repository boundary over Dexie schema
 
 **Context:**  

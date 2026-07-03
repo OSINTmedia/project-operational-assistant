@@ -6,11 +6,11 @@ Phase 2A — Domain and Demo Data Foundation: `In Progress`
 
 Completed micro-phase:
 
-- `Phase 2A.2 — Persistence Schema and Repository Boundaries`
+- `Phase 2A.3 — Seed Demo Dataset`
 
 Next concrete micro-phase:
 
-- `Phase 2A.3 — Seed Demo Dataset`
+- `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`
 
 ## Completed Work
 
@@ -38,6 +38,10 @@ Next concrete micro-phase:
 - Added a generic IndexedDB table adapter and repository boundary factory.
 - Added repository placeholders for:
   `issues`, `projects`, `users`, `teams`, `statuses`, `tags`, `labels`, and `activity history`.
+- Replaced the placeholder seed scaffold with a typed demo dataset for:
+  `users`, `teams`, `projects`, `statuses`, `tags`, `labels`, `issues`, and `activity history`.
+- Added dataset coverage for MVP-specific scenarios:
+  `owner`, `curator`, `group issue`, `needs update`, `ready for confirmation`, `ownership transfer`, and `confirmation-required` examples.
 
 ## Changed Files
 
@@ -123,16 +127,19 @@ Next concrete micro-phase:
 - Dexie remains confined to the persistence/repository boundary; no UI route or feature code reads from Dexie directly.
 - Repository placeholders remain structural only in this slice:
   basic entity access methods exist, but no issue-domain workflow behavior was added.
+- The demo seed dataset remains structural only in this slice:
+  data collections were added, but no first-load bootstrap or reset wiring was introduced.
 
 ## Known Issues
 
 - The frozen docs requested as `docs/*.md` currently exist in the repo as `docs/*.txt`.
 - Role switching is visual placeholder only; no permission or session behavior exists yet.
 - `BUILD_PLAN.md` current-status header is stale relative to the live checkpoint; it still names `Phase 2A.1` as the next micro-phase.
-- Seed/bootstrap/reset behavior is still TODO; current persistence work stops at schema and repository boundaries only.
+- Seed/bootstrap/reset behavior is still TODO; the current seed work stops at typed collections only.
 - `Project.status` currently reuses the shared status vocabulary because the frozen docs define a project status field but not a separate project-status taxonomy.
 - Group Issue participant membership and a source/reference field are described in product context, but they are not explicitly defined in the frozen technical field list, so they were not added in `Phase 2A.1`.
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
+- `docs/Technical_Planning_v1.txt` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
 
 ## Verification Results
 
@@ -145,8 +152,8 @@ Next concrete micro-phase:
 - `BUILD_PLAN.md` was finalized as the practical implementation roadmap / implementation bible for the Portfolio MVP.
 - Future implementation must follow micro-phases rather than umbrella phases.
 - Codex work should proceed one micro-phase at a time, with review and commit checkpoints between slices.
-- `Phase 2A.2 — Persistence Schema and Repository Boundaries` is now complete.
-- The next allowed implementation slice is `Phase 2A.3 — Seed Demo Dataset`.
+- `Phase 2A.3 — Seed Demo Dataset` is now complete.
+- The next allowed implementation slice is `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`.
 
 ## Next Recommended Task
 
@@ -154,18 +161,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2A.3 — Seed Demo Dataset`
+- `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`
 
 Scope for the next task only:
 
-- demo users
-- teams
-- projects
-- statuses
-- tags
-- system labels
-- issues
-- activity history examples
-- ownership / curator examples
+- first-load seed initialization
+- reset demo data flow
+- persistence lifecycle helpers
+- safe local browser demo behavior
 
 Do not implement the whole of `Phase 2A` in one task.
