@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Generic repository boundary over Dexie schema
+
+**Context:**  
+`Phase 2A.2` needed an initial IndexedDB/Dexie foundation and non-UI repository boundaries, but the scope explicitly excluded seed data, workflows, and app state.
+
+**Decision:**  
+Keep Dexie table definitions in the persistence layer and expose only small structural repository wrappers over a generic table adapter.
+
+**Reasoning:**  
+This satisfies the repository-boundary requirement without leaking persistence details into UI code or accidentally pulling issue-domain behavior into the persistence phase.
+
+**Alternatives considered:**  
+Direct UI-to-Dexie access for the MVP, or richer repository methods before seed data and workflows exist.
+
+**Impact:**  
+Later phases can add seed data, bootstrap behavior, and issue operations against stable repository entry points while keeping the current slice narrowly scoped.
+
 ### 2026-07-03 — Type-only domain contracts with explicit label/status separation
 
 **Context:**  
