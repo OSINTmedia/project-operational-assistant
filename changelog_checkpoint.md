@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 2A — Domain and Demo Data Foundation: `In Progress`
+Phase 2B — Issue Core Operations: `Next active phase`
 
 Completed micro-phase:
 
-- `Phase 2A.5 — Lightweight App State and Demo Role State`
+- `Phase 2A.6 — Phase 2A Integration Audit`
 
 Next concrete micro-phase:
 
-- `Phase 2A.6 — Phase 2A Integration Audit`
+- `Phase 2B.1 — Issue Repository Operations`
 
 ## Completed Work
 
@@ -49,6 +49,10 @@ Next concrete micro-phase:
   current demo user, selected demo role, app lifecycle status, and initialization error state.
 - Wired app startup to initialize seeded local demo data before route rendering.
 - Replaced the static role-switch placeholder with state-backed demo role switching in the app shell.
+- Audited the full `Phase 2A` foundation against the roadmap and frozen docs.
+- Verified all `Phase 2A` acceptance criteria are satisfied.
+- Verified no direct UI-to-Dexie access has slipped into app or feature code.
+- Verified no `Phase 2B`, `Phase 3`, or `Phase 4` feature work slipped in ahead of schedule.
 
 ## Changed Files
 
@@ -142,6 +146,7 @@ Next concrete micro-phase:
   app initialization now triggers local demo bootstrap through the app-state layer without introducing auth or feature workflow logic.
 - Demo identity remains app-state only in this slice:
   role switching and current-user context exist without introducing real auth, sessions, or protected routes.
+- `Phase 2A` is complete and the codebase is cleared to start `Phase 2B` issue operations.
 
 ## Known Issues
 
@@ -164,22 +169,22 @@ Next concrete micro-phase:
 - `BUILD_PLAN.md` was finalized as the practical implementation roadmap / implementation bible for the Portfolio MVP.
 - Future implementation must follow micro-phases rather than umbrella phases.
 - Codex work should proceed one micro-phase at a time, with review and commit checkpoints between slices.
-- `Phase 2A.5 — Lightweight App State and Demo Role State` is now complete.
-- The next allowed implementation slice is `Phase 2A.6 — Phase 2A Integration Audit`.
+- `Phase 2A — Domain and Demo Data Foundation` is now complete.
+- `Phase 2A.6 — Phase 2A Integration Audit` is now complete.
+- The next allowed implementation slice is `Phase 2B.1 — Issue Repository Operations`.
 
 ## Next Recommended Task
 
-`Phase 2A` is the next active umbrella phase.
+`Phase 2B` is the next active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 2A.6 — Phase 2A Integration Audit`
+- `Phase 2B.1 — Issue Repository Operations`
 
 Scope for the next task only:
 
-- verify all Phase 2A acceptance criteria
-- verify data access boundaries
-- verify no later-phase work slipped in
-- update checkpoint for completed Phase 2A foundation
+- create / update / read issue repository operations
+- no UI forms yet
+- activity-safe method boundaries
 
-Do not implement the whole of `Phase 2A` in one task.
+Do not implement the whole of `Phase 2B` in one task.
