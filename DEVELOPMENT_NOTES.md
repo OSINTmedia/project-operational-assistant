@@ -8,6 +8,40 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — App state owns demo identity, not authentication
+
+**Context:**  
+`Phase 2A.5` required lightweight Zustand state for current demo identity and app lifecycle, while the roadmap explicitly excluded real auth, protected routes, and advanced permissions.
+
+**Decision:**  
+Initialize seeded demo data from the app-state layer and represent demo identity as local Zustand state only: current demo user, selected role, lifecycle status, and initialization error state.
+
+**Reasoning:**  
+This finishes the local-first demo bootstrap path end to end without introducing server/session concepts or leaking Dexie access into feature UI code.
+
+**Alternatives considered:**  
+Adding auth-shaped session state early, or leaving persistence bootstrap unconnected until later feature work.
+
+**Impact:**  
+The app now starts against seeded local data and can switch demo role context, while real authentication and permission logic remain explicitly out of scope.
+
+### 2026-07-03 — Keep demo bootstrap/reset behavior in persistence helpers only
+
+**Context:**  
+`Phase 2A.4` required first-load seed initialization and reset behavior, but the slice explicitly excluded app state, UI controls, and broader workflow wiring.
+
+**Decision:**  
+Implement demo bootstrap/reset as persistence-layer helpers only, with `loadSeedData()` and `resetDemoData()` operating against Dexie-backed seed records without adding UI or provider integration yet.
+
+**Reasoning:**  
+This keeps the slice aligned with the roadmap, preserves the repository/persistence boundary, and avoids dragging `Phase 2A.5` app-state work into the persistence step.
+
+**Alternatives considered:**  
+Auto-wiring bootstrap into app providers immediately, or delaying all behavior until the later state slice.
+
+**Impact:**  
+The local-first demo lifecycle now exists at the persistence boundary, and the next slice can focus on representing current user / selected role context without reworking seed/reset logic.
+
 ### 2026-07-03 — Seed dataset follows role breakdown over conflicting total user count
 
 **Context:**  

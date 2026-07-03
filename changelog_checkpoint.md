@@ -6,11 +6,11 @@ Phase 2A — Domain and Demo Data Foundation: `In Progress`
 
 Completed micro-phase:
 
-- `Phase 2A.3 — Seed Demo Dataset`
+- `Phase 2A.5 — Lightweight App State and Demo Role State`
 
 Next concrete micro-phase:
 
-- `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`
+- `Phase 2A.6 — Phase 2A Integration Audit`
 
 ## Completed Work
 
@@ -42,6 +42,13 @@ Next concrete micro-phase:
   `users`, `teams`, `projects`, `statuses`, `tags`, `labels`, `issues`, and `activity history`.
 - Added dataset coverage for MVP-specific scenarios:
   `owner`, `curator`, `group issue`, `needs update`, `ready for confirmation`, `ownership transfer`, and `confirmation-required` examples.
+- Added persistence lifecycle helpers for:
+  first-load demo seeding, persisted demo data reads, persisted demo data writes, and safe demo data clearing.
+- Implemented first-load seed initialization and reset reseeding behavior for the local browser demo.
+- Added a lightweight Zustand app-state slice for:
+  current demo user, selected demo role, app lifecycle status, and initialization error state.
+- Wired app startup to initialize seeded local demo data before route rendering.
+- Replaced the static role-switch placeholder with state-backed demo role switching in the app shell.
 
 ## Changed Files
 
@@ -60,6 +67,7 @@ Next concrete micro-phase:
 - `src/index.css`
 - `src/app/layout/AppShell.tsx`
 - `src/app/providers/AppProviders.tsx`
+- `src/app/state/useDemoAppState.ts`
 - `src/app/router/AppRouter.tsx`
 - `src/features/dashboard/DashboardPage.tsx`
 - `src/features/demo/DemoPage.tsx`
@@ -69,6 +77,7 @@ Next concrete micro-phase:
 - `src/features/projects/ProjectsPage.tsx`
 - `src/features/teams/TeamsPage.tsx`
 - `src/persistence/db.ts`
+- `src/persistence/demoDataLifecycle.ts`
 - `src/persistence/indexedDbAdapter.ts`
 - `src/persistence/records.ts`
 - `src/persistence/resetDemoData.ts`
@@ -129,17 +138,20 @@ Next concrete micro-phase:
   basic entity access methods exist, but no issue-domain workflow behavior was added.
 - The demo seed dataset remains structural only in this slice:
   data collections were added, but no first-load bootstrap or reset wiring was introduced.
+- First-load and reset behavior still execute through persistence helpers:
+  app initialization now triggers local demo bootstrap through the app-state layer without introducing auth or feature workflow logic.
+- Demo identity remains app-state only in this slice:
+  role switching and current-user context exist without introducing real auth, sessions, or protected routes.
 
 ## Known Issues
 
 - The frozen docs requested as `docs/*.md` currently exist in the repo as `docs/*.txt`.
-- Role switching is visual placeholder only; no permission or session behavior exists yet.
 - `BUILD_PLAN.md` current-status header is stale relative to the live checkpoint; it still names `Phase 2A.1` as the next micro-phase.
-- Seed/bootstrap/reset behavior is still TODO; the current seed work stops at typed collections only.
 - `Project.status` currently reuses the shared status vocabulary because the frozen docs define a project status field but not a separate project-status taxonomy.
 - Group Issue participant membership and a source/reference field are described in product context, but they are not explicitly defined in the frozen technical field list, so they were not added in `Phase 2A.1`.
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
 - `docs/Technical_Planning_v1.txt` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
+- Demo role switching currently selects the first seeded user for a role. A richer per-user picker is intentionally deferred.
 
 ## Verification Results
 
@@ -152,8 +164,8 @@ Next concrete micro-phase:
 - `BUILD_PLAN.md` was finalized as the practical implementation roadmap / implementation bible for the Portfolio MVP.
 - Future implementation must follow micro-phases rather than umbrella phases.
 - Codex work should proceed one micro-phase at a time, with review and commit checkpoints between slices.
-- `Phase 2A.3 — Seed Demo Dataset` is now complete.
-- The next allowed implementation slice is `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`.
+- `Phase 2A.5 — Lightweight App State and Demo Role State` is now complete.
+- The next allowed implementation slice is `Phase 2A.6 — Phase 2A Integration Audit`.
 
 ## Next Recommended Task
 
@@ -161,13 +173,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2A.4 — First-load Bootstrap and Reset Demo Data`
+- `Phase 2A.6 — Phase 2A Integration Audit`
 
 Scope for the next task only:
 
-- first-load seed initialization
-- reset demo data flow
-- persistence lifecycle helpers
-- safe local browser demo behavior
+- verify all Phase 2A acceptance criteria
+- verify data access boundaries
+- verify no later-phase work slipped in
+- update checkpoint for completed Phase 2A foundation
 
 Do not implement the whole of `Phase 2A` in one task.

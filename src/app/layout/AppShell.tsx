@@ -7,7 +7,9 @@ import {
 } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { appNavigation } from '../../shared/constants/navigation'
+import { USER_ROLE_IDS, USER_ROLE_LABELS } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
+import { getCurrentDemoUser, useDemoAppState } from '../state/useDemoAppState'
 
 const iconMap = {
   dashboard: ChartColumn,
@@ -18,6 +20,13 @@ const iconMap = {
 } as const
 
 export function AppShell() {
+  const demoUsers = useDemoAppState((state) => state.demoUsers)
+  const currentUserId = useDemoAppState((state) => state.currentUserId)
+  const selectedRole = useDemoAppState((state) => state.selectedRole)
+  const isSeedDataInitialized = useDemoAppState((state) => state.isSeedDataInitialized)
+  const setSelectedRole = useDemoAppState((state) => state.setSelectedRole)
+  const currentUser = getCurrentDemoUser(demoUsers, currentUserId)
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto grid min-h-screen max-w-[1600px] lg:grid-cols-[260px_minmax(0,1fr)]">
@@ -36,20 +45,27 @@ export function AppShell() {
             </div>
             <div className="rounded-lg border border-slate-800 bg-slate-900 p-3 text-xs text-slate-300 lg:mt-6">
               <p className="font-medium text-slate-100">Role switch</p>
-              <p className="mt-1 text-slate-400">Placeholder only</p>
+              <p className="mt-1 text-slate-400">
+                {currentUser
+                  ? `${USER_ROLE_LABELS[currentUser.role]} · ${currentUser.name}`
+                  : 'No demo user selected'}
+              </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {['Manager', 'Project Manager', 'User'].map((role, index) => (
+                {USER_ROLE_IDS.map((role) => (
                   <button
                     key={role}
                     type="button"
+                    onClick={() => {
+                      setSelectedRole(role)
+                    }}
                     className={cn(
                       'rounded-md border px-2.5 py-1 text-xs transition-colors',
-                      index === 0
+                      selectedRole === role
                         ? 'border-accent bg-accent text-white'
                         : 'border-slate-700 bg-slate-950 text-slate-300',
                     )}
                   >
-                    {role}
+                    {USER_ROLE_LABELS[role]}
                   </button>
                 ))}
               </div>
@@ -84,14 +100,16 @@ export function AppShell() {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Environment Foundation
+                  Demo Lifecycle
                 </p>
                 <p className="mt-1 text-sm text-slate-600">
-                  React + TypeScript + Vite + Tailwind + HashRouter scaffold.
+                  {isSeedDataInitialized
+                    ? 'Local demo data is initialized and ready in browser storage.'
+                    : 'Local demo bootstrap has not completed yet.'}
                 </p>
               </div>
               <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-500">
-                Business logic intentionally deferred
+                Real authentication intentionally excluded
               </div>
             </div>
           </header>
