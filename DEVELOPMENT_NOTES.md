@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-03 — Keep issue repository operations persistence-only and activity-safe
+
+**Context:**  
+`Phase 2B.1` required repository-level issue create/update/read operations, but the slice explicitly excluded UI forms, workflow services, and activity-history behavior.
+
+**Decision:**  
+Add explicit issue repository methods for create, update, and filtered reads, while keeping activity-history writes out of the repository and preserving immutable creation fields during updates.
+
+**Reasoning:**  
+This gives later domain/service slices a usable persistence surface without mixing repository concerns with workflow logic or audit-trail policy too early.
+
+**Alternatives considered:**  
+Leaving the repository as a generic CRUD wrapper, or coupling issue updates directly to activity-history persistence in the same slice.
+
+**Impact:**  
+The next issue-service slice can encode owner/curator rules against stable repository methods, while history-writing behavior remains a separate concern for later operations.
+
 ### 2026-07-03 — App state owns demo identity, not authentication
 
 **Context:**  

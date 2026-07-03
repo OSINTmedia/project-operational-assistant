@@ -16,18 +16,8 @@ This document must be used together with `changelog_checkpoint.md`.
 - `BUILD_PLAN.md` defines the roadmap.
 - `changelog_checkpoint.md` records the live implementation checkpoint and handoff state.
 
----
-
-## Current Status
-
-- Phase 0 — Product Discovery and Planning: `Completed`
-- Phase 1 — Foundation / Repository Setup: `Completed`
-- Phase 2A — Domain and Demo Data Foundation: `Next active phase`
-- Next concrete micro-phase: `Phase 2A.1 — Core Domain Model / Type Contracts`
-
 Roadmap control rule:
-
-"Codex must never implement a whole umbrella phase in one task. Each micro-phase must be implemented, reviewed, committed, and pushed separately."
+"You must never implement a whole umbrella phase in one task. Each micro-phase must be implemented, reviewed, committed, and pushed separately."
 
 ---
 

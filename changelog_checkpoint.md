@@ -6,11 +6,11 @@ Phase 2B — Issue Core Operations: `Next active phase`
 
 Completed micro-phase:
 
-- `Phase 2A.6 — Phase 2A Integration Audit`
+- `Phase 2B.1 — Issue Repository Operations`
 
 Next concrete micro-phase:
 
-- `Phase 2B.1 — Issue Repository Operations`
+- `Phase 2B.2 — Issue Creation Service Foundation`
 
 ## Completed Work
 
@@ -53,6 +53,10 @@ Next concrete micro-phase:
 - Verified all `Phase 2A` acceptance criteria are satisfied.
 - Verified no direct UI-to-Dexie access has slipped into app or feature code.
 - Verified no `Phase 2B`, `Phase 3`, or `Phase 4` feature work slipped in ahead of schedule.
+- Expanded the issue repository from a structural placeholder into explicit issue operations for:
+  create, update, list by project, list by owner, list by team, and list by status.
+- Kept issue record updates activity-safe at the repository boundary:
+  updates preserve `id`, `createdBy`, and `createdAt`, and do not write `activityHistory`.
 
 ## Changed Files
 
@@ -157,6 +161,8 @@ Next concrete micro-phase:
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
 - `docs/Technical_Planning_v1.txt` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
 - Demo role switching currently selects the first seeded user for a role. A richer per-user picker is intentionally deferred.
+- The roadmap file still describes `Phase 2A` as the next active phase even though the live checkpoint has moved into `Phase 2B`.
+- Issue repository updates currently throw a generic error for a missing issue id; higher-level domain error shaping is still deferred.
 
 ## Verification Results
 
@@ -171,7 +177,8 @@ Next concrete micro-phase:
 - Codex work should proceed one micro-phase at a time, with review and commit checkpoints between slices.
 - `Phase 2A — Domain and Demo Data Foundation` is now complete.
 - `Phase 2A.6 — Phase 2A Integration Audit` is now complete.
-- The next allowed implementation slice is `Phase 2B.1 — Issue Repository Operations`.
+- `Phase 2B.1 — Issue Repository Operations` is now complete.
+- The next allowed implementation slice is `Phase 2B.2 — Issue Creation Service Foundation`.
 
 ## Next Recommended Task
 
@@ -179,12 +186,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2B.1 — Issue Repository Operations`
+- `Phase 2B.2 — Issue Creation Service Foundation`
 
 Scope for the next task only:
 
-- create / update / read issue repository operations
-- no UI forms yet
-- activity-safe method boundaries
+- create issue domain / application function
+- default owner / curator rules
+- basic validation boundary
+- no UI form yet
 
 Do not implement the whole of `Phase 2B` in one task.
