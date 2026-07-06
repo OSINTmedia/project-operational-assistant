@@ -6,11 +6,11 @@ Phase 2B — Issue Core Operations: `In progress`
 
 Completed micro-phase:
 
-- `Phase 2B.4 — Ownership and Curator Operations`
+- `Phase 2B.5 — Tag and Label Operations`
 
 Next concrete micro-phase:
 
-- `Phase 2B.5 — Tag and Label Operations`
+- `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`
 
 ## Completed Work
 
@@ -69,6 +69,10 @@ Next concrete micro-phase:
 - Added activity history writes for owner and curator changes through repository-backed domain logic.
 - Enforced the group-issue curator rule:
   group issues cannot have a null curator.
+- Added structured issue classification operations for:
+  tag add, tag remove, label add, and label remove.
+- Added duplicate-prevention behavior for assigned tag ids and label ids.
+- Preserved system-label semantics in mutation logic so `Needs Update` and `Ready for Confirmation` remain labels, not statuses or tags.
 
 ## Changed Files
 
@@ -143,6 +147,7 @@ Next concrete micro-phase:
 - `src/repositories/userRepository.ts`
 - `src/domain/issueRules/createIssue.ts`
 - `src/domain/issueRules/index.ts`
+- `src/domain/issueRules/updateIssueClassification.ts`
 - `src/domain/issueRules/updateIssueResponsibility.ts`
 - `src/domain/issueRules/updateIssueState.ts`
 - placeholder `.gitkeep` files across planned source folders
@@ -169,22 +174,23 @@ Next concrete micro-phase:
 - `Phase 2A` is complete and the codebase is cleared to start `Phase 2B` issue operations.
 - Status and priority update behavior now lives in domain/application code and writes activity history through repositories rather than UI code.
 - Ownership and curator changes now live in domain/application code, stay repository-backed, and preserve group-issue curator rules without introducing UI or notification behavior.
+- Tag and label mutations now live in domain/application code, keep duplicate assignment out of issue state, and preserve the separation between tags, labels, and system labels.
 
 ## Known Issues
 
-- Frozen docs are currently present in the worktree as `docs/*.md`, while parts of the roadmap/checkpoint and older task instructions still reference `docs/*.txt`.
+- Some older task instructions still reference frozen docs as `docs/*.txt`, while the repository now stores them as `docs/*.md`.
 - `Project.status` currently reuses the shared status vocabulary because the frozen docs define a project status field but not a separate project-status taxonomy.
 - Group Issue participant membership and a source/reference field are described in product context, but they are not explicitly defined in the frozen technical field list, so they were not added in `Phase 2A.1`.
 - `Issue.statusId` currently remains typed to the default status union from `Phase 2A.1`, while persisted statuses allow room for future custom records. This should be revisited when status management and seed data are implemented.
-- `docs/Technical_Planning_v1.txt` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
+- `docs/Technical_Planning_v1.md` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
 - Demo role switching currently selects the first seeded user for a role. A richer per-user picker is intentionally deferred.
-- The roadmap file still describes `Phase 2A` as the next active phase even though the live checkpoint has moved into `Phase 2B`.
 - Issue repository updates currently throw a generic error for a missing issue id; higher-level domain error shaping is still deferred.
 - Group issue participants are still not modeled in creation logic because the frozen technical field list does not define participant storage yet.
 - Issue creation currently persists the created issue record but still does not write `activityHistory`; that remains deferred to later operation slices.
-- `BUILD_PLAN.md` phase-status labeling is stale relative to the live checkpoint; it still labels `Phase 2A` as `Next active phase` and `Phase 2B` as `Later`.
 - Activity history entries for status and priority changes currently store human-readable labels as `oldValue` / `newValue`, not ids.
 - Activity history entries for owner and curator changes currently store ids in `oldValue` / `newValue`, not display names.
+- Label add/remove operations currently do not write activity history entries.
+- Duplicate prevention in `Phase 2B.5` works at assignment time by id; tag-creation/name-normalization rules are still deferred.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 
 ## Verification Results
@@ -204,7 +210,8 @@ Next concrete micro-phase:
 - `Phase 2B.2 — Issue Creation Service Foundation` is now complete.
 - `Phase 2B.3 — Status and Priority Update Operations` is now complete.
 - `Phase 2B.4 — Ownership and Curator Operations` is now complete.
-- The next allowed implementation slice is `Phase 2B.5 — Tag and Label Operations`.
+- `Phase 2B.5 — Tag and Label Operations` is now complete.
+- The next allowed implementation slice is `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`.
 
 ## Next Recommended Task
 
@@ -212,14 +219,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 2B.4 — Ownership and Curator Operations`
-- `Phase 2B.5 — Tag and Label Operations`
+- `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`
 
 Scope for the next task only:
 
-- tag add / remove behavior
-- duplicate tag prevention
-- system label handling
-- keep `Needs Update` / `Ready for Confirmation` as labels
+- needs update calculation
+- ready for confirmation modeling
+- lightweight confirmation state transitions
+- no heavy approval workflow
 
 Do not implement the whole of `Phase 2B` in one task.

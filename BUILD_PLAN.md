@@ -34,9 +34,9 @@ Completed outcomes:
 
 Source context:
 
-- `docs/Portfolio_MVP_V1.txt`
-- `docs/Technical_Planning_v1.txt`
-- `docs/User_Journey_Freeze_v1.txt`
+- `docs/Portfolio_MVP_V1.md`
+- `docs/Technical_Planning_v1.md`
+- `docs/User_Journey_Freeze_v1.md`
 
 ---
 
@@ -70,7 +70,7 @@ Reference:
 
 ## Phase 2A — Domain and Demo Data Foundation
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -396,7 +396,7 @@ Suggested commit message:
 
 ## Phase 2B — Issue Core Operations
 
-Status: `Later`
+Status: `In progress`
 
 Goal:
 
@@ -404,7 +404,7 @@ Implement issue-domain behavior and repository-backed operations before UI workf
 
 ### Phase 2B.1 — Issue Repository Operations
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -441,7 +441,7 @@ Suggested commit message:
 
 ### Phase 2B.2 — Issue Creation Service Foundation
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -478,7 +478,7 @@ Suggested commit message:
 
 ### Phase 2B.3 — Status and Priority Update Operations
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -515,7 +515,7 @@ Suggested commit message:
 
 ### Phase 2B.4 — Ownership and Curator Operations
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -552,7 +552,7 @@ Suggested commit message:
 
 ### Phase 2B.5 — Tag and Label Operations
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Keep tag and label mutations separate
+
+**Context:**  
+`Phase 2B.5` required tag add/remove behavior, duplicate prevention, and system-label handling, while the slice explicitly excluded UI polish, search/filter UX, and later confirmation logic.
+
+**Decision:**  
+Implement tag and label mutations as separate domain/application helpers, write activity history only for tag mutations in this slice, and preserve system labels strictly as label assignments rather than tag or status behavior.
+
+**Reasoning:**  
+This keeps the product semantics intact: tags stay lightweight classification, labels stay contextual markers, and system labels do not drift into other categories while the mutation rules remain small and repository-backed.
+
+**Alternatives considered:**  
+Treating labels the same as tags for history purposes immediately, or collapsing tag and label mutation logic into a single generic path without semantic guardrails.
+
+**Impact:**  
+The next needs-update/confirmation slice can build on stable label semantics, while richer history coverage and tag-creation rules remain explicitly deferred.
+
 ### 2026-07-03 — Keep ownership and curator changes repository-backed
 
 **Context:**  
