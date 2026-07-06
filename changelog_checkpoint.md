@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.2 — Personal View`
+- `Phase 3.3 — Projects List View`
 
 Next concrete micro-phase:
 
-- `Phase 3.3 — Projects List View`
+- `Phase 3.4 — Project Detail View`
 
 ## Completed Work
 
@@ -98,6 +98,10 @@ Next concrete micro-phase:
 - Added a scoped Personal read-model hook that loads issue, project, and label data through repository boundaries and groups it for screen rendering without introducing direct persistence access.
 - Kept the Personal screen read-oriented and linked issue cards to the existing issue-detail route without adding advanced filters, quick actions, or dashboard logic.
 - Limited the `Needs Update` section to issues that are actually related to the current demo user, preserving the screen's personal-work focus instead of turning it into a global alert board.
+- Replaced the Projects page placeholder with a real Phase 3.3 list and navigation surface for:
+  project summaries, coherent issue counts, visible project-level context, and click-through into the existing project-detail route.
+- Added a scoped Projects read-model hook that loads projects, issues, teams, users, and labels through repository boundaries and derives screen-level summary data without introducing direct persistence access.
+- Kept the Projects screen globally visible across demo roles in this slice, using role switching only for current identity display rather than introducing role-based project access semantics or team-scoped hiding.
 
 ## Changed Files
 
@@ -126,6 +130,7 @@ Next concrete micro-phase:
 - `src/features/personal/usePersonalView.ts`
 - `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/projects/ProjectsPage.tsx`
+- `src/features/projects/useProjectsListView.ts`
 - `src/features/teams/TeamsPage.tsx`
 - `src/persistence/db.ts`
 - `src/persistence/demoDataLifecycle.ts`
@@ -230,6 +235,7 @@ Next concrete micro-phase:
 - The Personal screen currently groups repository reads in-memory for created/curated/needs-update relationships because the shared issue repository still exposes only the narrower Phase 2B read methods.
 - Blocked / delayed related-to-me visibility described in frozen product docs remains deferred because it is outside the narrower approved scope of `Phase 3.2`.
 - Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
+- Project links currently navigate to the existing placeholder Project Detail route. This is an acceptable deferred behavior for `Phase 3.4 — Project Detail View`, but it remains a small current UX limitation until that route is implemented.
 
 ## Verification Results
 
@@ -255,8 +261,9 @@ Next concrete micro-phase:
 - `Phase 2B — Issue Core Operations` is now complete.
 - `Phase 3.1 — Demo Controls and Role Switch UI` is now complete.
 - `Phase 3.2 — Personal View` is now complete.
+- `Phase 3.3 — Projects List View` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.3 — Projects List View`.
+- The next allowed implementation slice is `Phase 3.4 — Project Detail View`.
 
 ## Next Recommended Task
 
@@ -264,13 +271,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.3 — Projects List View`
+- `Phase 3.4 — Project Detail View`
 
 Scope for the next task only:
 
-- project list
-- project summary cards / table
-- basic project navigation
-- no project creation form unless explicitly scoped
+- project detail
+- project issue list
+- basic filters by structured fields
+- project status summary
 
 Do not implement the whole of `Phase 3` in one task.

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Keep Projects list globally visible and summaries screen-scoped
+
+**Context:**  
+`Phase 3.3` required a project list, project summary cards or table, and basic project navigation, while the slice explicitly excluded project detail work, create/edit flows, and broader access-control behavior.
+
+**Decision:**  
+Keep the Projects screen globally visible across demo roles in this slice, derive project summaries in a small screen-scoped read-model hook, and avoid introducing team-scoped project hiding or role-based access semantics.
+
+**Reasoning:**  
+The roadmap defines `Phase 3.3` as a navigation and summary surface, not an access-control slice. Using role switching only for current identity display keeps the demo coherent for all seeded roles and avoids misleading team/org semantics before `Phase 3.4`.
+
+**Alternatives considered:**  
+Showing only same-team projects per role, or expanding shared repository APIs before broader project-detail and filtering work is defined.
+
+**Impact:**  
+`Phase 3.3` now delivers a consistent project list for Manager, Project Manager, and User demo roles without implying permissions logic, while richer project drill-down and filtering remain deferred to later phases.
+
 ### 2026-07-06 — Keep Personal issue grouping in a scoped read-model hook
 
 **Context:**  

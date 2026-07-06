@@ -704,7 +704,7 @@ Suggested commit message:
 
 ## Phase 3 — Main Screens
 
-Status: `Next active phase`
+Status: `In progress`
 
 Goal:
 
@@ -712,7 +712,7 @@ Replace placeholder pages with real feature surfaces backed by repository/state 
 
 ### Phase 3.1 — Demo Controls and Role Switch UI
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -747,7 +747,7 @@ Suggested commit message:
 
 ### Phase 3.2 — Personal View
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -785,7 +785,7 @@ Suggested commit message:
 
 ### Phase 3.3 — Projects List View
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -821,7 +821,7 @@ Suggested commit message:
 
 ### Phase 3.4 — Project Detail View
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
