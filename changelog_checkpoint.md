@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.1 — Demo Controls and Role Switch UI`
+- `Phase 3.2 — Personal View`
 
 Next concrete micro-phase:
 
-- `Phase 3.2 — Personal View`
+- `Phase 3.3 — Projects List View`
 
 ## Completed Work
 
@@ -93,6 +93,11 @@ Next concrete micro-phase:
 - Extracted a reusable role-switcher component and applied it to both the sidebar shell and Demo page to keep demo identity controls synchronized.
 - Added reset-in-progress, reset-error, and last-reset UI state for the local demo controls without introducing real auth or backend behavior.
 - Verified the remaining Dashboard, Personal, Projects, Project Detail, Issue Detail, and Team Workspace screens remain outside this slice and untouched as placeholders.
+- Replaced the Personal page placeholder with a real Phase 3.2 relationship-based screen for:
+  assigned issues, created issues, curated issues, needs-update items, and lightweight confirmation placeholders.
+- Added a scoped Personal read-model hook that loads issue, project, and label data through repository boundaries and groups it for screen rendering without introducing direct persistence access.
+- Kept the Personal screen read-oriented and linked issue cards to the existing issue-detail route without adding advanced filters, quick actions, or dashboard logic.
+- Limited the `Needs Update` section to issues that are actually related to the current demo user, preserving the screen's personal-work focus instead of turning it into a global alert board.
 
 ## Changed Files
 
@@ -118,6 +123,7 @@ Next concrete micro-phase:
 - `src/features/demo/DemoRoleSwitcher.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
 - `src/features/personal/PersonalPage.tsx`
+- `src/features/personal/usePersonalView.ts`
 - `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/projects/ProjectsPage.tsx`
 - `src/features/teams/TeamsPage.tsx`
@@ -203,6 +209,7 @@ Next concrete micro-phase:
 - Group issues now carry minimal `participantIds` data so later detail/list screens can show participants without changing team/org scope.
 - Demo reset now executes through app-state orchestration rather than feature-level persistence calls, keeping the Demo page inside the intended UI/state boundary.
 - Demo role switching now uses one reusable UI control across the sidebar and Demo page so visible identity state stays consistent without adding auth-like complexity.
+- Personal issue grouping now stays in a screen-scoped read-model hook instead of widening the shared repository API prematurely, keeping Phase 3.2 small while still respecting repository boundaries.
 
 ## Known Issues
 
@@ -220,6 +227,9 @@ Next concrete micro-phase:
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 - `BUILD_PLAN.md` still retains historical `Planned` labels inside completed `Phase 2A` micro-phase entries, even though the umbrella phase is correctly marked complete.
 - The Demo controls slice intentionally exposes reset only; the separate `Load Seed Data` wording in frozen technical planning remains deferred unless a later roadmap slice explicitly requires a dedicated control.
+- The Personal screen currently groups repository reads in-memory for created/curated/needs-update relationships because the shared issue repository still exposes only the narrower Phase 2B read methods.
+- Blocked / delayed related-to-me visibility described in frozen product docs remains deferred because it is outside the narrower approved scope of `Phase 3.2`.
+- Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
 
 ## Verification Results
 
@@ -244,8 +254,9 @@ Next concrete micro-phase:
 - `Phase 2B.8 — Pre-Phase 3 Domain Hardening` is now complete.
 - `Phase 2B — Issue Core Operations` is now complete.
 - `Phase 3.1 — Demo Controls and Role Switch UI` is now complete.
+- `Phase 3.2 — Personal View` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.2 — Personal View`.
+- The next allowed implementation slice is `Phase 3.3 — Projects List View`.
 
 ## Next Recommended Task
 
@@ -253,14 +264,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.2 — Personal View`
+- `Phase 3.3 — Projects List View`
 
 Scope for the next task only:
 
-- assigned to me
-- created by me
-- curated by me
-- needs update
-- confirmation-related placeholders if ready
+- project list
+- project summary cards / table
+- basic project navigation
+- no project creation form unless explicitly scoped
 
 Do not implement the whole of `Phase 3` in one task.

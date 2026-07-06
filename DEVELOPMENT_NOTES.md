@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Keep Personal issue grouping in a scoped read-model hook
+
+**Context:**  
+`Phase 3.2` required a Personal screen for assigned, created, curated, needs-update, and confirmation-related issue relationships, while the slice explicitly excluded advanced filters, broader screen work, and later workflow actions.
+
+**Decision:**  
+Implement the Personal screen with a small feature-scoped read-model hook that reads through existing repositories and groups results in memory, instead of expanding the shared issue repository with additional created-by, curated-by, and label-specific query methods in this slice.
+
+**Reasoning:**  
+This keeps the micro-phase narrow, respects the repository boundary, avoids direct persistence access from UI components, and prevents a small screen slice from prematurely widening the shared data-access API before the broader list and filtering phases are defined.
+
+**Alternatives considered:**  
+Adding new issue repository query methods immediately, or pushing the grouping logic directly into the page component.
+
+**Impact:**  
+`Phase 3.2` now delivers the approved Personal relationships view with a clean read path, while more general list/query infrastructure remains available for a later, broader slice if the roadmap actually needs it.
+
 ### 2026-07-06 — Route demo reset through app state and reuse one role-switcher UI
 
 **Context:**  
