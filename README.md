@@ -165,7 +165,7 @@ This allows visitors to test the product without needing a backend, database ser
 
 ## Current Status
 
-The project is currently in the foundation/setup phase.
+The project has completed the Phase 2 foundation and issue-domain work and is now entering Phase 3 — Main Screens.
 
 Completed so far:
 
@@ -175,6 +175,9 @@ Completed so far:
 * technical planning
 * documentation structure
 * GitHub repository initialization
+* frontend foundation and static SPA routing
+* local-first persistence and demo seed lifecycle
+* issue-domain operations and pre-screen hardening
 
 Implementation is being developed step by step with documented checkpoints.
 
@@ -187,9 +190,9 @@ Project planning documents are maintained in the repository:
 * `BUILD_PLAN.md`
 * `changelog_checkpoint.md`
 * `DEVELOPMENT_NOTES.md`
-* `docs/Portfolio_MVP_V1.txt`
-* `docs/Technical_Planning_v1.txt`
-* `docs/User_Journey_Freeze_v1.txt`
+* `docs/Portfolio_MVP_V1.md`
+* `docs/Technical_Planning_v1.md`
+* `docs/User_Journey_Freeze_v1.md`
 
 These documents describe the product scope, technical direction, user journeys, build phases, decisions, trade-offs, and implementation progress.
 
