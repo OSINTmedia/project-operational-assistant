@@ -81,6 +81,8 @@ Next concrete micro-phase:
 - Verified no direct UI-to-Dexie access has slipped into app, feature, or screen code.
 - Verified no backend, real auth, notification behavior, or screen-scope feature work slipped into `Phase 2B`.
 - Cleared the codebase to begin `Phase 3` screen work.
+- Completed a full evidence-based `Phase 2A` to `Phase 2B` transition audit against actual source, repository state, and verification commands.
+- Confirmed the repository is ready to begin `Phase 3` screen work with only non-blocking deferred notes remaining.
 
 ## Changed Files
 
@@ -205,7 +207,7 @@ Next concrete micro-phase:
 - `markIssueReadyForConfirmation()` currently does not write a dedicated activity history entry.
 - `reopenIssueFromConfirmation()` currently stores the target status id string in activity history `newValue`.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
-- `README.md` has local portfolio-progress edits in the worktree that were not part of the `Phase 2B` audit slice.
+- `BUILD_PLAN.md` still retains historical `Planned` labels inside completed `Phase 2A` micro-phase entries, even though the umbrella phase is correctly marked complete.
 
 ## Verification Results
 
@@ -228,6 +230,7 @@ Next concrete micro-phase:
 - `Phase 2B.6 — Needs Update and Confirmation Logic Foundation` is now complete.
 - `Phase 2B.7 — Phase 2B Audit` is now complete.
 - `Phase 2B — Issue Core Operations` is now complete.
+- The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - The next allowed implementation slice is `Phase 3.1 — Demo Controls and Role Switch UI`.
 
 ## Next Recommended Task
