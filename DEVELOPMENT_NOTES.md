@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Route demo reset through app state and reuse one role-switcher UI
+
+**Context:**  
+`Phase 3.1` required demo page controls, a role switch UI connected to app state, and a safe reset action, while the slice explicitly excluded real authentication, later screen work, and direct UI-to-persistence coupling.
+
+**Decision:**  
+Expose demo reset as a Zustand app-state action that calls the existing persistence reset helper and rehydrates demo identity state, and extract a reusable role-switcher component that is rendered both in the sidebar shell and on the Demo page.
+
+**Reasoning:**  
+This keeps the feature UI inside the intended UI/state boundary, avoids direct Demo-page knowledge of persistence helpers or Dexie details, and ensures visible demo identity stays synchronized across the two entry points without duplicating stateful UI logic.
+
+**Alternatives considered:**  
+Calling reset helpers directly from the Demo page, or maintaining separate role-switch UI implementations in the shell and Demo screen.
+
+**Impact:**  
+`Phase 3.1` now delivers the approved demo controls slice with cleaner state orchestration, while richer demo account selection and other screen implementations remain explicitly deferred.
+
 ### 2026-07-06 — Normalize activity payloads and add minimal group participants before screens
 
 **Context:**  

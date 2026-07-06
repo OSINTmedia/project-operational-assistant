@@ -6,10 +6,10 @@ import {
   Users,
 } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
+import { DemoRoleSwitcher } from '../../features/demo/DemoRoleSwitcher'
 import { appNavigation } from '../../shared/constants/navigation'
-import { USER_ROLE_IDS, USER_ROLE_LABELS } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
-import { getCurrentDemoUser, useDemoAppState } from '../state/useDemoAppState'
+import { useDemoAppState } from '../state/useDemoAppState'
 
 const iconMap = {
   dashboard: ChartColumn,
@@ -25,7 +25,6 @@ export function AppShell() {
   const selectedRole = useDemoAppState((state) => state.selectedRole)
   const isSeedDataInitialized = useDemoAppState((state) => state.isSeedDataInitialized)
   const setSelectedRole = useDemoAppState((state) => state.setSelectedRole)
-  const currentUser = getCurrentDemoUser(demoUsers, currentUserId)
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -43,32 +42,15 @@ export function AppShell() {
                 Foundation shell for a local-first operational dashboard demo.
               </p>
             </div>
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-3 text-xs text-slate-300 lg:mt-6">
-              <p className="font-medium text-slate-100">Role switch</p>
-              <p className="mt-1 text-slate-400">
-                {currentUser
-                  ? `${USER_ROLE_LABELS[currentUser.role]} · ${currentUser.name}`
-                  : 'No demo user selected'}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {USER_ROLE_IDS.map((role) => (
-                  <button
-                    key={role}
-                    type="button"
-                    onClick={() => {
-                      setSelectedRole(role)
-                    }}
-                    className={cn(
-                      'rounded-md border px-2.5 py-1 text-xs transition-colors',
-                      selectedRole === role
-                        ? 'border-accent bg-accent text-white'
-                        : 'border-slate-700 bg-slate-950 text-slate-300',
-                    )}
-                  >
-                    {USER_ROLE_LABELS[role]}
-                  </button>
-                ))}
-              </div>
+            <div className="lg:mt-6">
+              <DemoRoleSwitcher
+                demoUsers={demoUsers}
+                currentUserId={currentUserId}
+                selectedRole={selectedRole}
+                onSelectRole={setSelectedRole}
+                variant="sidebar"
+                description="Switching roles changes only local demo identity. No real authentication is used."
+              />
             </div>
           </div>
 

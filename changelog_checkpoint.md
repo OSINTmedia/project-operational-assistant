@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 3 — Main Screens: `Next active phase`
+Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 2B.8 — Pre-Phase 3 Domain Hardening`
+- `Phase 3.1 — Demo Controls and Role Switch UI`
 
 Next concrete micro-phase:
 
-- `Phase 3.1 — Demo Controls and Role Switch UI`
+- `Phase 3.2 — Personal View`
 
 ## Completed Work
 
@@ -87,6 +87,12 @@ Next concrete micro-phase:
   issue creation, label add/remove, ready-for-confirmation, confirmation, and reopen-from-confirmation.
 - Normalized activity payloads to typed value objects with stable `kind`, `id`, and `label` fields for later Issue Detail rendering.
 - Added minimal `participantIds` modeling to issues so group issue screens can render participants without inventing team/org behavior later.
+- Replaced the Demo page placeholder with a real Phase 3.1 controls surface for:
+  demo role switching, safe local demo reset, and concise visitor-facing demo context.
+- Moved demo reset execution behind the Zustand app-state layer so feature UI triggers local reseeding without reading persistence internals directly.
+- Extracted a reusable role-switcher component and applied it to both the sidebar shell and Demo page to keep demo identity controls synchronized.
+- Added reset-in-progress, reset-error, and last-reset UI state for the local demo controls without introducing real auth or backend behavior.
+- Verified the remaining Dashboard, Personal, Projects, Project Detail, Issue Detail, and Team Workspace screens remain outside this slice and untouched as placeholders.
 
 ## Changed Files
 
@@ -109,6 +115,7 @@ Next concrete micro-phase:
 - `src/app/router/AppRouter.tsx`
 - `src/features/dashboard/DashboardPage.tsx`
 - `src/features/demo/DemoPage.tsx`
+- `src/features/demo/DemoRoleSwitcher.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
 - `src/features/personal/PersonalPage.tsx`
 - `src/features/projects/ProjectDetailPage.tsx`
@@ -194,6 +201,8 @@ Next concrete micro-phase:
 - Attention and confirmation logic now lives in domain/application code, resolves persisted system labels through the label repository, and keeps confirmation lightweight rather than workflow-heavy.
 - Activity history payloads now use a typed, UI-friendly shape instead of ad hoc strings, without turning the model into event sourcing.
 - Group issues now carry minimal `participantIds` data so later detail/list screens can show participants without changing team/org scope.
+- Demo reset now executes through app-state orchestration rather than feature-level persistence calls, keeping the Demo page inside the intended UI/state boundary.
+- Demo role switching now uses one reusable UI control across the sidebar and Demo page so visible identity state stays consistent without adding auth-like complexity.
 
 ## Known Issues
 
@@ -210,6 +219,7 @@ Next concrete micro-phase:
 - `Needs Update` resolution currently depends on persisted system label records by name/type because exported shared label ids do not match the seeded persisted label ids.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 - `BUILD_PLAN.md` still retains historical `Planned` labels inside completed `Phase 2A` micro-phase entries, even though the umbrella phase is correctly marked complete.
+- The Demo controls slice intentionally exposes reset only; the separate `Load Seed Data` wording in frozen technical planning remains deferred unless a later roadmap slice explicitly requires a dedicated control.
 
 ## Verification Results
 
@@ -233,8 +243,9 @@ Next concrete micro-phase:
 - `Phase 2B.7 — Phase 2B Audit` is now complete.
 - `Phase 2B.8 — Pre-Phase 3 Domain Hardening` is now complete.
 - `Phase 2B — Issue Core Operations` is now complete.
+- `Phase 3.1 — Demo Controls and Role Switch UI` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.1 — Demo Controls and Role Switch UI`.
+- The next allowed implementation slice is `Phase 3.2 — Personal View`.
 
 ## Next Recommended Task
 
@@ -242,12 +253,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.1 — Demo Controls and Role Switch UI`
+- `Phase 3.2 — Personal View`
 
 Scope for the next task only:
 
-- demo page controls
-- role switch UI connected to app state
-- reset data action exposed safely
+- assigned to me
+- created by me
+- curated by me
+- needs update
+- confirmation-related placeholders if ready
 
 Do not implement the whole of `Phase 3` in one task.
