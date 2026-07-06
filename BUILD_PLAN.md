@@ -396,7 +396,7 @@ Suggested commit message:
 
 ## Phase 2B — Issue Core Operations
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -552,7 +552,7 @@ Suggested commit message:
 
 ### Phase 2B.5 — Tag and Label Operations
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -589,7 +589,7 @@ Suggested commit message:
 
 ### Phase 2B.6 — Needs Update and Confirmation Logic Foundation
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -626,7 +626,7 @@ Suggested commit message:
 
 ### Phase 2B.7 — Phase 2B Audit
 
-Status: `Later`
+Status: `Completed`
 
 Goal:
 
@@ -663,7 +663,7 @@ Suggested commit message:
 
 ## Phase 3 — Main Screens
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
@@ -671,7 +671,7 @@ Replace placeholder pages with real feature surfaces backed by repository/state 
 
 ### Phase 3.1 — Demo Controls and Role Switch UI
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

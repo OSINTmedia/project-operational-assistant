@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 2B — Issue Core Operations: `In progress`
+Phase 3 — Main Screens: `Next active phase`
 
 Completed micro-phase:
 
-- `Phase 2B.5 — Tag and Label Operations`
+- `Phase 2B.7 — Phase 2B Audit`
 
 Next concrete micro-phase:
 
-- `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`
+- `Phase 3.1 — Demo Controls and Role Switch UI`
 
 ## Completed Work
 
@@ -73,6 +73,14 @@ Next concrete micro-phase:
   tag add, tag remove, label add, and label remove.
 - Added duplicate-prevention behavior for assigned tag ids and label ids.
 - Preserved system-label semantics in mutation logic so `Needs Update` and `Ready for Confirmation` remain labels, not statuses or tags.
+- Added lightweight attention and confirmation operations for:
+  needs-update refresh, ready-for-confirmation marking, confirmation, and reopen-from-confirmation.
+- Kept `Needs Update` and `Ready for Confirmation` modeled as system labels rather than statuses.
+- Added repository-backed activity history writes for issue confirmation and reopen-from-confirmation transitions.
+- Audited `Phase 2B` issue-domain behavior against the frozen product, technical, and user-journey docs.
+- Verified no direct UI-to-Dexie access has slipped into app, feature, or screen code.
+- Verified no backend, real auth, notification behavior, or screen-scope feature work slipped into `Phase 2B`.
+- Cleared the codebase to begin `Phase 3` screen work.
 
 ## Changed Files
 
@@ -148,6 +156,7 @@ Next concrete micro-phase:
 - `src/domain/issueRules/createIssue.ts`
 - `src/domain/issueRules/index.ts`
 - `src/domain/issueRules/updateIssueClassification.ts`
+- `src/domain/issueRules/updateIssueAttention.ts`
 - `src/domain/issueRules/updateIssueResponsibility.ts`
 - `src/domain/issueRules/updateIssueState.ts`
 - placeholder `.gitkeep` files across planned source folders
@@ -175,6 +184,7 @@ Next concrete micro-phase:
 - Status and priority update behavior now lives in domain/application code and writes activity history through repositories rather than UI code.
 - Ownership and curator changes now live in domain/application code, stay repository-backed, and preserve group-issue curator rules without introducing UI or notification behavior.
 - Tag and label mutations now live in domain/application code, keep duplicate assignment out of issue state, and preserve the separation between tags, labels, and system labels.
+- Attention and confirmation logic now lives in domain/application code, resolves persisted system labels through the label repository, and keeps confirmation lightweight rather than workflow-heavy.
 
 ## Known Issues
 
@@ -191,7 +201,11 @@ Next concrete micro-phase:
 - Activity history entries for owner and curator changes currently store ids in `oldValue` / `newValue`, not display names.
 - Label add/remove operations currently do not write activity history entries.
 - Duplicate prevention in `Phase 2B.5` works at assignment time by id; tag-creation/name-normalization rules are still deferred.
+- `Needs Update` resolution currently depends on persisted system label records by name/type because exported shared label ids do not match the seeded persisted label ids.
+- `markIssueReadyForConfirmation()` currently does not write a dedicated activity history entry.
+- `reopenIssueFromConfirmation()` currently stores the target status id string in activity history `newValue`.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
+- `README.md` has local portfolio-progress edits in the worktree that were not part of the `Phase 2B` audit slice.
 
 ## Verification Results
 
@@ -211,21 +225,23 @@ Next concrete micro-phase:
 - `Phase 2B.3 — Status and Priority Update Operations` is now complete.
 - `Phase 2B.4 — Ownership and Curator Operations` is now complete.
 - `Phase 2B.5 — Tag and Label Operations` is now complete.
-- The next allowed implementation slice is `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`.
+- `Phase 2B.6 — Needs Update and Confirmation Logic Foundation` is now complete.
+- `Phase 2B.7 — Phase 2B Audit` is now complete.
+- `Phase 2B — Issue Core Operations` is now complete.
+- The next allowed implementation slice is `Phase 3.1 — Demo Controls and Role Switch UI`.
 
 ## Next Recommended Task
 
-`Phase 2B` is the next active umbrella phase.
+`Phase 3` is the next active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 2B.6 — Needs Update and Confirmation Logic Foundation`
+- `Phase 3.1 — Demo Controls and Role Switch UI`
 
 Scope for the next task only:
 
-- needs update calculation
-- ready for confirmation modeling
-- lightweight confirmation state transitions
-- no heavy approval workflow
+- demo page controls
+- role switch UI connected to app state
+- reset data action exposed safely
 
-Do not implement the whole of `Phase 2B` in one task.
+Do not implement the whole of `Phase 3` in one task.

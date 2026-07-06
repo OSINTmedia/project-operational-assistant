@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Keep needs-update and confirmation behavior label-based
+
+**Context:**  
+`Phase 2B.6` required needs-update calculation, ready-for-confirmation modeling, and lightweight confirmation transitions, while the slice explicitly excluded dashboard visuals, notification behavior, and heavy approval workflow logic.
+
+**Decision:**  
+Implement attention and confirmation behavior as small domain/application helpers that resolve persisted system labels by label record, keep `Needs Update` and `Ready for Confirmation` as labels rather than statuses, and write only the minimal activity-history entries required for confirmation/reopen transitions in this slice.
+
+**Reasoning:**  
+This preserves the frozen product semantics, avoids coupling confirmation behavior to hard-coded shared label ids that do not match persisted seed ids, and keeps the logic lightweight instead of turning it into a workflow engine.
+
+**Alternatives considered:**  
+Treating confirmation as a new status category, or coupling the slice to the exported `SYSTEM_LABEL_IDS` instead of resolving the persisted system labels actually present in IndexedDB.
+
+**Impact:**  
+The next `Phase 2B.7` audit can validate stable attention/confirmation behavior before screen-level feature work begins, while richer notification and approval behavior remains explicitly deferred.
+
 ### 2026-07-06 — Keep tag and label mutations separate
 
 **Context:**  
