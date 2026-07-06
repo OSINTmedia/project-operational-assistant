@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.3 — Projects List View`
+- `Phase 3.4A — Project Detail Header and Summary`
 
 Next concrete micro-phase:
 
-- `Phase 3.4A — Project Detail Header and Summary`
+- `Phase 3.4B — Read-only Project Issue List`
 
 ## Completed Work
 
@@ -102,6 +102,10 @@ Next concrete micro-phase:
   project summaries, coherent issue counts, visible project-level context, and click-through into the existing project-detail route.
 - Added a scoped Projects read-model hook that loads projects, issues, teams, users, and labels through repository boundaries and derives screen-level summary data without introducing direct persistence access.
 - Kept the Projects screen globally visible across demo roles in this slice, using role switching only for current identity display rather than introducing role-based project access semantics or team-scoped hiding.
+- Replaced the Project Detail placeholder with a real Phase 3.4A read-only detail shell for:
+  project header/context, summary counts, Back to Projects navigation, and controlled invalid-project handling.
+- Added a scoped Project Detail read-model hook that loads selected-project context and issue-derived counts through repository boundaries without rendering the full issue list yet.
+- Reserved the issue-list section explicitly for `Phase 3.4B` so the route is now usable without drifting into Issue Detail, issue actions, or create/edit scope.
 
 ## Changed Files
 
@@ -130,6 +134,7 @@ Next concrete micro-phase:
 - `src/features/personal/usePersonalView.ts`
 - `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/projects/ProjectsPage.tsx`
+- `src/features/projects/useProjectDetailView.ts`
 - `src/features/projects/useProjectsListView.ts`
 - `src/features/teams/TeamsPage.tsx`
 - `src/persistence/db.ts`
@@ -235,7 +240,7 @@ Next concrete micro-phase:
 - The Personal screen currently groups repository reads in-memory for created/curated/needs-update relationships because the shared issue repository still exposes only the narrower Phase 2B read methods.
 - Blocked / delayed related-to-me visibility described in frozen product docs remains deferred because it is outside the narrower approved scope of `Phase 3.2`.
 - Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
-- Project links currently navigate to the existing placeholder Project Detail route. This is an acceptable deferred behavior for `Phase 3.4 — Project Detail View`, but it remains a small current UX limitation until that route is implemented.
+- Project detail currently stops at header/context, summary counts, and a reserved issue-list container. Full read-only issue-row rendering remains deferred to `Phase 3.4B`.
 
 ## Verification Results
 
@@ -263,8 +268,9 @@ Next concrete micro-phase:
 - `Phase 3.2 — Personal View` is now complete.
 - `Phase 3.3 — Projects List View` is now complete.
 - `Phase 3.4 — Project Detail View` has been split into `3.4A`, `3.4B`, and `3.4C` to keep the read-only detail work, issue-list rendering, and lightweight filter cleanup in separate scoped slices.
+- `Phase 3.4A — Project Detail Header and Summary` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.4A — Project Detail Header and Summary`.
+- The next allowed implementation slice is `Phase 3.4B — Read-only Project Issue List`.
 
 ## Next Recommended Task
 
@@ -272,14 +278,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.4A — Project Detail Header and Summary`
+- `Phase 3.4B — Read-only Project Issue List`
 
 Scope for the next task only:
 
-- replace the Project Detail placeholder with a real read-only detail shell
-- load selected project from route param
-- show project name, description, status, owner, team/context, updated date, and project-level summary counts
-- provide Back to Projects navigation and controlled invalid-project empty/error state
-- include only a reserved issue-list section/container, not the full issue list yet
+- render issues belonging to the selected project
+- show useful issue metadata such as title, type, status, priority, owner, curator if applicable, labels/tags, and updated date
+- allow navigation to existing Issue Detail placeholder routes if already supported
+- do not implement Issue Detail itself
+- do not add issue mutation actions
 
 Do not implement the whole of `Phase 3` in one task.

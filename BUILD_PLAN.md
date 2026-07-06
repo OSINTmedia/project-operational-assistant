@@ -821,7 +821,7 @@ Suggested commit message:
 
 ### Phase 3.4 — Project Detail View
 
-Status: `Next active phase`
+Status: `In progress`
 
 Goal:
 
@@ -849,7 +849,7 @@ Phase 3.4 umbrella exclusions:
 
 ### Phase 3.4A — Project Detail Header and Summary
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -900,7 +900,7 @@ Suggested commit message:
 
 ### Phase 3.4B — Read-only Project Issue List
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
