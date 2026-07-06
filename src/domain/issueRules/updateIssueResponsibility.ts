@@ -1,16 +1,19 @@
-import type { ActivityEntryRecord, IssueRecord } from '../../persistence/records'
+import type { IssueRecord } from '../../persistence/records'
 import {
   activityHistoryRepository,
   issueRepository,
+  userRepository,
   type ActivityHistoryRepository,
   type IssueRepository,
+  type UserRepository,
 } from '../../repositories'
-import type { ActivityActionTypeId } from '../../shared/types'
 import type { IssueId, UserId } from '../../entities'
+import { createActivityEntry, createActivityValue } from './activityHistory'
 
 interface UpdateIssueResponsibilityDependencies {
   issueRepository?: IssueRepository
   activityHistoryRepository?: ActivityHistoryRepository
+  userRepository?: UserRepository
   createId?: () => string
   now?: () => string
 }
@@ -54,24 +57,12 @@ async function getExistingIssue(
   return issue
 }
 
-function buildActivityEntry(params: {
-  issueId: IssueId
-  actorId: UserId
-  actionType: ActivityActionTypeId
-  oldValue: string | null
-  newValue: string | null
-  createdAt: string
-  createId: string
-}): ActivityEntryRecord {
-  return {
-    id: params.createId,
-    issueId: params.issueId,
-    actorId: params.actorId,
-    actionType: params.actionType,
-    oldValue: params.oldValue,
-    newValue: params.newValue,
-    createdAt: params.createdAt,
-  }
+async function getUserLabel(
+  userId: UserId,
+  repository: UserRepository,
+): Promise<string> {
+  const user = await repository.getById(userId)
+  return user?.name ?? userId
 }
 
 export async function transferIssueOwner(
@@ -83,6 +74,7 @@ export async function transferIssueOwner(
 
   const issueRepo = dependencies.issueRepository ?? issueRepository
   const historyRepo = dependencies.activityHistoryRepository ?? activityHistoryRepository
+  const userRepo = dependencies.userRepository ?? userRepository
   const existingIssue = await getExistingIssue(input.issueId, issueRepo)
 
   if (existingIssue.ownerId === input.ownerId) {
@@ -90,6 +82,10 @@ export async function transferIssueOwner(
   }
 
   const now = getNow(dependencies)
+  const [oldOwnerLabel, newOwnerLabel] = await Promise.all([
+    getUserLabel(existingIssue.ownerId, userRepo),
+    getUserLabel(input.ownerId, userRepo),
+  ])
 
   await issueRepo.update({
     id: existingIssue.id,
@@ -99,14 +95,14 @@ export async function transferIssueOwner(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'owner-changed',
-      oldValue: existingIssue.ownerId,
-      newValue: input.ownerId,
+      oldValue: createActivityValue('user', oldOwnerLabel, existingIssue.ownerId),
+      newValue: createActivityValue('user', newOwnerLabel, input.ownerId),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 
@@ -126,6 +122,7 @@ export async function updateIssueCurator(
 
   const issueRepo = dependencies.issueRepository ?? issueRepository
   const historyRepo = dependencies.activityHistoryRepository ?? activityHistoryRepository
+  const userRepo = dependencies.userRepository ?? userRepository
   const existingIssue = await getExistingIssue(input.issueId, issueRepo)
 
   if (existingIssue.type === 'group' && input.curatorId === null) {
@@ -141,6 +138,10 @@ export async function updateIssueCurator(
   }
 
   const now = getNow(dependencies)
+  const [oldCuratorLabel, newCuratorLabel] = await Promise.all([
+    existingIssue.curatorId ? getUserLabel(existingIssue.curatorId, userRepo) : Promise.resolve(null),
+    input.curatorId ? getUserLabel(input.curatorId, userRepo) : Promise.resolve(null),
+  ])
 
   await issueRepo.update({
     id: existingIssue.id,
@@ -150,14 +151,18 @@ export async function updateIssueCurator(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'curator-changed',
-      oldValue: existingIssue.curatorId,
-      newValue: input.curatorId,
+      oldValue: existingIssue.curatorId
+        ? createActivityValue('user', oldCuratorLabel ?? existingIssue.curatorId, existingIssue.curatorId)
+        : null,
+      newValue: input.curatorId
+        ? createActivityValue('user', newCuratorLabel ?? input.curatorId, input.curatorId)
+        : null,
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 

@@ -6,7 +6,7 @@ Phase 3 — Main Screens: `Next active phase`
 
 Completed micro-phase:
 
-- `Phase 2B.7 — Phase 2B Audit`
+- `Phase 2B.8 — Pre-Phase 3 Domain Hardening`
 
 Next concrete micro-phase:
 
@@ -83,6 +83,10 @@ Next concrete micro-phase:
 - Cleared the codebase to begin `Phase 3` screen work.
 - Completed a full evidence-based `Phase 2A` to `Phase 2B` transition audit against actual source, repository state, and verification commands.
 - Confirmed the repository is ready to begin `Phase 3` screen work with only non-blocking deferred notes remaining.
+- Hardened issue activity history coverage for:
+  issue creation, label add/remove, ready-for-confirmation, confirmation, and reopen-from-confirmation.
+- Normalized activity payloads to typed value objects with stable `kind`, `id`, and `label` fields for later Issue Detail rendering.
+- Added minimal `participantIds` modeling to issues so group issue screens can render participants without inventing team/org behavior later.
 
 ## Changed Files
 
@@ -156,6 +160,7 @@ Next concrete micro-phase:
 - `src/repositories/teamRepository.ts`
 - `src/repositories/userRepository.ts`
 - `src/domain/issueRules/createIssue.ts`
+- `src/domain/issueRules/activityHistory.ts`
 - `src/domain/issueRules/index.ts`
 - `src/domain/issueRules/updateIssueClassification.ts`
 - `src/domain/issueRules/updateIssueAttention.ts`
@@ -187,6 +192,8 @@ Next concrete micro-phase:
 - Ownership and curator changes now live in domain/application code, stay repository-backed, and preserve group-issue curator rules without introducing UI or notification behavior.
 - Tag and label mutations now live in domain/application code, keep duplicate assignment out of issue state, and preserve the separation between tags, labels, and system labels.
 - Attention and confirmation logic now lives in domain/application code, resolves persisted system labels through the label repository, and keeps confirmation lightweight rather than workflow-heavy.
+- Activity history payloads now use a typed, UI-friendly shape instead of ad hoc strings, without turning the model into event sourcing.
+- Group issues now carry minimal `participantIds` data so later detail/list screens can show participants without changing team/org scope.
 
 ## Known Issues
 
@@ -197,15 +204,10 @@ Next concrete micro-phase:
 - `docs/Technical_Planning_v1.md` contains an internal inconsistency around the number of demo users. The current dataset follows the role breakdown rather than the contradictory total count.
 - Demo role switching currently selects the first seeded user for a role. A richer per-user picker is intentionally deferred.
 - Issue repository updates currently throw a generic error for a missing issue id; higher-level domain error shaping is still deferred.
-- Group issue participants are still not modeled in creation logic because the frozen technical field list does not define participant storage yet.
-- Issue creation currently persists the created issue record but still does not write `activityHistory`; that remains deferred to later operation slices.
-- Activity history entries for status and priority changes currently store human-readable labels as `oldValue` / `newValue`, not ids.
-- Activity history entries for owner and curator changes currently store ids in `oldValue` / `newValue`, not display names.
-- Label add/remove operations currently do not write activity history entries.
+- Group issue participants are modeled minimally as `participantIds`, but no participant-management workflow exists yet.
+- Activity history entries for status/priority/label/tag/confirmation mutations are normalized, but some older seed examples still reflect legacy action coverage rather than every newer domain operation.
 - Duplicate prevention in `Phase 2B.5` works at assignment time by id; tag-creation/name-normalization rules are still deferred.
 - `Needs Update` resolution currently depends on persisted system label records by name/type because exported shared label ids do not match the seeded persisted label ids.
-- `markIssueReadyForConfirmation()` currently does not write a dedicated activity history entry.
-- `reopenIssueFromConfirmation()` currently stores the target status id string in activity history `newValue`.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 - `BUILD_PLAN.md` still retains historical `Planned` labels inside completed `Phase 2A` micro-phase entries, even though the umbrella phase is correctly marked complete.
 
@@ -229,6 +231,7 @@ Next concrete micro-phase:
 - `Phase 2B.5 — Tag and Label Operations` is now complete.
 - `Phase 2B.6 — Needs Update and Confirmation Logic Foundation` is now complete.
 - `Phase 2B.7 — Phase 2B Audit` is now complete.
+- `Phase 2B.8 — Pre-Phase 3 Domain Hardening` is now complete.
 - `Phase 2B — Issue Core Operations` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - The next allowed implementation slice is `Phase 3.1 — Demo Controls and Role Switch UI`.

@@ -659,6 +659,47 @@ Suggested commit message:
 
 - `chore: audit phase 2b issue operations`
 
+### Phase 2B.8 — Pre-Phase 3 Domain Hardening
+
+Status: `Completed`
+
+Goal:
+
+Harden issue-domain behavior for Phase 3 screen work without expanding UI scope.
+
+Scope:
+
+- activity history consistency for UI-relevant issue mutations
+- activity payload normalization for later Issue Detail rendering
+- minimal group issue participant modeling
+- checkpoint / development-note sync
+
+Explicit exclusions:
+
+- no screen work
+- no dashboard metrics
+- no notification behavior
+- no real auth
+- no backend
+- no production-grade event sourcing
+
+Acceptance criteria:
+
+- issue creation and label / confirmation mutations write meaningful activity history
+- activity payloads are consistent enough for later Issue Detail UI rendering
+- group issues have a minimal participant field or a documented deferral decision
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `refactor: harden issue activity model before screens`
+
 ---
 
 ## Phase 3 — Main Screens

@@ -1,4 +1,4 @@
-import type { ActivityEntryRecord, IssueRecord, LabelRecord } from '../../persistence/records'
+import type { IssueRecord, LabelRecord } from '../../persistence/records'
 import {
   activityHistoryRepository,
   issueRepository,
@@ -8,6 +8,8 @@ import {
   type LabelRepository,
 } from '../../repositories'
 import type { IssueId, LabelId, UserId } from '../../entities'
+import { STATUS_LABELS } from '../../shared/types'
+import { createActivityEntry, createActivityValue } from './activityHistory'
 
 const SYSTEM_LABEL_NAMES = {
   needsUpdate: 'Needs Update',
@@ -87,26 +89,6 @@ async function getSystemLabelByName(
   return label
 }
 
-function buildActivityEntry(params: {
-  issueId: IssueId
-  actorId: UserId
-  actionType: 'issue-confirmed' | 'issue-reopened'
-  oldValue: string | null
-  newValue: string | null
-  createdAt: string
-  createId: string
-}): ActivityEntryRecord {
-  return {
-    id: params.createId,
-    issueId: params.issueId,
-    actorId: params.actorId,
-    actionType: params.actionType,
-    oldValue: params.oldValue,
-    newValue: params.newValue,
-    createdAt: params.createdAt,
-  }
-}
-
 function isIssueStale(issue: IssueRecord, now: string, staleIssueThresholdMs: number): boolean {
   if (issue.statusId === 'done' || issue.statusId === 'canceled') {
     return false
@@ -176,6 +158,7 @@ export async function markIssueReadyForConfirmation(
   assertRequiredId(input.actorId, 'Actor')
 
   const issueRepo = dependencies.issueRepository ?? issueRepository
+  const historyRepo = dependencies.activityHistoryRepository ?? activityHistoryRepository
   const labelRepo = dependencies.labelRepository ?? labelRepository
   const existingIssue = await getExistingIssue(input.issueId, issueRepo)
   const readyLabel = await getSystemLabelByName(
@@ -203,6 +186,20 @@ export async function markIssueReadyForConfirmation(
     updatedAt: now,
     completedAt: existingIssue.completedAt ?? now,
   })
+
+  await historyRepo.put(
+    createActivityEntry({
+      id: getCreateId(dependencies),
+      issueId: existingIssue.id,
+      actorId: input.actorId,
+      actionType: 'confirmation-requested',
+      oldValue: existingIssue.labelIds.includes(readyLabel.id)
+        ? createActivityValue('label', readyLabel.name, readyLabel.id)
+        : null,
+      newValue: createActivityValue('label', readyLabel.name, readyLabel.id),
+      createdAt: now,
+    }),
+  )
 
   return {
     ...existingIssue,
@@ -245,14 +242,14 @@ export async function confirmIssue(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'issue-confirmed',
-      oldValue: SYSTEM_LABEL_NAMES.readyForConfirmation,
-      newValue: 'Confirmed',
+      oldValue: createActivityValue('label', readyLabel.name, readyLabel.id),
+      newValue: createActivityValue('text', 'Confirmed'),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 
@@ -299,14 +296,14 @@ export async function reopenIssueFromConfirmation(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'issue-reopened',
-      oldValue: SYSTEM_LABEL_NAMES.readyForConfirmation,
-      newValue: input.statusId,
+      oldValue: createActivityValue('label', readyLabel.name, readyLabel.id),
+      newValue: createActivityValue('status', STATUS_LABELS[input.statusId], input.statusId),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 

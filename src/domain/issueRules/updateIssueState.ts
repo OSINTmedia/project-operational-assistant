@@ -1,4 +1,4 @@
-import type { ActivityEntryRecord, IssueRecord } from '../../persistence/records'
+import type { IssueRecord } from '../../persistence/records'
 import {
   activityHistoryRepository,
   issueRepository,
@@ -13,6 +13,7 @@ import {
 } from '../../shared/types'
 import type { ActivityActionTypeId } from '../../shared/types'
 import type { IssueId, UserId } from '../../entities'
+import { createActivityEntry, createActivityValue } from './activityHistory'
 
 interface UpdateIssueStateDependencies {
   issueRepository?: IssueRepository
@@ -52,26 +53,6 @@ async function getExistingIssue(
   }
 
   return issue
-}
-
-function buildActivityEntry(params: {
-  issueId: IssueId
-  actorId: UserId
-  actionType: ActivityActionTypeId
-  oldValue: string | null
-  newValue: string | null
-  createdAt: string
-  createId: string
-}): ActivityEntryRecord {
-  return {
-    id: params.createId,
-    issueId: params.issueId,
-    actorId: params.actorId,
-    actionType: params.actionType,
-    oldValue: params.oldValue,
-    newValue: params.newValue,
-    createdAt: params.createdAt,
-  }
 }
 
 function getStatusActionType(oldStatusId: StatusId, nextStatusId: StatusId): ActivityActionTypeId {
@@ -115,14 +96,18 @@ export async function updateIssueStatus(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: getStatusActionType(existingIssue.statusId, input.statusId),
-      oldValue: STATUS_LABELS[existingIssue.statusId],
-      newValue: STATUS_LABELS[input.statusId],
+      oldValue: createActivityValue(
+        'status',
+        STATUS_LABELS[existingIssue.statusId],
+        existingIssue.statusId,
+      ),
+      newValue: createActivityValue('status', STATUS_LABELS[input.statusId], input.statusId),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 
@@ -157,14 +142,18 @@ export async function updateIssuePriority(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'priority-changed',
-      oldValue: PRIORITY_LABELS[existingIssue.priority],
-      newValue: PRIORITY_LABELS[input.priority],
+      oldValue: createActivityValue(
+        'priority',
+        PRIORITY_LABELS[existingIssue.priority],
+        existingIssue.priority,
+      ),
+      newValue: createActivityValue('priority', PRIORITY_LABELS[input.priority], input.priority),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 

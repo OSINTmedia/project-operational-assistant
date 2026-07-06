@@ -1,5 +1,10 @@
 import type { IssueRecord } from '../../persistence/records'
-import { issueRepository, type IssueRepository } from '../../repositories'
+import {
+  activityHistoryRepository,
+  issueRepository,
+  type ActivityHistoryRepository,
+  type IssueRepository,
+} from '../../repositories'
 import type {
   DependencyTypeId,
   IssueTypeId,
@@ -7,6 +12,7 @@ import type {
   StatusId,
 } from '../../shared/types'
 import type { LabelId, ProjectId, TagId, TeamId, UserId } from '../../entities'
+import { createActivityEntry, createActivityValue } from './activityHistory'
 
 export interface CreateIssueInput {
   title: string
@@ -16,6 +22,7 @@ export interface CreateIssueInput {
   actorId: UserId
   ownerId?: UserId
   curatorId?: UserId | null
+  participantIds?: UserId[]
   type?: IssueTypeId
   statusId?: StatusId
   priority?: PriorityId
@@ -30,6 +37,7 @@ export interface CreateIssueDependencies {
   createId?: () => string
   now?: () => string
   repository?: IssueRepository
+  activityHistoryRepository?: ActivityHistoryRepository
 }
 
 function normalizeText(value: string | null | undefined): string {
@@ -63,6 +71,10 @@ export function buildIssueRecord(
     type === 'group'
       ? input.curatorId ?? input.actorId
       : input.curatorId ?? null
+  const participantIds =
+    type === 'group'
+      ? [...new Set(input.participantIds ?? [])]
+      : []
   const statusId = input.statusId ?? 'new'
   const priority = input.priority ?? 'medium'
   const dependencyType = input.dependencyType ?? 'none'
@@ -84,6 +96,7 @@ export function buildIssueRecord(
     priority,
     ownerId,
     curatorId,
+    participantIds,
     teamId: input.teamId,
     tagIds: input.tagIds ?? [],
     labelIds: input.labelIds ?? [],
@@ -105,9 +118,22 @@ export async function createIssue(
   dependencies: CreateIssueDependencies = {},
 ): Promise<IssueRecord> {
   const repository = dependencies.repository ?? issueRepository
+  const historyRepository =
+    dependencies.activityHistoryRepository ?? activityHistoryRepository
   const issueRecord = buildIssueRecord(input, dependencies)
 
   await repository.create(issueRecord)
+  await historyRepository.put(
+    createActivityEntry({
+      id: (dependencies.createId ?? (() => crypto.randomUUID()))(),
+      issueId: issueRecord.id,
+      actorId: input.actorId,
+      actionType: 'issue-created',
+      oldValue: null,
+      newValue: createActivityValue('issue', issueRecord.title, issueRecord.id),
+      createdAt: issueRecord.createdAt,
+    }),
+  )
 
   return issueRecord
 }

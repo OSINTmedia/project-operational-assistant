@@ -6,8 +6,11 @@ export const ACTIVITY_ACTION_TYPE_IDS = [
   'curator-changed',
   'tag-added',
   'tag-removed',
+  'label-added',
+  'label-removed',
   'issue-updated',
   'issue-completed',
+  'confirmation-requested',
   'issue-confirmed',
   'issue-reopened',
 ] as const
@@ -22,8 +25,11 @@ export const ACTIVITY_ACTION_LABELS: Record<ActivityActionTypeId, string> = {
   'curator-changed': 'Curator Changed',
   'tag-added': 'Tag Added',
   'tag-removed': 'Tag Removed',
+  'label-added': 'Label Added',
+  'label-removed': 'Label Removed',
   'issue-updated': 'Issue Updated',
   'issue-completed': 'Issue Completed',
+  'confirmation-requested': 'Confirmation Requested',
   'issue-confirmed': 'Issue Confirmed',
   'issue-reopened': 'Issue Reopened',
 }

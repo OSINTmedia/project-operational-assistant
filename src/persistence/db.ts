@@ -21,7 +21,7 @@ export class ProjectOperationalAssistantDb extends Dexie {
       [PERSISTENCE_TABLE_NAMES.projects]:
         'id, name, status, ownerId, teamId, createdBy, createdAt, updatedAt',
       [PERSISTENCE_TABLE_NAMES.issues]:
-        'id, projectId, type, statusId, priority, ownerId, curatorId, teamId, *tagIds, *labelIds, dependencyType, dependencyTargetId, createdBy, createdAt, updatedAt, completedAt, confirmationRequired, confirmedBy, confirmedAt',
+        'id, projectId, type, statusId, priority, ownerId, curatorId, *participantIds, teamId, *tagIds, *labelIds, dependencyType, dependencyTargetId, createdBy, createdAt, updatedAt, completedAt, confirmationRequired, confirmedBy, confirmedAt',
       [PERSISTENCE_TABLE_NAMES.tags]: 'id, normalizedName, name, createdBy, createdAt',
       [PERSISTENCE_TABLE_NAMES.labels]: 'id, name, type, createdBy, createdAt',
       [PERSISTENCE_TABLE_NAMES.statuses]: 'id, name, isCustom, createdBy, createdAt',

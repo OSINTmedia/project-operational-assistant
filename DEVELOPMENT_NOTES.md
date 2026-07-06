@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Normalize activity payloads and add minimal group participants before screens
+
+**Context:**  
+`Phase 2B.8` was introduced as a pre-Phase 3 hardening slice to close UI-relevant domain gaps before Issue Detail and other screen work begin.
+
+**Decision:**  
+Normalize activity history payloads to a small typed value object shape (`kind`, `id`, `label`), expand activity coverage for issue creation / label mutations / confirmation-requested flows, and add a minimal `participantIds` field to group-capable issues.
+
+**Reasoning:**  
+This gives later Phase 3 screens a stable rendering shape for activity history and a minimal participant model for group issues without introducing event sourcing, participant-management workflows, or broader organization behavior.
+
+**Alternatives considered:**  
+Keeping string-only activity payloads until Issue Detail work, or deferring group participants entirely until a later screen forces a model change under UI pressure.
+
+**Impact:**  
+Phase 3 screens can now consume issue activity and group participant data with less domain churn, while richer history semantics, participant workflows, and typed domain errors remain explicitly deferred.
+
 ### 2026-07-06 — Keep needs-update and confirmation behavior label-based
 
 **Context:**  

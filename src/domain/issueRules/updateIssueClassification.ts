@@ -1,4 +1,4 @@
-import type { ActivityEntryRecord, IssueRecord } from '../../persistence/records'
+import type { IssueRecord } from '../../persistence/records'
 import {
   activityHistoryRepository,
   issueRepository,
@@ -10,6 +10,7 @@ import {
   type TagRepository,
 } from '../../repositories'
 import type { IssueId, LabelId, TagId, UserId } from '../../entities'
+import { createActivityEntry, createActivityValue } from './activityHistory'
 
 interface UpdateIssueClassificationDependencies {
   issueRepository?: IssueRepository
@@ -71,26 +72,6 @@ async function getExistingIssue(
   return issue
 }
 
-function buildActivityEntry(params: {
-  issueId: IssueId
-  actorId: UserId
-  actionType: 'tag-added' | 'tag-removed'
-  oldValue: string | null
-  newValue: string | null
-  createdAt: string
-  createId: string
-}): ActivityEntryRecord {
-  return {
-    id: params.createId,
-    issueId: params.issueId,
-    actorId: params.actorId,
-    actionType: params.actionType,
-    oldValue: params.oldValue,
-    newValue: params.newValue,
-    createdAt: params.createdAt,
-  }
-}
-
 async function assertTagExists(tagId: TagId, repository: TagRepository): Promise<string> {
   const tag = await repository.getById(tagId)
 
@@ -101,12 +82,14 @@ async function assertTagExists(tagId: TagId, repository: TagRepository): Promise
   return tag.name
 }
 
-async function assertLabelExists(labelId: LabelId, repository: LabelRepository): Promise<void> {
+async function assertLabelExists(labelId: LabelId, repository: LabelRepository): Promise<string> {
   const label = await repository.getById(labelId)
 
   if (!label) {
     throw new Error(`Label not found: ${labelId}`)
   }
+
+  return label.name
 }
 
 export async function addIssueTag(
@@ -137,14 +120,14 @@ export async function addIssueTag(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'tag-added',
       oldValue: null,
-      newValue: tagName,
+      newValue: createActivityValue('tag', tagName, input.tagId),
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 
@@ -184,14 +167,14 @@ export async function removeIssueTag(
   })
 
   await historyRepo.put(
-    buildActivityEntry({
+    createActivityEntry({
+      id: getCreateId(dependencies),
       issueId: existingIssue.id,
       actorId: input.actorId,
       actionType: 'tag-removed',
-      oldValue: tagName,
+      oldValue: createActivityValue('tag', tagName, input.tagId),
       newValue: null,
       createdAt: now,
-      createId: getCreateId(dependencies),
     }),
   )
 
@@ -211,10 +194,10 @@ export async function addIssueLabel(
   assertRequiredId(input.labelId, 'Label')
 
   const issueRepo = dependencies.issueRepository ?? issueRepository
+  const historyRepo = dependencies.activityHistoryRepository ?? activityHistoryRepository
   const labelRepo = dependencies.labelRepository ?? labelRepository
   const existingIssue = await getExistingIssue(input.issueId, issueRepo)
-
-  await assertLabelExists(input.labelId, labelRepo)
+  const labelName = await assertLabelExists(input.labelId, labelRepo)
 
   if (existingIssue.labelIds.includes(input.labelId)) {
     return existingIssue
@@ -229,6 +212,18 @@ export async function addIssueLabel(
     updatedBy: input.actorId,
     updatedAt: now,
   })
+
+  await historyRepo.put(
+    createActivityEntry({
+      id: getCreateId(dependencies),
+      issueId: existingIssue.id,
+      actorId: input.actorId,
+      actionType: 'label-added',
+      oldValue: null,
+      newValue: createActivityValue('label', labelName, input.labelId),
+      createdAt: now,
+    }),
+  )
 
   return {
     ...existingIssue,
@@ -246,10 +241,10 @@ export async function removeIssueLabel(
   assertRequiredId(input.labelId, 'Label')
 
   const issueRepo = dependencies.issueRepository ?? issueRepository
+  const historyRepo = dependencies.activityHistoryRepository ?? activityHistoryRepository
   const labelRepo = dependencies.labelRepository ?? labelRepository
   const existingIssue = await getExistingIssue(input.issueId, issueRepo)
-
-  await assertLabelExists(input.labelId, labelRepo)
+  const labelName = await assertLabelExists(input.labelId, labelRepo)
 
   if (!existingIssue.labelIds.includes(input.labelId)) {
     return existingIssue
@@ -264,6 +259,18 @@ export async function removeIssueLabel(
     updatedBy: input.actorId,
     updatedAt: now,
   })
+
+  await historyRepo.put(
+    createActivityEntry({
+      id: getCreateId(dependencies),
+      issueId: existingIssue.id,
+      actorId: input.actorId,
+      actionType: 'label-removed',
+      oldValue: createActivityValue('label', labelName, input.labelId),
+      newValue: null,
+      createdAt: now,
+    }),
+  )
 
   return {
     ...existingIssue,

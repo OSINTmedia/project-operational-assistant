@@ -22,6 +22,7 @@ export interface Issue {
   priority: PriorityId
   ownerId: UserId
   curatorId: UserId | null
+  participantIds: UserId[]
   teamId: TeamId
   tagIds: TagId[]
   labelIds: LabelId[]
