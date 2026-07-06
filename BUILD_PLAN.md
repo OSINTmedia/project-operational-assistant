@@ -827,22 +827,65 @@ Goal:
 
 Expose project-scoped issue visibility without broadening into project administration complexity.
 
+Phase 3.4 umbrella scope:
+
+- project detail header/context
+- project status summary
+- project issue list
+- lightweight structured filters only if still needed after the read-only detail surface exists
+
+Phase 3.4 umbrella exclusions:
+
+- no issue create/edit form
+- no Issue Detail implementation
+- no status update actions
+- no owner / curator transfer actions
+- no confirmation workflow UI
+- no dashboard charts
+- no Team Workspace implementation
+- no project create/edit flow
+- no backend / auth / integrations
+- no broad data model refactor
+
+### Phase 3.4A — Project Detail Header and Summary
+
+Status: `Next active phase`
+
+Goal:
+
+Replace the Project Detail placeholder with a real read-only detail shell before issue-row rendering begins.
+
 Scope:
 
-- project detail
-- project issue list
-- basic filters by structured fields
-- project status summary
+- replace the current Project Detail placeholder with a real read-only project detail shell
+- load selected project from route param
+- show project name, description, status, owner, team/context, and updated date where available
+- show project-level summary counts derived from its issues
+- provide clear Back to Projects navigation
+- provide controlled empty/error state for invalid project ids
+- include only a reserved issue-list section / container
+- do not implement the full project issue list yet
 
 Explicit exclusions:
 
-- project admin workflows
-- dashboard metrics scope
-- attachment handling
+- no issue create / edit form
+- no Issue Detail implementation
+- no issue mutation actions
+- no status update actions
+- no owner / curator transfer actions
+- no confirmation workflow UI
+- no dashboard charts
+- no Team Workspace implementation
+- no project create / edit flow
+- no broad data model refactor
 
 Acceptance criteria:
 
-- project detail is usable as an issue drill-down surface
+- project detail route is no longer a placeholder
+- project header / context loads from repository-state boundaries
+- project-level summary counts are coherent
+- Back to Projects navigation is clear
+- invalid project ids resolve to a controlled empty/error state
 - build / typecheck / lint pass
 
 Verification requirements:
@@ -853,7 +896,98 @@ Verification requirements:
 
 Suggested commit message:
 
-- `feat: add project detail view`
+- `feat: add project detail header and summary`
+
+### Phase 3.4B — Read-only Project Issue List
+
+Status: `Later`
+
+Goal:
+
+Render the selected project's issues without introducing mutation workflows or Issue Detail implementation.
+
+Scope:
+
+- render issues belonging to the selected project
+- show useful issue metadata such as title, type, status, priority, owner, curator if applicable, labels / tags, and updated date
+- allow navigation to existing Issue Detail placeholder routes if already supported
+- do not implement Issue Detail itself
+- do not add issue mutation actions
+
+Explicit exclusions:
+
+- no issue create / edit form
+- no Issue Detail implementation
+- no status update actions
+- no owner / curator transfer actions
+- no confirmation workflow UI
+- no dashboard charts
+- no Team Workspace implementation
+- no project create / edit flow
+- no broad data model refactor
+
+Acceptance criteria:
+
+- selected-project issue list is rendered read-only
+- issue metadata is useful and structurally coherent
+- issue links can use the existing Issue Detail placeholder route without breaking
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: add project issue list`
+
+### Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup
+
+Status: `Later`
+
+Goal:
+
+Finish the Project Detail read-only surface with lightweight structured filtering only if it is still necessary after 3.4A and 3.4B.
+
+Scope:
+
+- add only lightweight structured filters / grouping if still needed, such as status, priority, attention/system labels, or type
+- keep filters simple and local to Project Detail
+- finish empty states and UX cleanup for Project Detail
+- run final Phase 3.4 integrity check
+- do not add advanced table engine, dashboard metrics, or mutation workflows
+
+Explicit exclusions:
+
+- no issue create / edit form
+- no Issue Detail implementation
+- no status update actions
+- no owner / curator transfer actions
+- no confirmation workflow UI
+- no dashboard charts
+- no Team Workspace implementation
+- no project create / edit flow
+- no backend / auth / integrations
+- no broad data model refactor
+
+Acceptance criteria:
+
+- Project Detail is coherent and polished enough for the demo's read-only use
+- any filters remain lightweight and local in scope
+- Phase 3.4 integrity check passes
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `chore: finish project detail read-only surface`
 
 ### Phase 3.5 — Issue Create/Edit Form
 

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-06 — Split Phase 3.4 before implementation
+
+**Context:**  
+The original `Phase 3.4 — Project Detail View` combined project header/context, project summary counts, project issue rendering, and basic structured filters in one roadmap slice, while the surrounding phases separately defer Issue Create/Edit and Issue Detail work.
+
+**Decision:**  
+Split `Phase 3.4` into `3.4A — Project Detail Header and Summary`, `3.4B — Read-only Project Issue List`, and `3.4C — Basic Structured Filters, Empty States, and Audit Cleanup` before implementation begins.
+
+**Reasoning:**  
+This keeps the next implementation task small enough to stay read-only and route-focused, reduces the risk of accidental drift into Issue Detail or Issue Create/Edit scope, and makes the filter work explicitly optional until the simpler detail surface exists.
+
+**Alternatives considered:**  
+Implementing the entire Project Detail surface as one task, or deferring the split until after partial implementation exposed the scope pressure in code.
+
+**Impact:**  
+The live roadmap and handoff now make `3.4A` the next concrete implementation slice, with clearer exclusions around issue actions, mutation workflows, and broader filtering complexity.
+
 ### 2026-07-06 — Keep Projects list globally visible and summaries screen-scoped
 
 **Context:**  
