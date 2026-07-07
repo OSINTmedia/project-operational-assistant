@@ -1,8 +1,9 @@
 import { AlertCircle, ArrowLeft, FilePenLine } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
-import type { DependencyTypeId, IssueTypeId, PriorityId } from '../../shared/types'
+import { saveIssueEdits } from '../../domain/issueRules'
+import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
 import {
   useIssueEditFormPrefill,
@@ -90,6 +91,8 @@ function IssueEditPageReady({
   issueId: string | null
   data: IssueEditFormPrefillData
 }) {
+  const navigate = useNavigate()
+  const currentUserId = useDemoAppState((state) => state.currentUserId)
   const [title, setTitle] = useState(data.title)
   const [description, setDescription] = useState(data.description)
   const [type, setType] = useState<IssueTypeId>(data.type)
@@ -104,11 +107,21 @@ function IssueEditPageReady({
   const [selectedDependencyTargetId, setSelectedDependencyTargetId] = useState(
     data.dependencyTargetId ?? '',
   )
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const currentProject = useMemo(
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
   )
+
+  const hasValidationError =
+    !title.trim() ||
+    !selectedProjectId ||
+    !selectedStatusId ||
+    !selectedOwnerId ||
+    (type === 'group' && !selectedCuratorId) ||
+    (dependencyType !== 'none' && !selectedDependencyTargetId)
 
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
@@ -116,6 +129,80 @@ function IssueEditPageReady({
         ? selectedValues.filter((entry) => entry !== value)
         : [...selectedValues, value],
     )
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    if (!issueId) {
+      setSubmitError('A valid issue id is required to save changes.')
+      return
+    }
+
+    if (!currentUserId) {
+      setSubmitError('A current demo user is required to save issue changes.')
+      return
+    }
+
+    if (!title.trim()) {
+      setSubmitError('Issue title is required.')
+      return
+    }
+
+    if (!selectedProjectId) {
+      setSubmitError('A valid project is required.')
+      return
+    }
+
+    if (!selectedStatusId) {
+      setSubmitError('Status is required.')
+      return
+    }
+
+    if (!selectedOwnerId) {
+      setSubmitError('Owner is required.')
+      return
+    }
+
+    if (type === 'group' && !selectedCuratorId) {
+      setSubmitError('Group issues require a curator.')
+      return
+    }
+
+    if (dependencyType !== 'none' && !selectedDependencyTargetId) {
+      setSubmitError('A dependency target is required when a dependency is selected.')
+      return
+    }
+
+    setSubmitError(null)
+    setIsSubmitting(true)
+
+    try {
+      const savedIssue = await saveIssueEdits({
+        issueId,
+        actorId: currentUserId,
+        title,
+        description,
+        projectId: selectedProjectId,
+        statusId: selectedStatusId as StatusId,
+        type,
+        priority,
+        ownerId: selectedOwnerId,
+        curatorId: type === 'group' ? selectedCuratorId : null,
+        tagIds: selectedTagIds,
+        labelIds: selectedLabelIds,
+        preservedSystemLabelIds: data.readonlySystemLabelIds,
+        dependencyType,
+        dependencyTargetId: dependencyType === 'none' ? null : selectedDependencyTargetId,
+      })
+
+      navigate(`/projects/${savedIssue.projectId}`)
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : 'Failed to save issue changes in local demo data.',
+      )
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -162,7 +249,13 @@ function IssueEditPageReady({
           </div>
         </div>
 
-        <div className="mt-6 grid gap-6">
+        <form className="mt-6 grid gap-6" onSubmit={handleSubmit}>
+          {submitError ? (
+            <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              {submitError}
+            </div>
+          ) : null}
+
           <IssueFormFields
             data={data}
             title={title}
@@ -213,8 +306,8 @@ function IssueEditPageReady({
                 {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
               </p>
               <p>
-                <span className="font-medium text-slate-950">Save behavior:</span> Deferred to
-                `Phase 3.5D`
+                <span className="font-medium text-slate-950">Save behavior:</span> Persists
+                structured changes and returns to Project Detail
               </p>
             </div>
             {data.readonlySystemLabelNames.length > 0 ? (
@@ -227,8 +320,8 @@ function IssueEditPageReady({
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-6">
             <p className="text-sm leading-6 text-slate-500">
-              This slice preloads edit values only. No save, mutation submit, or activity history
-              rendering happens here.
+              Edit save stays inside domain and repository boundaries. System labels remain
+              read-only context rather than editable form inputs.
             </p>
             <div className="flex items-center gap-3">
               <Link
@@ -238,15 +331,15 @@ function IssueEditPageReady({
                 Cancel
               </Link>
               <button
-                type="button"
-                disabled
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white opacity-60"
+                type="submit"
+                disabled={isSubmitting || hasValidationError}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
               >
-                Save changes
+                {isSubmitting ? 'Saving changes...' : 'Save changes'}
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </section>
     </section>
   )

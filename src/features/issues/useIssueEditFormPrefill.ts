@@ -21,6 +21,7 @@ export interface IssueEditFormPrefillData extends IssueCreateFormShellData {
   labelIds: LabelId[]
   dependencyType: 'none' | 'user' | 'team' | 'client-representative' | 'external-representative' | 'unknown'
   dependencyTargetId: string | null
+  readonlySystemLabelIds: LabelId[]
   readonlySystemLabelNames: string[]
 }
 
@@ -69,6 +70,7 @@ async function loadIssueEditFormPrefillData(params: {
     labelIds: issue.labelIds.filter((labelId) => editableLabelIds.has(labelId)),
     dependencyType: issue.dependencyType,
     dependencyTargetId: issue.dependencyTargetId,
+    readonlySystemLabelIds: issue.labelIds.filter((labelId) => systemLabelNames.has(labelId)),
     readonlySystemLabelNames: issue.labelIds
       .map((labelId) => systemLabelNames.get(labelId))
       .filter((labelName): labelName is string => Boolean(labelName)),

@@ -1173,7 +1173,7 @@ Suggested commit message:
 
 ### Phase 3.5D — Save Edit Changes and Verify History
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1222,7 +1222,7 @@ Suggested commit message:
 
 ### Phase 3.5E — Final Form Validation, Empty States, and Self-Audit
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

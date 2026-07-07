@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.5C — Edit Issue Form Route and Prefill`
+- `Phase 3.5D — Save Edit Changes and Verify History`
 
 Next concrete micro-phase:
 
-- `Phase 3.5D — Save Edit Changes and Verify History`
+- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`
 
 ## Completed Work
 
@@ -121,6 +121,13 @@ Next concrete micro-phase:
 - Kept creation writes behind repository and domain-service boundaries, including issue creation activity history, without broadening into edit mode or Issue Detail work.
 - Added a dedicated Issue Edit route and prefill screen that loads persisted issue values through repository-backed reads without enabling save behavior yet.
 - Extracted shared structured issue form controls so create and edit surfaces stay aligned while system labels remain read-only context instead of editable label inputs.
+- Added a narrow issue-edit save orchestration helper that composes existing domain update operations instead of bypassing them with direct UI-side persistence writes.
+- Wired the Issue Edit form to save structured changes for:
+  title, description, status, priority, owner, curator, type, tags, labels, and dependency.
+- Preserved system-label semantics during edit save by carrying read-only system label ids through prefill and merging them back into saved issue labels instead of exposing them as editable inputs.
+- Kept edit-save behavior repository-backed and activity-safe:
+  direct field updates preserve `updatedAt` / `updatedBy`, while status, priority, owner, curator, tag, and label changes still flow through their existing domain helpers where available.
+- Returned edit-save users to the relevant Project Detail route after success so updated issue values are immediately visible in the project issue list without requiring Issue Detail implementation first.
 
 ## Changed Files
 
@@ -148,6 +155,7 @@ Next concrete micro-phase:
 - `src/features/issues/IssueEditPage.tsx`
 - `src/features/issues/IssueFormFields.tsx`
 - `src/features/issues/useIssueEditFormPrefill.ts`
+- `src/domain/issueRules/saveIssueEdits.ts`
 - `src/features/personal/PersonalPage.tsx`
 - `src/features/personal/usePersonalView.ts`
 - `src/features/projects/ProjectDetailPage.tsx`
@@ -264,7 +272,8 @@ Next concrete micro-phase:
 - Issue creation currently returns users to Project Detail after success; broader post-create navigation patterns remain deferred until later create/edit slices require them.
 - Issue Detail itself remains a placeholder route until `Phase 3.6 — Issue Detail View`.
 - The Issue Edit surface currently reuses the placeholder Issue Detail route as its narrow entry point. Broader edit entry patterns can be revisited later if real Issue Detail UX demands them.
-- Edit save behavior remains intentionally disabled until `Phase 3.5D — Save Edit Changes and Verify History`.
+- The first edit-save success path currently returns users to Project Detail because `Phase 3.6 — Issue Detail View` is still deferred and there is not yet a richer issue-specific post-save surface.
+- Direct edit-save orchestration currently writes one generic `issue-updated` activity entry for changed freeform / structural fields, while status, priority, owner, curator, tag, and label updates continue to use their more specific existing activity helpers.
 
 ## Verification Results
 
@@ -300,8 +309,9 @@ Next concrete micro-phase:
 - `Phase 3.5A — Create Issue Form UI Shell Only` is now complete.
 - `Phase 3.5B — Wire Create Issue to Domain Service` is now complete.
 - `Phase 3.5C — Edit Issue Form Route and Prefill` is now complete.
+- `Phase 3.5D — Save Edit Changes and Verify History` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.5D — Save Edit Changes and Verify History`.
+- The next allowed implementation slice is `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`.
 
 ## Next Recommended Task
 
@@ -309,14 +319,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.5D — Save Edit Changes and Verify History`
+- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`
 
 Scope for the next task only:
 
-- enable saving allowed structured issue changes
-- update Title and Description if allowed by current product scope
-- update structured fields only through existing domain / application helpers
-- write meaningful activity history where supported
-- preserve Updated At / Updated By behavior and return the user to a coherent context after save
+- tighten required-field validation
+- ensure create and edit defaults remain sensible
+- refine controlled empty / error states for the create and edit flows
+- verify create and edit flows across roles and demo reset behavior
+- run the final `Phase 3.5` integrity check without drifting into `Phase 3.6`
 
 Do not implement the whole of `Phase 3` in one task.

@@ -1,4 +1,5 @@
 export * from './createIssue'
+export * from './saveIssueEdits'
 export * from './updateIssueClassification'
 export * from './updateIssueAttention'
 export * from './updateIssueResponsibility'

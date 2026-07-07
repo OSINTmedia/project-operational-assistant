@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Save issue edits through one narrow orchestration helper
+
+**Context:**  
+`Phase 3.5D` needed to persist edit-form changes and preserve activity history behavior without turning the feature layer into a direct persistence client or rewriting the existing split issue-update helpers into one broad mutation service.
+
+**Decision:**  
+Add one narrow domain helper that orchestrates edit-save behavior by combining direct issue-record updates only where necessary with the existing focused domain operations for status, priority, owner, curator, tag, and label changes, while preserving read-only system labels during save.
+
+**Reasoning:**  
+The existing domain layer already has strong focused helpers for several structured changes. Reusing them keeps history behavior and business rules coherent, while a small orchestration helper avoids duplicating update logic in the UI and avoids forcing a broad repository or domain refactor just to support one edit surface.
+
+**Alternatives considered:**  
+Saving directly from the feature page with multiple repository calls, or collapsing all issue-update behavior into a new monolithic update service before `Phase 3.5E`.
+
+**Impact:**  
+`Phase 3.5D` now saves structured issue edits through repository/domain boundaries, preserves `Needs Update` and `Ready for Confirmation` as system labels, and leaves deeper activity-history/UI refinement for later slices.
+
 ### 2026-07-07 — Reuse one structured form surface for create and edit prefill
 
 **Context:**  
