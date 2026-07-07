@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.5A — Create Issue Form UI Shell Only`
+- `Phase 3.5B — Wire Create Issue to Domain Service`
 
 Next concrete micro-phase:
 
-- `Phase 3.5B — Wire Create Issue to Domain Service`
+- `Phase 3.5C — Edit Issue Form Route and Prefill`
 
 ## Completed Work
 
@@ -117,6 +117,8 @@ Next concrete micro-phase:
 - Added a structured Issue create form shell with:
   Title and Description as the only open-text fields, and structured controls for Project, Status, Type, Priority, Owner, Curator, Tags, Labels, and Dependency.
 - Added local create-form shell option loading through repository/read-model boundaries without wiring real submit, persistence writes, or activity-history writes yet.
+- Wired the Create Issue form to the existing domain create service with minimal required-field validation and project-context-first redirect behavior after success.
+- Kept creation writes behind repository and domain-service boundaries, including issue creation activity history, without broadening into edit mode or Issue Detail work.
 
 ## Changed Files
 
@@ -254,7 +256,8 @@ Next concrete micro-phase:
 - Project Detail issue links currently navigate to the existing placeholder Issue Detail route. This remains an acceptable deferred behavior until `Phase 3.6 — Issue Detail View`.
 - Project Detail filters remain intentionally local to this screen. No shared list/filter infrastructure exists yet, which is acceptable until a later broader slice actually requires it.
 - The Create Issue shell currently starts from Project Detail context only. A broader global create entry remains deferred unless a later slice explicitly requires it.
-- The Create Issue submit button remains intentionally disabled until `Phase 3.5B — Wire Create Issue to Domain Service`.
+- Issue creation currently returns users to Project Detail after success; broader post-create navigation patterns remain deferred until later create/edit slices require them.
+- Issue Detail itself remains a placeholder route until `Phase 3.6 — Issue Detail View`.
 
 ## Verification Results
 
@@ -288,8 +291,9 @@ Next concrete micro-phase:
 - `Phase 3.4 — Project Detail View` is now complete.
 - `Phase 3.5 — Issue Create/Edit Form` has been split into `3.5A`, `3.5B`, `3.5C`, `3.5D`, and `3.5E` so create-shell UI, create wiring, edit prefill, edit save behavior, and final validation/audit do not collapse into one oversized slice.
 - `Phase 3.5A — Create Issue Form UI Shell Only` is now complete.
+- `Phase 3.5B — Wire Create Issue to Domain Service` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.5B — Wire Create Issue to Domain Service`.
+- The next allowed implementation slice is `Phase 3.5C — Edit Issue Form Route and Prefill`.
 
 ## Next Recommended Task
 
@@ -297,14 +301,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.5B — Wire Create Issue to Domain Service`
+- `Phase 3.5C — Edit Issue Form Route and Prefill`
 
 Scope for the next task only:
 
-- enable submit behavior for creating a new issue
-- use existing domain / application `createIssue` logic
-- write through repository / service boundaries, not direct Dexie access
-- validate required fields and apply creation defaults consistently
-- return the user to the appropriate context after creation and verify the new issue appears in relevant views
+- add an edit route or edit form surface for an existing issue
+- load issue by route param or explicit edit entry point
+- prefill existing issue fields
+- display structured fields consistently with the create-form controls
+- handle missing / invalid issue id with a controlled state
 
 Do not implement the whole of `Phase 3` in one task.

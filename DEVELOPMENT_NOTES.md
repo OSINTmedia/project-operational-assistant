@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Keep issue creation submit project-scoped and reuse the existing create service
+
+**Context:**  
+`Phase 3.5B` required wiring the existing create-form shell to local persistence and activity history without expanding into edit mode, Issue Detail, or broader navigation patterns.
+
+**Decision:**  
+Submit the create form through the existing domain `createIssue` path, carry `teamId` from the selected project option in the feature read-model, and return the user to the originating Project Detail route after a successful create.
+
+**Reasoning:**  
+This keeps writes inside repository/domain boundaries, avoids a UI-side project lookup or direct persistence shortcut at submit time, and uses the already-established project context to make post-create visibility obvious in the project issue list.
+
+**Alternatives considered:**  
+Re-querying project data inside submit handling, adding a broader global post-create redirect decision now, or combining create wiring with edit-route work.
+
+**Impact:**  
+`Phase 3.5B` now completes the create path with a narrow project-scoped flow, while edit-mode routing and broader create-entry/navigation behavior remain deferred to later `Phase 3.5` slices.
+
 ### 2026-07-07 — Start issue creation from project context first
 
 **Context:**  

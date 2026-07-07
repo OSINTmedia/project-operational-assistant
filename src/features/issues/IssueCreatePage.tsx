@@ -1,8 +1,9 @@
 import { AlertCircle, ArrowLeft, CirclePlus } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
-import type { DependencyTypeId, IssueTypeId, PriorityId } from '../../shared/types'
+import { createIssue } from '../../domain/issueRules'
+import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import {
   useIssueCreateFormShell,
   issueCreateFormShellLabels,
@@ -66,6 +67,8 @@ function IssueCreatePageReady({
   data: IssueCreateFormShellData
   projectId: string | null
 }) {
+  const navigate = useNavigate()
+  const currentUserId = useDemoAppState((state) => state.currentUserId)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [type, setType] = useState<IssueTypeId>('individual')
@@ -82,6 +85,8 @@ function IssueCreatePageReady({
     type === 'group' ? (data.defaultCuratorId ?? '') : '',
   )
   const [selectedDependencyTargetId, setSelectedDependencyTargetId] = useState('')
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const dependencyTargetOptions = useMemo(
     () =>
@@ -95,12 +100,88 @@ function IssueCreatePageReady({
     [data.projectOptions, selectedProjectId],
   )
 
+  const hasValidationError =
+    !title.trim() ||
+    !selectedProjectId ||
+    !selectedStatusId ||
+    !selectedOwnerId ||
+    (type === 'group' && !selectedCuratorId) ||
+    (dependencyType !== 'none' && !selectedDependencyTargetId)
+
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
       selectedValues.includes(value)
         ? selectedValues.filter((entry) => entry !== value)
         : [...selectedValues, value],
     )
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    if (!currentUserId) {
+      setSubmitError('A current demo user is required to create an issue.')
+      return
+    }
+
+    if (!title.trim()) {
+      setSubmitError('Issue title is required.')
+      return
+    }
+
+    if (!selectedProjectId || !currentProject) {
+      setSubmitError('A valid project is required.')
+      return
+    }
+
+    if (!selectedStatusId) {
+      setSubmitError('Status is required.')
+      return
+    }
+
+    if (!selectedOwnerId) {
+      setSubmitError('Owner is required.')
+      return
+    }
+
+    if (type === 'group' && !selectedCuratorId) {
+      setSubmitError('Group issues require a curator.')
+      return
+    }
+
+    if (dependencyType !== 'none' && !selectedDependencyTargetId) {
+      setSubmitError('A dependency target is required when a dependency is selected.')
+      return
+    }
+
+    setSubmitError(null)
+    setIsSubmitting(true)
+
+    try {
+      await createIssue({
+        title,
+        description,
+        projectId: selectedProjectId,
+        teamId: currentProject.teamId,
+        actorId: currentUserId,
+        ownerId: selectedOwnerId,
+        curatorId: type === 'group' ? selectedCuratorId : null,
+        type,
+        statusId: selectedStatusId as StatusId,
+        priority,
+        tagIds: selectedTagIds,
+        labelIds: selectedLabelIds,
+        dependencyType,
+        dependencyTargetId: dependencyType === 'none' ? null : selectedDependencyTargetId,
+      })
+
+      navigate(`/projects/${selectedProjectId}`)
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : 'Failed to create issue in local demo data.',
+      )
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -121,8 +202,8 @@ function IssueCreatePageReady({
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-slate-950">Create Issue</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Structured creation shell for the local demo. This slice exposes the full form
-              surface without wiring persistence submit behavior yet.
+              Structured issue creation for the local demo. This slice wires the existing create
+              service without expanding into edit mode or Issue Detail behavior.
             </p>
           </div>
 
@@ -139,15 +220,21 @@ function IssueCreatePageReady({
         <div className="flex items-start gap-3">
           <CirclePlus className="mt-1 h-5 w-5 text-accent" />
           <div>
-            <p className="text-sm font-medium text-slate-950">Create form shell only</p>
+            <p className="text-sm font-medium text-slate-950">Create issue</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Submit wiring lands in `Phase 3.5B`. In this slice, the form exists to confirm
-              field structure, defaults, and navigation only.
+              Creates a new issue in local demo data through the existing domain service while
+              keeping the screen scoped to creation only.
             </p>
           </div>
         </div>
 
-        <div className="mt-6 grid gap-6">
+        <form className="mt-6 grid gap-6" onSubmit={handleSubmit}>
+          {submitError ? (
+            <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              {submitError}
+            </div>
+          ) : null}
+
           <div className="grid gap-4 lg:grid-cols-2">
             <label className="grid gap-2 text-sm text-slate-600 lg:col-span-2">
               <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
@@ -384,16 +471,16 @@ function IssueCreatePageReady({
                 {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
               </p>
               <p>
-                <span className="font-medium text-slate-950">Submit behavior:</span> Deferred to
-                `Phase 3.5B`
+                <span className="font-medium text-slate-950">Submit behavior:</span> Creates the
+                issue and returns to Project Detail
               </p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-6">
             <p className="text-sm leading-6 text-slate-500">
-              This shell confirms field structure only. No repository writes or activity history
-              writes happen in this slice.
+              The create flow stays inside repository and domain-service boundaries. Only title and
+              description remain open text.
             </p>
             <div className="flex items-center gap-3">
               <Link
@@ -403,15 +490,15 @@ function IssueCreatePageReady({
                 Cancel
               </Link>
               <button
-                type="button"
-                disabled
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white opacity-60"
+                type="submit"
+                disabled={isSubmitting || hasValidationError}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
               >
-                Create issue
+                {isSubmitting ? 'Creating issue...' : 'Create issue'}
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </section>
     </section>
   )

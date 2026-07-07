@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { LabelId, ProjectId, TagId, UserId } from '../../entities'
+import type { LabelId, ProjectId, TagId, TeamId, UserId } from '../../entities'
 import { issueRepository } from '../../repositories/issueRepository'
 import { labelRepository } from '../../repositories/labelRepository'
 import { projectRepository } from '../../repositories/projectRepository'
@@ -13,6 +13,7 @@ import { DEPENDENCY_TYPE_LABELS, ISSUE_TYPE_LABELS, PRIORITY_LABELS } from '../.
 export interface IssueCreateProjectOption {
   id: ProjectId
   name: string
+  teamId: TeamId
   teamName: string
 }
 
@@ -103,6 +104,7 @@ async function loadIssueCreateFormShellData(
     projectOptions: projectsSorted.map((project) => ({
       id: project.id,
       name: project.name,
+      teamId: project.teamId,
       teamName: teamNames.get(project.teamId) ?? 'Unknown team',
     })),
     statusOptions: statuses.map((status) => ({

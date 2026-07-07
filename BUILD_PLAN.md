@@ -1079,7 +1079,7 @@ Suggested commit message:
 
 ### Phase 3.5B — Wire Create Issue to Domain Service
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1127,7 +1127,7 @@ Suggested commit message:
 
 ### Phase 3.5C — Edit Issue Form Route and Prefill
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
