@@ -900,7 +900,7 @@ Suggested commit message:
 
 ### Phase 3.4B — Read-only Project Issue List
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -945,7 +945,7 @@ Suggested commit message:
 
 ### Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

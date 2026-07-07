@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.4A — Project Detail Header and Summary`
+- `Phase 3.4B — Read-only Project Issue List`
 
 Next concrete micro-phase:
 
-- `Phase 3.4B — Read-only Project Issue List`
+- `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup`
 
 ## Completed Work
 
@@ -106,6 +106,10 @@ Next concrete micro-phase:
   project header/context, summary counts, Back to Projects navigation, and controlled invalid-project handling.
 - Added a scoped Project Detail read-model hook that loads selected-project context and issue-derived counts through repository boundaries without rendering the full issue list yet.
 - Reserved the issue-list section explicitly for `Phase 3.4B` so the route is now usable without drifting into Issue Detail, issue actions, or create/edit scope.
+- Extended the scoped Project Detail read-model hook to shape selected-project issue summaries through repository boundaries, including owner, curator, label, and tag resolution for read-only rendering.
+- Replaced the reserved Project Detail issue-list container with a real Phase 3.4B read-only issue list for:
+  title, type, status, priority, owner, curator when present, labels, tags, and updated date.
+- Added Project Detail issue navigation to the existing Issue Detail route without introducing Issue Detail implementation, issue mutation actions, or create/edit scope.
 
 ## Changed Files
 
@@ -240,7 +244,8 @@ Next concrete micro-phase:
 - The Personal screen currently groups repository reads in-memory for created/curated/needs-update relationships because the shared issue repository still exposes only the narrower Phase 2B read methods.
 - Blocked / delayed related-to-me visibility described in frozen product docs remains deferred because it is outside the narrower approved scope of `Phase 3.2`.
 - Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
-- Project detail currently stops at header/context, summary counts, and a reserved issue-list container. Full read-only issue-row rendering remains deferred to `Phase 3.4B`.
+- Project Detail issue links currently navigate to the existing placeholder Issue Detail route. This remains an acceptable deferred behavior until `Phase 3.6 — Issue Detail View`.
+- Project Detail still has no lightweight structured filters or grouping. That remains deferred to `Phase 3.4C` unless the final audit shows they are unnecessary.
 
 ## Verification Results
 
@@ -269,8 +274,9 @@ Next concrete micro-phase:
 - `Phase 3.3 — Projects List View` is now complete.
 - `Phase 3.4 — Project Detail View` has been split into `3.4A`, `3.4B`, and `3.4C` to keep the read-only detail work, issue-list rendering, and lightweight filter cleanup in separate scoped slices.
 - `Phase 3.4A — Project Detail Header and Summary` is now complete.
+- `Phase 3.4B — Read-only Project Issue List` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.4B — Read-only Project Issue List`.
+- The next allowed implementation slice is `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup`.
 
 ## Next Recommended Task
 
@@ -278,14 +284,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.4B — Read-only Project Issue List`
+- `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup`
 
 Scope for the next task only:
 
-- render issues belonging to the selected project
-- show useful issue metadata such as title, type, status, priority, owner, curator if applicable, labels/tags, and updated date
-- allow navigation to existing Issue Detail placeholder routes if already supported
-- do not implement Issue Detail itself
-- do not add issue mutation actions
+- add only lightweight structured filters / grouping if they are still needed, such as status, priority, attention/system labels, or type
+- keep filters simple and local to Project Detail
+- finish empty states and UX cleanup for Project Detail
+- run the final Phase 3.4 integrity check
+- do not add Issue Detail, issue mutation workflows, or broader data-grid complexity
 
 Do not implement the whole of `Phase 3` in one task.

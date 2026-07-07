@@ -1,19 +1,98 @@
 import {
   AlertCircle,
   ArrowLeft,
+  ArrowRight,
   FolderKanban,
   RefreshCcw,
   ShieldAlert,
   Users,
 } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { useProjectDetailView } from './useProjectDetailView'
+import { cn } from '../../shared/utils/cn'
+import { useProjectDetailView, type ProjectIssueSummary } from './useProjectDetailView'
 
 function formatUpdatedAt(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
+}
+
+function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
+  return (
+    <Link
+      to={`/issues/${issue.id}`}
+      className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel transition-colors hover:border-slate-300"
+    >
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <span>{issue.typeLabel}</span>
+            <span className="text-slate-300">•</span>
+            <span>{issue.ownerName}</span>
+            {issue.curatorName ? (
+              <>
+                <span className="text-slate-300">•</span>
+                <span>Curated by {issue.curatorName}</span>
+              </>
+            ) : null}
+          </div>
+          <h3 className="mt-2 text-base font-semibold text-slate-950">{issue.title}</h3>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+            {issue.statusLabel}
+          </span>
+          <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+            {issue.priorityLabel}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+        <span>Updated {formatUpdatedAt(issue.updatedAt)}</span>
+      </div>
+
+      {issue.labelNames.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {issue.labelNames.map((label) => (
+            <span
+              key={`${issue.id}-label-${label}`}
+              className={cn(
+                'rounded-full px-3 py-1 text-xs font-medium',
+                label === 'Needs Update'
+                  ? 'bg-orange-50 text-orange-700'
+                  : label === 'Ready for Confirmation'
+                    ? 'bg-violet-50 text-violet-700'
+                    : 'bg-sky-50 text-sky-700',
+              )}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      {issue.tagNames.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {issue.tagNames.map((tag) => (
+            <span
+              key={`${issue.id}-tag-${tag}`}
+              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="flex items-center justify-end gap-2 text-sm font-medium text-slate-600">
+        <span>Open issue</span>
+        <ArrowRight className="h-4 w-4" />
+      </div>
+    </Link>
+  )
 }
 
 export function ProjectDetailPage() {
@@ -188,14 +267,24 @@ export function ProjectDetailPage() {
           <div>
             <p className="text-sm font-medium text-slate-950">Project issues</p>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              This reserved container marks where the read-only project issue list will land in
-              `Phase 3.4B`. This slice stops at project header/context, summary counts, and safe
-              route handling.
+              Read-only project issues for the selected project. This slice keeps the list
+              navigable and descriptive without introducing issue actions, inline edits, or Issue
+              Detail implementation.
             </p>
           </div>
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            {data.totalIssueCount} queued for next slice
+            {data.issues.length} visible
           </span>
+        </div>
+
+        <div className="mt-5 grid gap-3">
+          {data.issues.length > 0 ? (
+            data.issues.map((issue) => <ProjectIssueCard key={issue.id} issue={issue} />)
+          ) : (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
+              This demo project does not currently have any issue records to show.
+            </div>
+          )}
         </div>
       </section>
     </section>
