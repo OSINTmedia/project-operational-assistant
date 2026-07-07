@@ -2,14 +2,24 @@ import {
   AlertCircle,
   ArrowLeft,
   ArrowRight,
+  Filter,
   FolderKanban,
   RefreshCcw,
   ShieldAlert,
   Users,
 } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { cn } from '../../shared/utils/cn'
 import { useProjectDetailView, type ProjectIssueSummary } from './useProjectDetailView'
+
+const ATTENTION_FILTER_OPTIONS = [
+  { value: 'all', label: 'All attention' },
+  { value: 'needs-update', label: 'Needs Update' },
+  { value: 'ready-for-confirmation', label: 'Ready for Confirmation' },
+] as const
+
+type AttentionFilter = (typeof ATTENTION_FILTER_OPTIONS)[number]['value']
 
 function formatUpdatedAt(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -98,6 +108,59 @@ function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
 export function ProjectDetailPage() {
   const { projectId } = useParams()
   const projectView = useProjectDetailView(projectId ?? null)
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [priorityFilter, setPriorityFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
+  const issues = useMemo(
+    () => (projectView.status === 'ready' ? projectView.data.issues : []),
+    [projectView],
+  )
+  const statusOptions = useMemo(
+    () => ['all', ...new Set(issues.map((issue) => issue.statusLabel))],
+    [issues],
+  )
+  const priorityOptions = useMemo(
+    () => ['all', ...new Set(issues.map((issue) => issue.priorityLabel))],
+    [issues],
+  )
+  const typeOptions = useMemo(
+    () => ['all', ...new Set(issues.map((issue) => issue.typeLabel))],
+    [issues],
+  )
+  const filteredIssues = useMemo(() => {
+    return issues.filter((issue) => {
+      if (statusFilter !== 'all' && issue.statusLabel !== statusFilter) {
+        return false
+      }
+
+      if (priorityFilter !== 'all' && issue.priorityLabel !== priorityFilter) {
+        return false
+      }
+
+      if (typeFilter !== 'all' && issue.typeLabel !== typeFilter) {
+        return false
+      }
+
+      if (attentionFilter === 'needs-update' && !issue.labelNames.includes('Needs Update')) {
+        return false
+      }
+
+      if (
+        attentionFilter === 'ready-for-confirmation' &&
+        !issue.labelNames.includes('Ready for Confirmation')
+      ) {
+        return false
+      }
+
+      return true
+    })
+  }, [attentionFilter, issues, priorityFilter, statusFilter, typeFilter])
+  const hasActiveFilters =
+    statusFilter !== 'all' ||
+    priorityFilter !== 'all' ||
+    typeFilter !== 'all' ||
+    attentionFilter !== 'all'
 
   if (projectView.status === 'loading') {
     return (
@@ -156,6 +219,13 @@ export function ProjectDetailPage() {
   }
 
   const { data } = projectView
+
+  function resetFilters() {
+    setStatusFilter('all')
+    setPriorityFilter('all')
+    setTypeFilter('all')
+    setAttentionFilter('all')
+  }
 
   return (
     <section className="grid gap-6">
@@ -272,17 +342,112 @@ export function ProjectDetailPage() {
               Detail implementation.
             </p>
           </div>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            {data.issues.length} visible
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+              {filteredIssues.length} of {data.issues.length} visible
+            </span>
+            {hasActiveFilters ? (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              >
+                Reset filters
+              </button>
+            ) : null}
+          </div>
         </div>
 
+        {data.issues.length > 0 ? (
+          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-950">
+              <Filter className="h-4 w-4 text-accent" />
+              <span>Issue filters</span>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Status
+                </span>
+                <select
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {statusOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all' ? 'All statuses' : option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Priority
+                </span>
+                <select
+                  value={priorityFilter}
+                  onChange={(event) => setPriorityFilter(event.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {priorityOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all' ? 'All priorities' : option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Type
+                </span>
+                <select
+                  value={typeFilter}
+                  onChange={(event) => setTypeFilter(event.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {typeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all' ? 'All types' : option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Attention
+                </span>
+                <select
+                  value={attentionFilter}
+                  onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {ATTENTION_FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
+        ) : null}
+
         <div className="mt-5 grid gap-3">
-          {data.issues.length > 0 ? (
-            data.issues.map((issue) => <ProjectIssueCard key={issue.id} issue={issue} />)
-          ) : (
+          {data.issues.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
               This demo project does not currently have any issue records to show.
+            </div>
+          ) : filteredIssues.length > 0 ? (
+            filteredIssues.map((issue) => <ProjectIssueCard key={issue.id} issue={issue} />)
+          ) : (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
+              No project issues match the current filters. Reset the filters to return to the full
+              read-only list.
             </div>
           )}
         </div>

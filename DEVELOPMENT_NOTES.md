@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Keep Project Detail filters lightweight and local
+
+**Context:**  
+`Phase 3.4C` allowed lightweight structured filters only if they were still needed after the read-only Project Detail shell and issue list were already in place, while the slice explicitly excluded broader table-engine work and workflow actions.
+
+**Decision:**  
+Add only small local filters for status, priority, type, and attention labels directly in the Project Detail screen, and avoid introducing shared filtering infrastructure or wider query abstractions in this slice.
+
+**Reasoning:**  
+The current Project Detail list needed a modest readability improvement and a distinct filtered-empty state, but not a broader reusable filtering system. Keeping the behavior local closes `Phase 3.4` cleanly without pulling later table/list complexity forward.
+
+**Alternatives considered:**  
+Leaving the screen unfiltered, or introducing a shared filter framework before any broader cross-screen requirement actually existed.
+
+**Impact:**  
+`Phase 3.4` now closes with coherent local filtering and cleanup, while wider list/query infrastructure remains available for a later slice only if the roadmap genuinely requires it.
+
 ### 2026-07-06 — Split Phase 3.4 before implementation
 
 **Context:**  

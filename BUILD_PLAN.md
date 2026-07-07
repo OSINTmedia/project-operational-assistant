@@ -821,7 +821,7 @@ Suggested commit message:
 
 ### Phase 3.4 — Project Detail View
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -945,7 +945,7 @@ Suggested commit message:
 
 ### Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -991,7 +991,7 @@ Suggested commit message:
 
 ### Phase 3.5 — Issue Create/Edit Form
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
