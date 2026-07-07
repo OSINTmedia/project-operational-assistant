@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Filter,
   FolderKanban,
+  Plus,
   RefreshCcw,
   ShieldAlert,
   Users,
@@ -253,6 +254,13 @@ export function ProjectDetailPage() {
           </div>
 
           <div className="grid gap-3 text-sm text-slate-600 sm:grid-cols-2">
+            <Link
+              to={`/projects/${data.id}/issues/new`}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
+            >
+              <Plus className="h-4 w-4" />
+              Create issue
+            </Link>
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Owner

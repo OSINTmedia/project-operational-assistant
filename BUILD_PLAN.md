@@ -1027,7 +1027,7 @@ Phase 3.5 umbrella exclusions:
 
 ### Phase 3.5A — Create Issue Form UI Shell Only
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1079,7 +1079,7 @@ Suggested commit message:
 
 ### Phase 3.5B — Wire Create Issue to Domain Service
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

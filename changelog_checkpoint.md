@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup`
+- `Phase 3.5A — Create Issue Form UI Shell Only`
 
 Next concrete micro-phase:
 
-- `Phase 3.5A — Create Issue Form UI Shell Only`
+- `Phase 3.5B — Wire Create Issue to Domain Service`
 
 ## Completed Work
 
@@ -113,6 +113,10 @@ Next concrete micro-phase:
 - Added lightweight, local Project Detail filters for:
   status, priority, type, and attention/system labels.
 - Added filtered visibility counts, reset-filter behavior, and a distinct filtered-empty state so Project Detail is coherent without introducing broader table-engine complexity.
+- Added a project-context-first Create Issue entry point from Project Detail into a dedicated create-shell route.
+- Added a structured Issue create form shell with:
+  Title and Description as the only open-text fields, and structured controls for Project, Status, Type, Priority, Owner, Curator, Tags, Labels, and Dependency.
+- Added local create-form shell option loading through repository/read-model boundaries without wiring real submit, persistence writes, or activity-history writes yet.
 
 ## Changed Files
 
@@ -249,6 +253,8 @@ Next concrete micro-phase:
 - Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
 - Project Detail issue links currently navigate to the existing placeholder Issue Detail route. This remains an acceptable deferred behavior until `Phase 3.6 — Issue Detail View`.
 - Project Detail filters remain intentionally local to this screen. No shared list/filter infrastructure exists yet, which is acceptable until a later broader slice actually requires it.
+- The Create Issue shell currently starts from Project Detail context only. A broader global create entry remains deferred unless a later slice explicitly requires it.
+- The Create Issue submit button remains intentionally disabled until `Phase 3.5B — Wire Create Issue to Domain Service`.
 
 ## Verification Results
 
@@ -281,8 +287,9 @@ Next concrete micro-phase:
 - `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup` is now complete.
 - `Phase 3.4 — Project Detail View` is now complete.
 - `Phase 3.5 — Issue Create/Edit Form` has been split into `3.5A`, `3.5B`, `3.5C`, `3.5D`, and `3.5E` so create-shell UI, create wiring, edit prefill, edit save behavior, and final validation/audit do not collapse into one oversized slice.
+- `Phase 3.5A — Create Issue Form UI Shell Only` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.5A — Create Issue Form UI Shell Only`.
+- The next allowed implementation slice is `Phase 3.5B — Wire Create Issue to Domain Service`.
 
 ## Next Recommended Task
 
@@ -290,15 +297,14 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.5A — Create Issue Form UI Shell Only`
+- `Phase 3.5B — Wire Create Issue to Domain Service`
 
 Scope for the next task only:
 
-- add or expose a Create Issue entry point from the most appropriate existing screen, preferably Project Detail when current project context is available
-- create a form route, panel, or screen surface for issue creation
-- render structured form fields needed for creation
-- keep Title and Description as the only open-text fields
-- provide cancel / back navigation and placeholder or disabled submit behavior only
-- do not wire real repository writes or edit-mode behavior yet
+- enable submit behavior for creating a new issue
+- use existing domain / application `createIssue` logic
+- write through repository / service boundaries, not direct Dexie access
+- validate required fields and apply creation defaults consistently
+- return the user to the appropriate context after creation and verify the new issue appears in relevant views
 
 Do not implement the whole of `Phase 3` in one task.

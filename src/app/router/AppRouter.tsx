@@ -1,6 +1,7 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { DashboardPage } from '../../features/dashboard/DashboardPage'
 import { DemoPage } from '../../features/demo/DemoPage'
+import { IssueCreatePage } from '../../features/issues/IssueCreatePage'
 import { IssueDetailPage } from '../../features/issues/IssueDetailPage'
 import { PersonalPage } from '../../features/personal/PersonalPage'
 import { ProjectDetailPage } from '../../features/projects/ProjectDetailPage'
@@ -17,6 +18,7 @@ export function AppRouter() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/personal" element={<PersonalPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:projectId/issues/new" element={<IssueCreatePage />} />
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
           <Route path="/teams" element={<TeamsPage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Start issue creation from project context first
+
+**Context:**  
+`Phase 3.5A` required only the create-form UI shell and explicitly preferred a Create Issue entry point from Project Detail when current project context was available.
+
+**Decision:**  
+Start the first create-form shell from Project Detail and use a dedicated create route scoped by `projectId`, rather than introducing a broader global create entry at the same time.
+
+**Reasoning:**  
+Project-scoped entry keeps defaults understandable, reduces ambiguity around initial project selection, and lets the form shell stay small without pulling broader navigation or workflow decisions into the first create slice.
+
+**Alternatives considered:**  
+Adding a global create entry from the top-level app shell or Projects list immediately, or waiting to expose any entry point until submit wiring existed.
+
+**Impact:**  
+`Phase 3.5A` now validates the issue-create shell against a coherent project context, while broader create entry surfaces remain available for later slices only if the roadmap needs them.
+
 ### 2026-07-07 — Split Phase 3.5 before implementation
 
 **Context:**  
