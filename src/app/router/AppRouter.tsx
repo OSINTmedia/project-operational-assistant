@@ -3,6 +3,7 @@ import { DashboardPage } from '../../features/dashboard/DashboardPage'
 import { DemoPage } from '../../features/demo/DemoPage'
 import { IssueCreatePage } from '../../features/issues/IssueCreatePage'
 import { IssueDetailPage } from '../../features/issues/IssueDetailPage'
+import { IssueEditPage } from '../../features/issues/IssueEditPage'
 import { PersonalPage } from '../../features/personal/PersonalPage'
 import { ProjectDetailPage } from '../../features/projects/ProjectDetailPage'
 import { ProjectsPage } from '../../features/projects/ProjectsPage'
@@ -21,6 +22,7 @@ export function AppRouter() {
           <Route path="/projects/:projectId/issues/new" element={<IssueCreatePage />} />
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
           <Route path="/teams" element={<TeamsPage />} />
+          <Route path="/issues/:issueId/edit" element={<IssueEditPage />} />
           <Route path="/issues/:issueId" element={<IssueDetailPage />} />
           <Route path="/demo" element={<DemoPage />} />
         </Route>

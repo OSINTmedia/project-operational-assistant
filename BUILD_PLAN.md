@@ -1127,7 +1127,7 @@ Suggested commit message:
 
 ### Phase 3.5C — Edit Issue Form Route and Prefill
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1173,7 +1173,7 @@ Suggested commit message:
 
 ### Phase 3.5D — Save Edit Changes and Verify History
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

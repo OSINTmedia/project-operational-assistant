@@ -4,9 +4,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { createIssue } from '../../domain/issueRules'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
+import { IssueFormFields } from './IssueFormFields'
 import {
   useIssueCreateFormShell,
-  issueCreateFormShellLabels,
   type IssueCreateFormShellData,
 } from './useIssueCreateFormShell'
 
@@ -88,13 +88,6 @@ function IssueCreatePageReady({
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const dependencyTargetOptions = useMemo(
-    () =>
-      selectedProjectId
-        ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
-        : [],
-    [data.dependencyTargetOptionsByProjectId, selectedProjectId],
-  )
   const currentProject = useMemo(
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
@@ -235,234 +228,48 @@ function IssueCreatePageReady({
             </div>
           ) : null}
 
-          <div className="grid gap-4 lg:grid-cols-2">
-            <label className="grid gap-2 text-sm text-slate-600 lg:col-span-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Title
-              </span>
-              <input
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="Summarize the issue briefly"
-                className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              />
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600 lg:col-span-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Description
-              </span>
-              <textarea
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                rows={4}
-                placeholder="Add optional context for the issue"
-                className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              />
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Project
-              </span>
-              <select
-                value={selectedProjectId}
-                onChange={(event) => {
-                  setSelectedProjectId(event.target.value)
-                  setSelectedDependencyTargetId('')
-                }}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {data.projectOptions.map((project) => (
-                  <option key={project.id} value={project.id}>
-                    {project.name} · {project.teamName}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Status
-              </span>
-              <select
-                value={selectedStatusId}
-                onChange={(event) => setSelectedStatusId(event.target.value)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {data.statusOptions.map((status) => (
-                  <option key={status.id} value={status.id}>
-                    {status.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Type
-              </span>
-              <select
-                value={type}
-                onChange={(event) => setType(event.target.value as IssueTypeId)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {Object.entries(issueCreateFormShellLabels.type).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Priority
-              </span>
-              <select
-                value={priority}
-                onChange={(event) => setPriority(event.target.value as PriorityId)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {Object.entries(issueCreateFormShellLabels.priority).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Owner
-              </span>
-              <select
-                value={selectedOwnerId}
-                onChange={(event) => setSelectedOwnerId(event.target.value)}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {data.ownerOptions.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name} · {user.roleLabel}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Curator
-              </span>
-              <select
-                value={type === 'group' ? selectedCuratorId : ''}
-                onChange={(event) => setSelectedCuratorId(event.target.value)}
-                disabled={type !== 'group'}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
-              >
-                {type !== 'group' ? (
-                  <option value="">Only relevant for group issues</option>
-                ) : null}
-                {data.curatorOptions.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name} · {user.roleLabel}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Dependency
-              </span>
-              <select
-                value={dependencyType}
-                onChange={(event) => {
-                  setDependencyType(event.target.value as DependencyTypeId)
-                  setSelectedDependencyTargetId('')
-                }}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {Object.entries(issueCreateFormShellLabels.dependency).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Dependency target
-              </span>
-              <select
-                value={selectedDependencyTargetId}
-                onChange={(event) => setSelectedDependencyTargetId(event.target.value)}
-                disabled={dependencyType === 'none' || dependencyTargetOptions.length === 0}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
-              >
-                {dependencyType === 'none' ? (
-                  <option value="">No dependency target needed</option>
-                ) : dependencyTargetOptions.length === 0 ? (
-                  <option value="">No issue targets in this project yet</option>
-                ) : (
-                  <>
-                    <option value="">Select related issue</option>
-                    {dependencyTargetOptions.map((issue) => (
-                      <option key={issue.id} value={issue.id}>
-                        {issue.title}
-                      </option>
-                    ))}
-                  </>
-                )}
-              </select>
-            </label>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-2">
-            <fieldset className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Tags
-              </legend>
-              <div className="mt-3 grid gap-2">
-                {data.tagOptions.map((tag) => (
-                  <label key={tag.id} className="flex items-center gap-3 text-sm text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={selectedTagIds.includes(tag.id)}
-                      onChange={() => toggleArrayValue(tag.id, selectedTagIds, setSelectedTagIds)}
-                      className="h-4 w-4 rounded border-slate-300"
-                    />
-                    <span>{tag.name}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <fieldset className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Labels
-              </legend>
-              <div className="mt-3 grid gap-2">
-                {data.labelOptions.map((label) => (
-                  <label key={label.id} className="flex items-center gap-3 text-sm text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={selectedLabelIds.includes(label.id)}
-                      onChange={() =>
-                        toggleArrayValue(label.id, selectedLabelIds, setSelectedLabelIds)
-                      }
-                      className="h-4 w-4 rounded border-slate-300"
-                    />
-                    <span>{label.name}</span>
-                  </label>
-                ))}
-              </div>
-              <p className="mt-3 text-xs leading-5 text-slate-500">
-                System labels such as `Needs Update` and `Ready for Confirmation` are intentionally
-                excluded from manual selection in this shell.
-              </p>
-            </fieldset>
-          </div>
+          <IssueFormFields
+            data={data}
+            title={title}
+            onTitleChange={setTitle}
+            description={description}
+            onDescriptionChange={setDescription}
+            selectedProjectId={selectedProjectId}
+            onSelectedProjectIdChange={(value) => {
+              setSelectedProjectId(value)
+              setSelectedDependencyTargetId('')
+            }}
+            selectedStatusId={selectedStatusId}
+            onSelectedStatusIdChange={setSelectedStatusId}
+            type={type}
+            onTypeChange={(value) => {
+              setType(value)
+              if (value !== 'group') {
+                setSelectedCuratorId('')
+              } else if (!selectedCuratorId) {
+                setSelectedCuratorId(data.defaultCuratorId ?? '')
+              }
+            }}
+            priority={priority}
+            onPriorityChange={setPriority}
+            selectedOwnerId={selectedOwnerId}
+            onSelectedOwnerIdChange={setSelectedOwnerId}
+            selectedCuratorId={selectedCuratorId}
+            onSelectedCuratorIdChange={setSelectedCuratorId}
+            dependencyType={dependencyType}
+            onDependencyTypeChange={(value) => {
+              setDependencyType(value)
+              setSelectedDependencyTargetId('')
+            }}
+            selectedDependencyTargetId={selectedDependencyTargetId}
+            onSelectedDependencyTargetIdChange={setSelectedDependencyTargetId}
+            selectedTagIds={selectedTagIds}
+            onToggleTagId={(value) => toggleArrayValue(value, selectedTagIds, setSelectedTagIds)}
+            selectedLabelIds={selectedLabelIds}
+            onToggleLabelId={(value) =>
+              toggleArrayValue(value, selectedLabelIds, setSelectedLabelIds)
+            }
+          />
 
           <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
             <div className="grid gap-2 text-sm text-slate-600 md:grid-cols-2">

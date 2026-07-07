@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Reuse one structured form surface for create and edit prefill
+
+**Context:**  
+`Phase 3.5C` required an edit route and persisted-field prefill without enabling save behavior yet, while `Phase 3.5A` and `3.5B` had already established a structured create form with the correct open-text boundary.
+
+**Decision:**  
+Extract the shared issue form controls into one reusable feature component, use that component in both create and edit surfaces, and expose the first edit entry narrowly from the existing Issue Detail placeholder route.
+
+**Reasoning:**  
+This keeps create and edit field structure aligned, avoids duplicating structured control logic before save behavior exists, and introduces the smallest coherent edit entry without expanding the placeholder Issue Detail route into a broader workflow surface.
+
+**Alternatives considered:**  
+Building a second standalone edit form, or waiting to expose any edit entry until save behavior was implemented.
+
+**Impact:**  
+`Phase 3.5C` now verifies route handling and persisted-field prefill against the same structured controls used by create, while save behavior and broader edit-entry UX remain deferred to later slices.
+
 ### 2026-07-07 — Keep issue creation submit project-scoped and reuse the existing create service
 
 **Context:**  

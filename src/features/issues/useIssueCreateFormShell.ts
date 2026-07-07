@@ -75,7 +75,7 @@ function getRoleLabel(role: string): string {
   }
 }
 
-async function loadIssueCreateFormShellData(
+export async function loadIssueCreateFormShellData(
   preferredProjectId: ProjectId | null,
   currentUserId: UserId | null,
   currentUserName: string | null,
