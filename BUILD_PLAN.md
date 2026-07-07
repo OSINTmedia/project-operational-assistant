@@ -991,35 +991,80 @@ Suggested commit message:
 
 ### Phase 3.5 — Issue Create/Edit Form
 
-Status: `Next active phase`
+Status: `In progress`
 
 Goal:
 
-Expose structured issue creation and editing through a minimal UI without turning the form into open-text workflow chaos.
+Expose structured issue creation and editing through minimal UI slices without turning the form into a broad Issue Detail workflow, dashboard workflow, or open-text process.
 
-Scope:
+Phase 3.5 umbrella scope:
 
 - quick-create issue form
 - structured issue edit form
 - title / description as open text only
 - project, status, priority, owner, curator, type, tags, labels, dependency as structured fields
-- connect to Phase 2B issue creation/update services
-- activity history updates where applicable
+- connect to existing Phase 2B creation/update services
+- verify meaningful activity history writes where supported
+
+Phase 3.5 umbrella exclusions:
+
+- no Issue Detail implementation
+- no activity timeline rendering UI
+- no comments
+- no attachments
+- no notification behavior
+- no backend
+- no real authentication
+- no dashboard metrics / charts
+- no Team Workspace implementation
+- no project create / edit flow
+- no status quick-action toolbar
+- no owner transfer workflow UI beyond explicitly scoped form fields
+- no confirmation workflow UI
+- no advanced validation UX
+- no custom workflow builder
+- no broad repository / data-model refactor
+
+### Phase 3.5A — Create Issue Form UI Shell Only
+
+Status: `Next active phase`
+
+Goal:
+
+Create the visual and structural form shell for issue creation without wiring persistence submit behavior yet.
+
+Scope:
+
+- add or expose a Create Issue entry point from the most appropriate existing screen, preferably Project Detail when current project context is available
+- create a form route, panel, or screen surface for issue creation
+- render structured form fields needed for creation
+- include Title and Description as the only open-text fields
+- include structured fields such as Project, Status, Priority, Owner, Type, Curator when applicable, Tags, Labels, and Dependency where feasible
+- provide cancel / back navigation
+- provide placeholder or disabled submit behavior if submit wiring belongs to `Phase 3.5B`
+- keep default values visible and understandable
+- keep UI state local / feature-scoped
 
 Explicit exclusions:
 
-- comments
-- attachments
-- notification behavior
-- advanced validation UX
-- custom workflow builder
+- no real issue creation submit
+- no repository writes
+- no activity history writes
+- no edit mode
+- no Issue Detail implementation
+- no status quick actions
+- no owner transfer workflow UI
+- no confirmation workflow UI
+- no advanced validation UX
+- no broad form framework abstraction unless already present
 
 Acceptance criteria:
 
-- user can create a new Issue
-- user can edit structured Issue fields
-- form respects open text policy
-- activity history is updated for meaningful changes
+- user can open the Create Issue form shell
+- form layout is visible and structured
+- Title / Description are the only open-text fields
+- structured fields are represented as selects, toggles, pickers, or simple structured controls
+- cancel / back navigation works
 - build / typecheck / lint pass
 
 Verification requirements:
@@ -1030,7 +1075,201 @@ Verification requirements:
 
 Suggested commit message:
 
-- `feat: add issue create edit form`
+- `feat: add issue create form shell`
+
+### Phase 3.5B — Wire Create Issue to Domain Service
+
+Status: `Later`
+
+Goal:
+
+Connect the Create Issue form to the existing Phase 2B issue creation service and local persistence path.
+
+Scope:
+
+- enable submit behavior for creating a new issue
+- use existing domain / application `createIssue` logic
+- write through repository / service boundaries, not direct Dexie access
+- validate required fields
+- apply creation defaults consistently
+- create activity history for issue creation if the service supports it
+- redirect or return to the appropriate context after creation, such as Project Detail or Personal
+- verify new issue appears in relevant lists after creation
+- preserve reset-demo behavior
+
+Explicit exclusions:
+
+- no edit mode
+- no Issue Detail implementation
+- no comments / attachments / notifications
+- no advanced validation UX
+- no custom status creation
+- no broad repository refactor unless a tiny adapter is unavoidable and documented
+
+Acceptance criteria:
+
+- user can create a new issue
+- created issue persists in IndexedDB / local demo data
+- created issue appears in the selected project issue list or relevant Personal view
+- form respects open-text policy
+- creation writes expected metadata and activity history where supported
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: wire issue creation form`
+
+### Phase 3.5C — Edit Issue Form Route and Prefill
+
+Status: `Later`
+
+Goal:
+
+Create the edit surface for existing issues and prefill it from persisted issue data without saving changes yet.
+
+Scope:
+
+- add an edit route or edit form surface for an existing issue
+- load issue by route param or explicit edit entry point
+- prefill existing issue fields
+- display structured fields consistently with create-form controls
+- handle missing / invalid issue id with a controlled state
+- provide cancel / back navigation
+- avoid implementing full Issue Detail content
+
+Explicit exclusions:
+
+- no save / edit persistence yet
+- no issue mutation submit
+- no status quick-action toolbar
+- no activity history rendering
+- no confirmation workflow UI
+- no comments / attachments
+- no full Issue Detail implementation
+
+Acceptance criteria:
+
+- user can open edit form for an existing issue
+- fields are prefilled correctly
+- invalid issue id does not crash
+- no direct UI-to-Dexie access
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: add issue edit form prefill`
+
+### Phase 3.5D — Save Edit Changes and Verify History
+
+Status: `Later`
+
+Goal:
+
+Connect edit-form save behavior to existing structured update operations and verify meaningful activity history writes.
+
+Scope:
+
+- enable saving allowed structured issue changes
+- update Title and Description if allowed by current product scope
+- update structured fields such as Status, Priority, Owner, Curator, Type, Tags, Labels, and Dependency only through existing domain / application helpers where available
+- write activity history for meaningful changes where supported
+- preserve Updated At and Updated By behavior
+- ensure group-issue curator rules remain enforced
+- ensure `Needs Update` and `Ready for Confirmation` remain labels
+- return user to a coherent context after save
+
+Explicit exclusions:
+
+- no Issue Detail implementation
+- no activity timeline UI
+- no comments / attachments / notifications
+- no confirmation workflow UI
+- no broad quick-action controls
+- no custom workflow builder
+- no broad repository rewrite
+
+Acceptance criteria:
+
+- user can edit an existing issue and save changes
+- saved changes persist after refresh
+- changed issue appears updated in Project Detail / Personal read views
+- relevant activity history entries are created where domain helpers support them
+- Updated At / Updated By behavior remains coherent
+- form respects open-text policy
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: wire issue edit form`
+
+### Phase 3.5E — Final Form Validation, Empty States, and Self-Audit
+
+Status: `Later`
+
+Goal:
+
+Close Phase 3.5 by validating the create/edit flow, improving obvious empty/error states, and auditing scope boundaries.
+
+Scope:
+
+- tighten required-field validation
+- ensure default values are sensible
+- add or refine controlled empty / error states
+- verify create and edit flows across roles
+- verify reset demo data restores seeded state after user-created issues
+- verify no direct Dexie access in UI
+- update `changelog_checkpoint.md`
+- update `BUILD_PLAN.md` status metadata
+- update `DEVELOPMENT_NOTES.md` only if a meaningful implementation decision was made
+- run final Phase 3.5 integrity check
+
+Explicit exclusions:
+
+- no new create / edit features beyond validation and cleanup
+- no Issue Detail implementation
+- no dashboard metrics
+- no Team Workspace
+- no comments / attachments / notifications
+- no backend / auth / integrations
+- no broad refactor
+
+Acceptance criteria:
+
+- Phase 3.5 create / edit flow is coherent enough for the portfolio demo
+- create / edit validation is sufficient for MVP usage
+- user-created data persists locally
+- demo reset restores seed state
+- form respects open-text policy
+- no scope creep into `Phase 3.6` or later phases
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `chore: audit issue create edit flow`
 
 ### Phase 3.6 — Issue Detail View
 

@@ -10,7 +10,7 @@ Completed micro-phase:
 
 Next concrete micro-phase:
 
-- `Phase 3.5 — Issue Create/Edit Form`
+- `Phase 3.5A — Create Issue Form UI Shell Only`
 
 ## Completed Work
 
@@ -280,8 +280,9 @@ Next concrete micro-phase:
 - `Phase 3.4B — Read-only Project Issue List` is now complete.
 - `Phase 3.4C — Basic Structured Filters, Empty States, and Audit Cleanup` is now complete.
 - `Phase 3.4 — Project Detail View` is now complete.
+- `Phase 3.5 — Issue Create/Edit Form` has been split into `3.5A`, `3.5B`, `3.5C`, `3.5D`, and `3.5E` so create-shell UI, create wiring, edit prefill, edit save behavior, and final validation/audit do not collapse into one oversized slice.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.5 — Issue Create/Edit Form`.
+- The next allowed implementation slice is `Phase 3.5A — Create Issue Form UI Shell Only`.
 
 ## Next Recommended Task
 
@@ -289,14 +290,15 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.5 — Issue Create/Edit Form`
+- `Phase 3.5A — Create Issue Form UI Shell Only`
 
 Scope for the next task only:
 
-- quick-create issue form
-- structured issue edit form
-- keep title / description as the only open-text fields
-- keep project, status, priority, owner, curator, type, tags, labels, and dependency structured
-- connect to existing Phase 2B creation/update services without broadening into comments, attachments, or notification behavior
+- add or expose a Create Issue entry point from the most appropriate existing screen, preferably Project Detail when current project context is available
+- create a form route, panel, or screen surface for issue creation
+- render structured form fields needed for creation
+- keep Title and Description as the only open-text fields
+- provide cancel / back navigation and placeholder or disabled submit behavior only
+- do not wire real repository writes or edit-mode behavior yet
 
 Do not implement the whole of `Phase 3` in one task.

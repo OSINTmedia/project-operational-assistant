@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-07 — Split Phase 3.5 before implementation
+
+**Context:**  
+The original `Phase 3.5 — Issue Create/Edit Form` combined create-form UI, edit-form UI, validation, persistence wiring, domain-service integration, and activity-history verification in one roadmap slice, while the surrounding roadmap still separately defers full Issue Detail work.
+
+**Decision:**  
+Split `Phase 3.5` into `3.5A — Create Issue Form UI Shell Only`, `3.5B — Wire Create Issue to Domain Service`, `3.5C — Edit Issue Form Route and Prefill`, `3.5D — Save Edit Changes and Verify History`, and `3.5E — Final Form Validation, Empty States, and Self-Audit` before implementation begins.
+
+**Reasoning:**  
+Create/edit work combines enough UI, validation, persistence, and domain-service behavior that one large slice would be prone to scope creep and accidental Issue Detail implementation. Smaller form-focused slices keep each checkpoint reviewable and easier to audit.
+
+**Alternatives considered:**  
+Implementing the full create/edit flow in one task, or splitting only after the first implementation exposed the pressure in code.
+
+**Impact:**  
+`Phase 3.5` can now proceed through smaller commits that keep create-shell UI, create wiring, edit prefill, edit save behavior, and final validation/audit as separate scoped tasks.
+
 ### 2026-07-07 — Keep Project Detail filters lightweight and local
 
 **Context:**  
