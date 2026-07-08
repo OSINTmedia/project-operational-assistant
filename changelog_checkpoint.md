@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.5D — Save Edit Changes and Verify History`
+- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`
 
 Next concrete micro-phase:
 
-- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`
+- `Phase 3.6 — Issue Detail View`
 
 ## Completed Work
 
@@ -128,6 +128,9 @@ Next concrete micro-phase:
 - Kept edit-save behavior repository-backed and activity-safe:
   direct field updates preserve `updatedAt` / `updatedBy`, while status, priority, owner, curator, tag, and label changes still flow through their existing domain helpers where available.
 - Returned edit-save users to the relevant Project Detail route after success so updated issue values are immediately visible in the project issue list without requiring Issue Detail implementation first.
+- Tightened create and edit submit gating through one shared blocking-state helper instead of leaving required-field checks duplicated and partially inconsistent across the two form surfaces.
+- Added controlled empty-state behavior for missing projects, statuses, owners, curators, tags, and editable labels so create/edit forms degrade predictably instead of rendering ambiguous blank controls.
+- Updated outdated edit-page copy so the screen accurately reflects real save behavior rather than the older prefill-only state.
 
 ## Changed Files
 
@@ -154,6 +157,7 @@ Next concrete micro-phase:
 - `src/features/issues/IssueDetailPage.tsx`
 - `src/features/issues/IssueEditPage.tsx`
 - `src/features/issues/IssueFormFields.tsx`
+- `src/features/issues/issueFormValidation.ts`
 - `src/features/issues/useIssueEditFormPrefill.ts`
 - `src/domain/issueRules/saveIssueEdits.ts`
 - `src/features/personal/PersonalPage.tsx`
@@ -274,6 +278,7 @@ Next concrete micro-phase:
 - The Issue Edit surface currently reuses the placeholder Issue Detail route as its narrow entry point. Broader edit entry patterns can be revisited later if real Issue Detail UX demands them.
 - The first edit-save success path currently returns users to Project Detail because `Phase 3.6 — Issue Detail View` is still deferred and there is not yet a richer issue-specific post-save surface.
 - Direct edit-save orchestration currently writes one generic `issue-updated` activity entry for changed freeform / structural fields, while status, priority, owner, curator, tag, and label updates continue to use their more specific existing activity helpers.
+- Create and edit validation is intentionally MVP-level and controlled at the screen/domain boundary; advanced inline form UX and richer field-level guidance remain deferred.
 
 ## Verification Results
 
@@ -310,8 +315,10 @@ Next concrete micro-phase:
 - `Phase 3.5B — Wire Create Issue to Domain Service` is now complete.
 - `Phase 3.5C — Edit Issue Form Route and Prefill` is now complete.
 - `Phase 3.5D — Save Edit Changes and Verify History` is now complete.
+- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit` is now complete.
+- `Phase 3.5 — Issue Create/Edit Form` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`.
+- The next allowed implementation slice is `Phase 3.6 — Issue Detail View`.
 
 ## Next Recommended Task
 
@@ -319,14 +326,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit`
+- `Phase 3.6 — Issue Detail View`
 
 Scope for the next task only:
 
-- tighten required-field validation
-- ensure create and edit defaults remain sensible
-- refine controlled empty / error states for the create and edit flows
-- verify create and edit flows across roles and demo reset behavior
-- run the final `Phase 3.5` integrity check without drifting into `Phase 3.6`
+- render the structured issue record on the Issue Detail route
+- show owner, curator, status, priority, tags, labels, dependency, timestamps, and activity history
+- allow read-first visibility before any broader quick-action polish
+- keep comments, attachments, and broad workflow expansion out of this slice
 
 Do not implement the whole of `Phase 3` in one task.

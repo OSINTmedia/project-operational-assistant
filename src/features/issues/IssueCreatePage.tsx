@@ -5,6 +5,7 @@ import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppS
 import { createIssue } from '../../domain/issueRules'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
+import { getIssueFormBlockingMessage } from './issueFormValidation'
 import {
   useIssueCreateFormShell,
   type IssueCreateFormShellData,
@@ -92,14 +93,27 @@ function IssueCreatePageReady({
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
   )
+  const dependencyTargetOptions = selectedProjectId
+    ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
+    : []
 
-  const hasValidationError =
-    !title.trim() ||
-    !selectedProjectId ||
-    !selectedStatusId ||
-    !selectedOwnerId ||
-    (type === 'group' && !selectedCuratorId) ||
-    (dependencyType !== 'none' && !selectedDependencyTargetId)
+  const blockingMessage = getIssueFormBlockingMessage({
+    mode: 'create',
+    title,
+    selectedProjectId,
+    selectedStatusId,
+    selectedOwnerId,
+    type,
+    selectedCuratorId,
+    dependencyType,
+    selectedDependencyTargetId,
+    projectOptionCount: data.projectOptions.length,
+    statusOptionCount: data.statusOptions.length,
+    ownerOptionCount: data.ownerOptions.length,
+    curatorOptionCount: data.curatorOptions.length,
+    dependencyTargetOptionCount: dependencyTargetOptions.length,
+    currentProjectAvailable: currentProject !== null,
+  })
 
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
@@ -111,6 +125,11 @@ function IssueCreatePageReady({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    if (blockingMessage) {
+      setSubmitError(blockingMessage)
+      return
+    }
 
     if (!currentUserId) {
       setSubmitError('A current demo user is required to create an issue.')
@@ -215,8 +234,8 @@ function IssueCreatePageReady({
           <div>
             <p className="text-sm font-medium text-slate-950">Create issue</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Creates a new issue in local demo data through the existing domain service while
-              keeping the screen scoped to creation only.
+              Creates a new issue in local demo data through the existing domain service with
+              controlled validation and structured defaults.
             </p>
           </div>
         </div>
@@ -225,6 +244,12 @@ function IssueCreatePageReady({
           {submitError ? (
             <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {submitError}
+            </div>
+          ) : null}
+
+          {!submitError && blockingMessage ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              {blockingMessage}
             </div>
           ) : null}
 
@@ -298,7 +323,7 @@ function IssueCreatePageReady({
               </Link>
               <button
                 type="submit"
-                disabled={isSubmitting || hasValidationError}
+                disabled={isSubmitting || Boolean(blockingMessage)}
                 className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
               >
                 {isSubmitting ? 'Creating issue...' : 'Create issue'}

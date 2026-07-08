@@ -991,7 +991,7 @@ Suggested commit message:
 
 ### Phase 3.5 — Issue Create/Edit Form
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -1222,7 +1222,7 @@ Suggested commit message:
 
 ### Phase 3.5E — Final Form Validation, Empty States, and Self-Audit
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1273,7 +1273,7 @@ Suggested commit message:
 
 ### Phase 3.6 — Issue Detail View
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

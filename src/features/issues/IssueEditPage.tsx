@@ -5,6 +5,7 @@ import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppS
 import { saveIssueEdits } from '../../domain/issueRules'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
+import { getIssueFormBlockingMessage } from './issueFormValidation'
 import {
   useIssueEditFormPrefill,
   type IssueEditFormPrefillData,
@@ -114,14 +115,27 @@ function IssueEditPageReady({
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
   )
+  const dependencyTargetOptions = selectedProjectId
+    ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
+    : []
 
-  const hasValidationError =
-    !title.trim() ||
-    !selectedProjectId ||
-    !selectedStatusId ||
-    !selectedOwnerId ||
-    (type === 'group' && !selectedCuratorId) ||
-    (dependencyType !== 'none' && !selectedDependencyTargetId)
+  const blockingMessage = getIssueFormBlockingMessage({
+    mode: 'edit',
+    title,
+    selectedProjectId,
+    selectedStatusId,
+    selectedOwnerId,
+    type,
+    selectedCuratorId,
+    dependencyType,
+    selectedDependencyTargetId,
+    projectOptionCount: data.projectOptions.length,
+    statusOptionCount: data.statusOptions.length,
+    ownerOptionCount: data.ownerOptions.length,
+    curatorOptionCount: data.curatorOptions.length,
+    dependencyTargetOptionCount: dependencyTargetOptions.length,
+    currentProjectAvailable: currentProject !== null,
+  })
 
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
@@ -133,6 +147,11 @@ function IssueEditPageReady({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    if (blockingMessage) {
+      setSubmitError(blockingMessage)
+      return
+    }
 
     if (!issueId) {
       setSubmitError('A valid issue id is required to save changes.')
@@ -223,8 +242,8 @@ function IssueEditPageReady({
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-slate-950">Edit Issue</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Structured edit prefill for the local demo. This slice loads persisted issue values
-              without enabling save behavior yet.
+              Structured issue editing for the local demo with controlled validation, preserved
+              system-label semantics, and repository-backed save behavior.
             </p>
           </div>
 
@@ -241,10 +260,10 @@ function IssueEditPageReady({
         <div className="flex items-start gap-3">
           <FilePenLine className="mt-1 h-5 w-5 text-accent" />
           <div>
-            <p className="text-sm font-medium text-slate-950">Edit form prefill only</p>
+            <p className="text-sm font-medium text-slate-950">Save structured issue changes</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Save wiring lands in `Phase 3.5D`. In this slice, the edit surface exists to confirm
-              route handling, field prefill, and controlled invalid-id behavior only.
+              Save updates stay inside domain and repository boundaries and return the user to
+              Project Detail after success.
             </p>
           </div>
         </div>
@@ -253,6 +272,12 @@ function IssueEditPageReady({
           {submitError ? (
             <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {submitError}
+            </div>
+          ) : null}
+
+          {!submitError && blockingMessage ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              {blockingMessage}
             </div>
           ) : null}
 
@@ -332,7 +357,7 @@ function IssueEditPageReady({
               </Link>
               <button
                 type="submit"
-                disabled={isSubmitting || hasValidationError}
+                disabled={isSubmitting || Boolean(blockingMessage)}
                 className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
               >
                 {isSubmitting ? 'Saving changes...' : 'Save changes'}

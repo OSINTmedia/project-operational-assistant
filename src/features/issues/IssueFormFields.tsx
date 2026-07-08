@@ -98,13 +98,18 @@ export function IssueFormFields({
           <select
             value={selectedProjectId}
             onChange={(event) => onSelectedProjectIdChange(event.target.value)}
+            disabled={data.projectOptions.length === 0}
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
-            {data.projectOptions.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name} · {project.teamName}
-              </option>
-            ))}
+            {data.projectOptions.length === 0 ? (
+              <option value="">No projects available</option>
+            ) : (
+              data.projectOptions.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name} · {project.teamName}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -115,13 +120,18 @@ export function IssueFormFields({
           <select
             value={selectedStatusId}
             onChange={(event) => onSelectedStatusIdChange(event.target.value)}
+            disabled={data.statusOptions.length === 0}
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
-            {data.statusOptions.map((status) => (
-              <option key={status.id} value={status.id}>
-                {status.name}
-              </option>
-            ))}
+            {data.statusOptions.length === 0 ? (
+              <option value="">No statuses available</option>
+            ) : (
+              data.statusOptions.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -166,13 +176,18 @@ export function IssueFormFields({
           <select
             value={selectedOwnerId}
             onChange={(event) => onSelectedOwnerIdChange(event.target.value)}
+            disabled={data.ownerOptions.length === 0}
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
-            {data.ownerOptions.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name} · {user.roleLabel}
-              </option>
-            ))}
+            {data.ownerOptions.length === 0 ? (
+              <option value="">No owners available</option>
+            ) : (
+              data.ownerOptions.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name} · {user.roleLabel}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -183,15 +198,20 @@ export function IssueFormFields({
           <select
             value={type === 'group' ? selectedCuratorId : ''}
             onChange={(event) => onSelectedCuratorIdChange(event.target.value)}
-            disabled={type !== 'group'}
+            disabled={type !== 'group' || data.curatorOptions.length === 0}
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
           >
-            {type !== 'group' ? <option value="">Only relevant for group issues</option> : null}
-            {data.curatorOptions.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name} · {user.roleLabel}
-              </option>
-            ))}
+            {type !== 'group' ? (
+              <option value="">Only relevant for group issues</option>
+            ) : data.curatorOptions.length === 0 ? (
+              <option value="">No curator options available</option>
+            ) : (
+              data.curatorOptions.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name} · {user.roleLabel}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -246,17 +266,21 @@ export function IssueFormFields({
             Tags
           </legend>
           <div className="mt-3 grid gap-2">
-            {data.tagOptions.map((tag) => (
-              <label key={tag.id} className="flex items-center gap-3 text-sm text-slate-700">
-                <input
-                  type="checkbox"
-                  checked={selectedTagIds.includes(tag.id)}
-                  onChange={() => onToggleTagId(tag.id)}
-                  className="h-4 w-4 rounded border-slate-300"
-                />
-                <span>{tag.name}</span>
-              </label>
-            ))}
+            {data.tagOptions.length === 0 ? (
+              <p className="text-sm text-slate-500">No reusable tags are available yet.</p>
+            ) : (
+              data.tagOptions.map((tag) => (
+                <label key={tag.id} className="flex items-center gap-3 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={selectedTagIds.includes(tag.id)}
+                    onChange={() => onToggleTagId(tag.id)}
+                    className="h-4 w-4 rounded border-slate-300"
+                  />
+                  <span>{tag.name}</span>
+                </label>
+              ))
+            )}
           </div>
         </fieldset>
 
@@ -265,17 +289,21 @@ export function IssueFormFields({
             Labels
           </legend>
           <div className="mt-3 grid gap-2">
-            {data.labelOptions.map((label) => (
-              <label key={label.id} className="flex items-center gap-3 text-sm text-slate-700">
-                <input
-                  type="checkbox"
-                  checked={selectedLabelIds.includes(label.id)}
-                  onChange={() => onToggleLabelId(label.id)}
-                  className="h-4 w-4 rounded border-slate-300"
-                />
-                <span>{label.name}</span>
-              </label>
-            ))}
+            {data.labelOptions.length === 0 ? (
+              <p className="text-sm text-slate-500">No editable labels are available yet.</p>
+            ) : (
+              data.labelOptions.map((label) => (
+                <label key={label.id} className="flex items-center gap-3 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={selectedLabelIds.includes(label.id)}
+                    onChange={() => onToggleLabelId(label.id)}
+                    className="h-4 w-4 rounded border-slate-300"
+                  />
+                  <span>{label.name}</span>
+                </label>
+              ))
+            )}
           </div>
           <p className="mt-3 text-xs leading-5 text-slate-500">
             System labels such as `Needs Update` and `Ready for Confirmation` are intentionally
