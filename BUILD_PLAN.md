@@ -19,6 +19,12 @@ This document must be used together with `changelog_checkpoint.md`.
 Roadmap control rule:
 "You must never implement a whole umbrella phase in one task. Each micro-phase must be implemented, reviewed, committed, and pushed separately."
 
+Interpretation rule:
+
+- `changelog_checkpoint.md` is the live source of truth for the latest completed micro-phase and the next concrete micro-phase.
+- `BUILD_PLAN.md` defines roadmap order and scope, but some older completed sections intentionally retain historical micro-phase status labels.
+- Do not choose the next task from historical `Planned` labels inside already completed umbrella phases.
+
 ---
 
 ## Phase 0 — Product Discovery and Planning
@@ -704,7 +710,7 @@ Suggested commit message:
 
 ## Phase 3 — Main Screens
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -1382,7 +1388,7 @@ Suggested commit message:
 
 ## Phase 4 — Dashboard and Operational Metrics
 
-Status: `Later`
+Status: `In progress`
 
 Goal:
 

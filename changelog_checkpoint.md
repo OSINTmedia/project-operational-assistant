@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 3 — Main Screens: `In progress`
+Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
@@ -11,6 +11,23 @@ Completed micro-phase:
 Next concrete micro-phase:
 
 - `Phase 4.1 — Dashboard Metrics Domain Functions`
+
+## Documentation Trust Order
+
+Use the project docs in this order when deciding what is current and what should be built next:
+
+1. `changelog_checkpoint.md` for the live handoff, latest completed micro-phase, and next concrete micro-phase
+2. `BUILD_PLAN.md` for roadmap order, scope boundaries, and acceptance criteria
+3. `DEVELOPMENT_NOTES.md` for meaningful implementation decisions and trade-offs
+4. frozen docs in `docs/` for product and technical context only
+5. `README.md` for public portfolio presentation only, not implementation guidance
+
+## Documentation Interpretation Notes
+
+- `Phase 3` is complete enough to begin dashboard work; do not continue screen-scope work unless a later task explicitly reopens a blocking screen defect.
+- Older completed sections in `BUILD_PLAN.md` still contain some historical micro-phase `Planned` labels. Treat those as historical plan artifacts, not active next-step guidance.
+- Frozen docs intentionally remain broader than the live implementation state. They describe product intent and constraints, not the live completion checkpoint.
+- `README.md` may summarize progress at a high level, but the live implementation state and next concrete micro-phase must always come from this file first.
 
 ## Completed Work
 

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-10 — Treat checkpoint docs as the live workflow source of truth
+
+**Context:**  
+After closing `Phase 3.8`, the live handoff and roadmap status metadata needed to stay unambiguous for fresh Codex chats, while older completed sections and the public README still contained historical phrasing that could mislead phase selection.
+
+**Decision:**  
+Make `changelog_checkpoint.md` the explicit live handoff source of truth, keep `BUILD_PLAN.md` as the roadmap/scope source, treat frozen docs as context only, and limit README status language to high-level presentation rather than implementation guidance.
+
+**Reasoning:**  
+The project now has enough phase history that historical roadmap wording and public-facing summaries can be mistaken for current execution state. A small documentation-governance rule is cheaper and safer than repeatedly rewriting old sections or trusting README status text.
+
+**Alternatives considered:**  
+Rewriting older completed roadmap sections wholesale, or leaving the hierarchy implicit and relying on prompt discipline alone.
+
+**Impact:**  
+Future chats can identify the current umbrella phase, latest completed micro-phase, and next concrete micro-phase without confusing frozen context or public README copy for the live implementation state.
+
 ### 2026-07-10 — Start Phase 4 metrics without a separate Phase 3 blocker-fix detour
 
 **Context:**  
