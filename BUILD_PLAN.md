@@ -1430,7 +1430,7 @@ Suggested commit message:
 
 ### Phase 4.2 — Dashboard Metric Cards
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1465,7 +1465,7 @@ Suggested commit message:
 
 ### Phase 4.3 — Status / Priority / Project / Owner Distributions
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

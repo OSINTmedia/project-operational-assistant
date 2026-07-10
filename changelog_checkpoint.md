@@ -6,11 +6,11 @@ Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.1 — Dashboard Metrics Domain Functions`
+- `Phase 4.2 — Dashboard Metric Cards`
 
 Next concrete micro-phase:
 
-- `Phase 4.2 — Dashboard Metric Cards`
+- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
 
 ## Documentation Trust Order
 
@@ -164,7 +164,11 @@ Use the project docs in this order when deciding what is current and what should
 - Kept `open issues` aligned with the approved Phase 4.1 semantics:
   issues not in `Done` and not in `Canceled`.
 - Kept `needs update` counts aligned with the current persisted data model by resolving the `Needs Update` system label record and counting issues carrying that persisted label id.
-- Confirmed the Dashboard route remains a placeholder after `Phase 4.1`, so no `Phase 4.2+` UI work slipped in early.
+- Replaced the Dashboard placeholder with a real top-level metric card surface backed by the completed domain metric calculations.
+- Added a feature-scoped dashboard read-model hook that loads issue and label data through repository boundaries and maps it into role-aware dashboard card data.
+- Rendered the first dashboard cards for:
+  `total`, `open`, `done`, `waiting`, `blocked`, `delayed`, and `needs update`.
+- Kept the first dashboard UI slice free of charts, distributions, saved filters, click-through behavior, and employee-scoring semantics.
 
 ## Changed Files
 
@@ -259,8 +263,9 @@ Use the project docs in this order when deciding what is current and what should
 - `src/domain/dashboardMetrics/calculateDashboardMetrics.ts`
 - `src/domain/dashboardMetrics/index.ts`
 - `src/domain/dashboardMetrics/types.ts`
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/dashboard/useDashboardMetrics.ts`
 - `BUILD_PLAN.md`
-- `DEVELOPMENT_NOTES.md`
 - `changelog_checkpoint.md`
 - placeholder `.gitkeep` files across planned source folders
 
@@ -326,7 +331,7 @@ Use the project docs in this order when deciding what is current and what should
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 - `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
-- `Dashboard` remains an intentional placeholder route after `Phase 4.1`; metric cards, charts, and click-through behavior are still deferred to later `Phase 4` slices.
+- The first Dashboard UI slice now shows top-level metric cards only; charts, distributions, and click-through interactions are still deferred to later `Phase 4` slices.
 
 ## Verification Results
 
@@ -369,8 +374,9 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 3.7 — Team Workspace View` is now complete.
 - `Phase 3.8 — Phase 3 Screen Audit` is now complete.
 - `Phase 4.1 — Dashboard Metrics Domain Functions` is now complete.
+- `Phase 4.2 — Dashboard Metric Cards` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.2 — Dashboard Metric Cards`.
+- The next allowed implementation slice is `Phase 4.3 — Status / Priority / Project / Owner Distributions`.
 
 ## Next Recommended Task
 
@@ -378,13 +384,12 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 4.2 — Dashboard Metric Cards`
+- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
 
 Scope for the next task only:
 
-- render top-level dashboard metric cards
-- connect the cards to the completed metric domain functions
-- keep employee scoring out of scope
-- keep the slice free of charts, saved filters, and broader dashboard polish
+- prepare dashboard distribution data for:
+  `issues by status`, `issues by priority`, `issues by project`, and `issues by owner`
+- keep the slice free of chart styling, cross-screen search polish, and employee scoring
 
 Do not implement the whole of `Phase 4` in one task.
