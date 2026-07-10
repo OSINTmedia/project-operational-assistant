@@ -6,11 +6,11 @@ Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.8 — Phase 3 Screen Audit`
+- `Phase 4.1 — Dashboard Metrics Domain Functions`
 
 Next concrete micro-phase:
 
-- `Phase 4.1 — Dashboard Metrics Domain Functions`
+- `Phase 4.2 — Dashboard Metric Cards`
 
 ## Documentation Trust Order
 
@@ -158,6 +158,13 @@ Use the project docs in this order when deciding what is current and what should
 - Completed a strict code-first audit of all Phase 3 screens against actual routes, feature code, repository boundaries, persistence behavior, and verification commands instead of trusting roadmap docs alone.
 - Confirmed Phase 3 screens are coherent enough to begin dashboard metrics work:
   no direct Dexie access exists in `src/app` or `src/features`, no backend/auth/integration behavior slipped in, and no accidental dashboard metrics implementation exists yet.
+- Added a dedicated `dashboardMetrics` domain module for portfolio-dashboard counts without introducing UI cards, charts, filters, or repository-layer rewrites.
+- Implemented narrow dashboard metric calculations for:
+  `total`, `open`, `done`, `waiting`, `blocked`, `delayed`, and `needs update` issue counts.
+- Kept `open issues` aligned with the approved Phase 4.1 semantics:
+  issues not in `Done` and not in `Canceled`.
+- Kept `needs update` counts aligned with the current persisted data model by resolving the `Needs Update` system label record and counting issues carrying that persisted label id.
+- Confirmed the Dashboard route remains a placeholder after `Phase 4.1`, so no `Phase 4.2+` UI work slipped in early.
 
 ## Changed Files
 
@@ -249,6 +256,12 @@ Use the project docs in this order when deciding what is current and what should
 - `src/domain/issueRules/updateIssueAttention.ts`
 - `src/domain/issueRules/updateIssueResponsibility.ts`
 - `src/domain/issueRules/updateIssueState.ts`
+- `src/domain/dashboardMetrics/calculateDashboardMetrics.ts`
+- `src/domain/dashboardMetrics/index.ts`
+- `src/domain/dashboardMetrics/types.ts`
+- `BUILD_PLAN.md`
+- `DEVELOPMENT_NOTES.md`
+- `changelog_checkpoint.md`
 - placeholder `.gitkeep` files across planned source folders
 
 ## Important Decisions
@@ -294,6 +307,7 @@ Use the project docs in this order when deciding what is current and what should
 - Activity history entries for status/priority/label/tag/confirmation mutations are normalized, but some older seed examples still reflect legacy action coverage rather than every newer domain operation.
 - Duplicate prevention in `Phase 2B.5` works at assignment time by id; tag-creation/name-normalization rules are still deferred.
 - `Needs Update` resolution currently depends on persisted system label records by name/type because exported shared label ids do not match the seeded persisted label ids.
+- Dashboard metrics now follow that same persisted-label resolution path for `Needs Update` counts, so missing or malformed system label seed records would break that metric calculation rather than silently drifting to a second label-identity model.
 - Domain-level errors for issue operations are still plain `Error` objects rather than richer typed error shapes.
 - `BUILD_PLAN.md` still retains historical `Planned` labels inside completed `Phase 2A` micro-phase entries, even though the umbrella phase is correctly marked complete.
 - The Demo controls slice intentionally exposes reset only; the separate `Load Seed Data` wording in frozen technical planning remains deferred unless a later roadmap slice explicitly requires a dedicated control.
@@ -312,7 +326,7 @@ Use the project docs in this order when deciding what is current and what should
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 - `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
-- `Dashboard` remains an intentional placeholder route and is ready to become the next implementation slice without code/doc mismatch.
+- `Dashboard` remains an intentional placeholder route after `Phase 4.1`; metric cards, charts, and click-through behavior are still deferred to later `Phase 4` slices.
 
 ## Verification Results
 
@@ -354,8 +368,9 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 3.6 — Issue Detail View` is now complete.
 - `Phase 3.7 — Team Workspace View` is now complete.
 - `Phase 3.8 — Phase 3 Screen Audit` is now complete.
+- `Phase 4.1 — Dashboard Metrics Domain Functions` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.1 — Dashboard Metrics Domain Functions`.
+- The next allowed implementation slice is `Phase 4.2 — Dashboard Metric Cards`.
 
 ## Next Recommended Task
 
@@ -363,12 +378,13 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 4.1 — Dashboard Metrics Domain Functions`
+- `Phase 4.2 — Dashboard Metric Cards`
 
 Scope for the next task only:
 
-- define dashboard metric calculations in the domain layer
-- support total / open / done / waiting / blocked / delayed / needs update calculations
-- keep the slice free of UI cards, charts, click-through filters, and screen polish
+- render top-level dashboard metric cards
+- connect the cards to the completed metric domain functions
+- keep employee scoring out of scope
+- keep the slice free of charts, saved filters, and broader dashboard polish
 
 Do not implement the whole of `Phase 4` in one task.

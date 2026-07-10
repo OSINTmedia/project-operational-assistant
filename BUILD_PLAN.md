@@ -1396,7 +1396,7 @@ Turn the dashboard into the primary operational entry point for the portfolio de
 
 ### Phase 4.1 — Dashboard Metrics Domain Functions
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1430,7 +1430,7 @@ Suggested commit message:
 
 ### Phase 4.2 — Dashboard Metric Cards
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

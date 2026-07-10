@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-10 — Resolve dashboard needs-update metrics from persisted system labels
+
+**Context:**  
+`Phase 4.1` requires dashboard metric calculations in the domain layer, including a `needs update` count, while the current codebase already stores system labels with persisted ids that do not match the exported shared system-label ids.
+
+**Decision:**  
+Calculate `needs update` metrics by resolving the persisted `Needs Update` system label record by `type === 'system'` and name, then count issues carrying that persisted label id.
+
+**Reasoning:**  
+This matches the current domain behavior in attention logic, keeps the metrics slice aligned with the actual local-first data model, and avoids introducing a second conflicting interpretation of system-label identity just for dashboard counts.
+
+**Alternatives considered:**  
+Hard-coding the exported shared `needs-update` id in dashboard metrics, or recomputing stale-state freshness directly in the metrics layer.
+
+**Impact:**  
+`Phase 4.1` remains a narrow domain-calculation slice, and later dashboard UI work can consume stable metrics based on the same persisted system-label semantics already used elsewhere in the app.
+
 ### 2026-07-10 — Treat checkpoint docs as the live workflow source of truth
 
 **Context:**  
