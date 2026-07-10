@@ -359,7 +359,7 @@ Use the project docs in this order when deciding what is current and what should
 
 ## Next Recommended Task
 
-`Phase 3` is the next active umbrella phase.
+`Phase 4` is the next active umbrella phase.
 
 Next concrete Codex task:
 
@@ -371,4 +371,4 @@ Scope for the next task only:
 - support total / open / done / waiting / blocked / delayed / needs update calculations
 - keep the slice free of UI cards, charts, click-through filters, and screen polish
 
-Do not implement the whole of `Phase 3` in one task.
+Do not implement the whole of `Phase 4` in one task.
