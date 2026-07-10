@@ -1273,7 +1273,7 @@ Suggested commit message:
 
 ### Phase 3.6 — Issue Detail View
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1309,7 +1309,7 @@ Suggested commit message:
 
 ### Phase 3.7 — Team Workspace View
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
