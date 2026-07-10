@@ -1345,7 +1345,7 @@ Suggested commit message:
 
 ### Phase 3.8 — Phase 3 Screen Audit
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1390,7 +1390,7 @@ Turn the dashboard into the primary operational entry point for the portfolio de
 
 ### Phase 4.1 — Dashboard Metrics Domain Functions
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

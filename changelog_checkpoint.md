@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.7 — Team Workspace View`
+- `Phase 3.8 — Phase 3 Screen Audit`
 
 Next concrete micro-phase:
 
-- `Phase 3.8 — Phase 3 Screen Audit`
+- `Phase 4.1 — Dashboard Metrics Domain Functions`
 
 ## Completed Work
 
@@ -138,6 +138,9 @@ Next concrete micro-phase:
   team members, team issues, group issues, and team-level status summary.
 - Added a scoped Team Workspace read-model hook that loads team, user, issue, project, label, and status data through repository boundaries.
 - Kept the `/teams` route read-oriented as a lightweight multi-team workspace, prioritizing the current demo user's team first without introducing org hierarchy, permissions, or department-management behavior.
+- Completed a strict code-first audit of all Phase 3 screens against actual routes, feature code, repository boundaries, persistence behavior, and verification commands instead of trusting roadmap docs alone.
+- Confirmed Phase 3 screens are coherent enough to begin dashboard metrics work:
+  no direct Dexie access exists in `src/app` or `src/features`, no backend/auth/integration behavior slipped in, and no accidental dashboard metrics implementation exists yet.
 
 ## Changed Files
 
@@ -291,6 +294,8 @@ Next concrete micro-phase:
 - Create and edit validation is intentionally MVP-level and controlled at the screen/domain boundary; advanced inline form UX and richer field-level guidance remain deferred.
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
+- `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
+- `Dashboard` remains an intentional placeholder route and is ready to become the next implementation slice without code/doc mismatch.
 
 ## Verification Results
 
@@ -331,8 +336,9 @@ Next concrete micro-phase:
 - `Phase 3.5 — Issue Create/Edit Form` is now complete.
 - `Phase 3.6 — Issue Detail View` is now complete.
 - `Phase 3.7 — Team Workspace View` is now complete.
+- `Phase 3.8 — Phase 3 Screen Audit` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.8 — Phase 3 Screen Audit`.
+- The next allowed implementation slice is `Phase 4.1 — Dashboard Metrics Domain Functions`.
 
 ## Next Recommended Task
 
@@ -340,13 +346,12 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.8 — Phase 3 Screen Audit`
+- `Phase 4.1 — Dashboard Metrics Domain Functions`
 
 Scope for the next task only:
 
-- audit screen-layer repository/state boundaries
-- verify no direct IndexedDB access from UI
-- verify no dashboard metrics scope creep
-- avoid introducing new screen features or deployment work
+- define dashboard metric calculations in the domain layer
+- support total / open / done / waiting / blocked / delayed / needs update calculations
+- keep the slice free of UI cards, charts, click-through filters, and screen polish
 
 Do not implement the whole of `Phase 3` in one task.

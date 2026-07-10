@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-10 — Start Phase 4 metrics without a separate Phase 3 blocker-fix detour
+
+**Context:**  
+`Phase 3.8` audited the live codebase route-by-route and boundary-by-boundary before dashboard work, with a specific goal of deciding whether any screen-layer defects or architecture issues truly block `Phase 4.1`.
+
+**Decision:**  
+Treat the remaining Phase 3 issues as non-blocking debt and move directly into `Phase 4.1`, rather than spending an extra slice on pre-dashboard cleanup.
+
+**Reasoning:**  
+The implemented screens compile, lint, and hold their repository/state boundaries. The remaining issues are localized MVP limitations, such as the invalid create-route fallback and some navigation rough edges, but they do not prevent metric calculations from being defined cleanly in the domain layer.
+
+**Alternatives considered:**  
+Pausing for a small blocker-fix task before dashboard work, or widening `Phase 3.8` into a general polish pass.
+
+**Impact:**  
+The next slice can focus narrowly on dashboard metric calculations without reopening screen-scope work unless a concrete metric implementation exposes a real dependency gap.
+
 ### 2026-07-10 — Keep Team Workspace on the existing `/teams` route as a lightweight multi-team view
 
 **Context:**  
