@@ -1309,7 +1309,7 @@ Suggested commit message:
 
 ### Phase 3.7 — Team Workspace View
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1345,7 +1345,7 @@ Suggested commit message:
 
 ### Phase 3.8 — Phase 3 Screen Audit
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

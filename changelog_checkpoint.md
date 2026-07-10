@@ -6,11 +6,11 @@ Phase 3 — Main Screens: `In progress`
 
 Completed micro-phase:
 
-- `Phase 3.6 — Issue Detail View`
+- `Phase 3.7 — Team Workspace View`
 
 Next concrete micro-phase:
 
-- `Phase 3.7 — Team Workspace View`
+- `Phase 3.8 — Phase 3 Screen Audit`
 
 ## Completed Work
 
@@ -134,6 +134,10 @@ Next concrete micro-phase:
 - Replaced the Issue Detail placeholder with a real structured read-first issue screen that renders owner, curator, status, priority, tags, labels, dependency context, timestamps, and activity history.
 - Added a scoped Issue Detail read-model hook that loads issue, project, team, user, label, tag, status, and activity-history data through repository boundaries.
 - Kept Issue Detail read-oriented while preserving the existing narrow edit entry point and controlled loading / error / missing states.
+- Replaced the Team Workspace placeholder with a real lightweight visibility surface for:
+  team members, team issues, group issues, and team-level status summary.
+- Added a scoped Team Workspace read-model hook that loads team, user, issue, project, label, and status data through repository boundaries.
+- Kept the `/teams` route read-oriented as a lightweight multi-team workspace, prioritizing the current demo user's team first without introducing org hierarchy, permissions, or department-management behavior.
 
 ## Changed Files
 
@@ -172,6 +176,7 @@ Next concrete micro-phase:
 - `src/features/projects/useProjectDetailView.ts`
 - `src/features/projects/useProjectsListView.ts`
 - `src/features/teams/TeamsPage.tsx`
+- `src/features/teams/useTeamWorkspaceView.ts`
 - `src/persistence/db.ts`
 - `src/persistence/demoDataLifecycle.ts`
 - `src/persistence/indexedDbAdapter.ts`
@@ -281,10 +286,11 @@ Next concrete micro-phase:
 - Issue creation currently returns users to Project Detail after success; broader post-create navigation patterns remain deferred until later create/edit slices require them.
 - The first Issue Detail slice is intentionally read-first; broader quick-action polish remains deferred.
 - The Issue Edit surface currently enters from the Issue Detail screen, but broader edit-entry patterns can still be revisited later if the workflow surface grows.
-- The first edit-save success path currently returns users to Project Detail because `Phase 3.6 — Issue Detail View` is still deferred and there is not yet a richer issue-specific post-save surface.
+- The first edit-save success path currently returns users to Project Detail rather than back into Issue Detail. This remains acceptable for now, but the navigation can be revisited if a later workflow slice requires a richer post-save detail surface.
 - Direct edit-save orchestration currently writes one generic `issue-updated` activity entry for changed freeform / structural fields, while status, priority, owner, curator, tag, and label updates continue to use their more specific existing activity helpers.
 - Create and edit validation is intentionally MVP-level and controlled at the screen/domain boundary; advanced inline form UX and richer field-level guidance remain deferred.
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
+- Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 
 ## Verification Results
 
@@ -324,8 +330,9 @@ Next concrete micro-phase:
 - `Phase 3.5E — Final Form Validation, Empty States, and Self-Audit` is now complete.
 - `Phase 3.5 — Issue Create/Edit Form` is now complete.
 - `Phase 3.6 — Issue Detail View` is now complete.
+- `Phase 3.7 — Team Workspace View` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 3.7 — Team Workspace View`.
+- The next allowed implementation slice is `Phase 3.8 — Phase 3 Screen Audit`.
 
 ## Next Recommended Task
 
@@ -333,12 +340,13 @@ Next concrete micro-phase:
 
 Next concrete Codex task:
 
-- `Phase 3.7 — Team Workspace View`
+- `Phase 3.8 — Phase 3 Screen Audit`
 
 Scope for the next task only:
 
-- add lightweight team-level visibility
-- show team members, assigned issues, group issues, and team-level status summary
-- keep the scope away from org-management behavior, advanced permissions, and department structure
+- audit screen-layer repository/state boundaries
+- verify no direct IndexedDB access from UI
+- verify no dashboard metrics scope creep
+- avoid introducing new screen features or deployment work
 
 Do not implement the whole of `Phase 3` in one task.

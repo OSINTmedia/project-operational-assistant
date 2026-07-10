@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-10 — Keep Team Workspace on the existing `/teams` route as a lightweight multi-team view
+
+**Context:**  
+`Phase 3.7` required a Team Workspace surface for team members, team issues, group issues, and team-level status summary, while the technical planning and router structure only defined a `/teams` route rather than a dedicated `/teams/:teamId` drill-in route.
+
+**Decision:**  
+Implement the first Team Workspace slice as a read-only multi-team overview on `/teams`, and prioritize the current demo user's team first instead of expanding the route model or adding team-management behavior in the same slice.
+
+**Reasoning:**  
+This stays inside the approved scope, keeps the feature aligned with the existing router contract, and avoids turning a visibility slice into a navigation, permissions, or organization-structure redesign.
+
+**Alternatives considered:**  
+Adding a new `/teams/:teamId` route immediately, or narrowing the page to only one current-user team and hiding the rest of the seeded team data.
+
+**Impact:**  
+`Phase 3.7` now provides usable team-level visibility without org-management drift, while future route refinement remains available only if a later roadmap slice explicitly requires it.
+
 ### 2026-07-07 — Save issue edits through one narrow orchestration helper
 
 **Context:**  
