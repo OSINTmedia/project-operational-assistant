@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep dashboard click-throughs on existing issue and project routes
+
+**Context:**  
+`Phase 4.5` requires dashboard filters and click-through behavior, but the current app does not yet have a dedicated global issue-list route that can accept dashboard-origin filters without widening route scope or adding a new list surface.
+
+**Decision:**  
+Use the existing project list, project detail, and issue detail routes as the first dashboard click-through targets, and keep the filtered queue local to the dashboard instead of inventing a new cross-app issue-list route in the same slice.
+
+**Reasoning:**  
+This satisfies the approved navigation intent, stays inside current routing boundaries, and avoids turning a narrow dashboard-actionability slice into a broader navigation or list-architecture redesign.
+
+**Alternatives considered:**  
+Adding a new global issue-list route, or delaying dashboard click-through behavior until such a route existed.
+
+**Impact:**  
+`Phase 4.5` now makes the dashboard actionable without introducing new route contracts, while future list-surface expansion remains available only if a later roadmap slice explicitly requires it.
+
 ### 2026-07-14 — Keep owner distribution data-ready but out of the first chart slice
 
 **Context:**  

@@ -6,11 +6,11 @@ Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.4 — Dashboard Charts`
+- `Phase 4.5 — Dashboard Filters and Click-throughs`
 
 Next concrete micro-phase:
 
-- `Phase 4.5 — Dashboard Filters and Click-throughs`
+- `Phase 4.6 — Phase 4 Dashboard Audit`
 
 ## Documentation Trust Order
 
@@ -178,6 +178,10 @@ Use the project docs in this order when deciding what is current and what should
 - Rendered the first operational dashboard visuals for:
   `status`, `priority`, and `project` distributions.
 - Kept the first chart slice readable and portfolio-grade without introducing click-through behavior, saved dashboards, employee scoring, or broader dashboard analytics.
+- Added structured dashboard filters for:
+  `status`, `priority`, `project`, and `Needs Update` attention visibility.
+- Added a filtered operational queue directly on the Dashboard without introducing saved filters, notification workflows, or a new global issue-list route.
+- Added dashboard click-through behavior into the existing project list, project detail, and issue detail routes so the dashboard is actionable without widening routing scope.
 
 ## Changed Files
 
@@ -342,9 +346,10 @@ Use the project docs in this order when deciding what is current and what should
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 - `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
-- The first Dashboard UI slice now shows top-level metric cards only; charts and click-through interactions are still deferred to later `Phase 4` slices.
-- The first dashboard chart slice now renders status, priority, and project visuals only; click-through filters and broader dashboard actionability remain deferred to `Phase 4.5`.
+- The dashboard now combines top-level metric cards, compact charts, and a local filtered operational queue, but it still does not provide saved filters or broader report-style workflows.
+- Dashboard click-through behavior currently targets the existing issue detail, project detail, and projects list routes; no dedicated global issue-list surface exists yet.
 - Dashboard chart rendering increases the existing build chunk-size warning pressure, but the current warning remains non-blocking for the portfolio MVP.
+- The existing build chunk-size warning remains non-blocking and has grown slightly as the dashboard surface expanded.
 
 ## Verification Results
 
@@ -390,8 +395,9 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 4.2 — Dashboard Metric Cards` is now complete.
 - `Phase 4.3 — Status / Priority / Project / Owner Distributions` is now complete.
 - `Phase 4.4 — Dashboard Charts` is now complete.
+- `Phase 4.5 — Dashboard Filters and Click-throughs` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.5 — Dashboard Filters and Click-throughs`.
+- The next allowed implementation slice is `Phase 4.6 — Phase 4 Dashboard Audit`.
 
 ## Next Recommended Task
 
@@ -399,12 +405,12 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 4.5 — Dashboard Filters and Click-throughs`
+- `Phase 4.6 — Phase 4 Dashboard Audit`
 
 Scope for the next task only:
 
-- add basic dashboard filters
-- add click-through behavior into relevant issue or project lists
-- keep the slice free of saved filters, notification workflows, and broader command-palette behavior
+- verify the dashboard is operational clarity, not employee scoring
+- verify dashboard metrics and interactions match frozen product rules
+- verify performance, build, typecheck, and lint before polish or deployment work
 
 Do not implement the whole of `Phase 4` in one task.
