@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Add app-experience refinement before final QA
+
+**Context:**
+After completing feature surfaces, dashboard work, and portfolio polish, the app is functionally coherent but still feels too page-hop heavy and not assistant-like enough for a public demo.
+
+**Decision:**
+Insert `Phase 5.8` before `Phase 6` to improve navigation, role-aware workflow clarity, interaction comfort, context recovery, and responsive usability before final testing and deployment.
+
+**Reasoning:**
+This reflects natural product development: once the full app exists, UX/IA problems become visible. Addressing them before final QA is safer than shipping a technically complete but uncomfortable demo.
+
+**Alternatives considered:**
+Proceed directly to `Phase 6`, defer all UX/navigation issues post-MVP, or start a broad redesign.
+
+**Impact:**
+The roadmap now includes a controlled, scoped app-experience refinement phase that improves usability without changing MVP scope, backend/auth constraints, or core data model.
+
 ### 2026-07-14 — Keep Phase 5.5 visual polish presentation-only
 
 **Context:**

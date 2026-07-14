@@ -6,15 +6,16 @@ Portfolio MVP for project-based operational clarity.
 
 ## Build Progress
 
-`[#################---] 85%`
+`[##################--] 90%`
 
-Current public-demo status: Phase 5 polish is nearly complete. Phase 5.6 README presentation is complete; Phase 5.7 polish audit and Phase 6 final quality/deployment work remain.
+Current public-demo status: Phase 5 portfolio polish is complete. Phase 5.8 app-experience refinement is active before Phase 6 final quality, deployment setup, live-demo verification, and release readiness.
 
 - Complete: Phase 0 and 1 - Product scope, planning, and frontend foundation
 - Complete: Phase 2A and 2B - Local-first data model, persistence, seed data, and issue-domain logic
 - Complete: Phase 3 - Main app screens and screen audit
 - Complete: Phase 4 - Dashboard metrics, charts, filters, click-throughs, and audit
-- In progress: Phase 5 - Portfolio polish and public documentation
+- Complete: Phase 5 - Portfolio polish, public README, and polish audit
+- In progress: Phase 5.8 - App experience refinement before final QA
 - Upcoming: Phase 6 - Validation, deployment setup, live demo verification, and final release audit
 
 For exact implementation handoff state, use `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. This README is public-facing portfolio context, not the internal work log.
@@ -188,10 +189,11 @@ Completed:
 - Main screens for Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, and Demo
 - Dashboard metrics, charts, filters, and click-throughs
 - Portfolio polish through helper text, search/filter polish, quick actions, responsive layout, and visual consistency
+- Public README presentation and Phase 5 polish audit
 
 Remaining:
 
-- Phase 5.7 - Phase 5 polish audit
+- Phase 5.8 - app experience refinement before final QA
 - Phase 6 - validation, focused tests, GitHub Pages deployment setup, live-demo verification, final scope audit, documentation cleanup, and release tag
 
 ## Lessons Captured

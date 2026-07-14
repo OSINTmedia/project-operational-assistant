@@ -1608,7 +1608,7 @@ Suggested commit message:
 
 ## Phase 5 — Portfolio Polish
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -1827,7 +1827,7 @@ Suggested commit message:
 
 ### Phase 5.7 — Phase 5 Polish Audit
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1856,6 +1856,279 @@ Verification requirements:
 Suggested commit message:
 
 - `chore: audit portfolio polish`
+
+---
+
+### Phase 5.8 — App Experience Refinement Before Final QA
+
+Status: `In progress`
+
+Goal:
+
+Improve navigation, information architecture, role-aware workflow clarity, interaction comfort, and responsive usability before final QA and deployment.
+
+Purpose:
+
+Improve the product experience after the full feature and polish surface is visible, before final validation, tests, deployment, and release.
+
+This phase should make the app feel like an operational assistant rather than a collection of disconnected admin pages.
+
+Scope:
+
+- reduce unnecessary page hopping
+- improve dashboard-as-operational-home behavior
+- improve selected-user orientation
+- make "my next actions" clearer
+- make needs-update and confirmation-needed items easier to discover
+- improve project / issue / team context recovery
+- improve list -> detail -> edit -> return flows
+- improve sidebar / topbar / contextual navigation clarity
+- use inline expansion, collapsible sections, dropdowns, or drawers where they reduce friction
+- refine responsive behavior where navigation changes require it
+- preserve existing domain model, route compatibility, local-first architecture, and static GitHub Pages direction
+
+Explicit exclusions:
+
+- no backend
+- no real auth
+- no notification hub
+- no organization workspace
+- no employee scoring
+- no enterprise permissions
+- no workflow engine
+- no broad product-scope expansion
+- no new project/issue data model unless a tiny UI-only adaptation is explicitly justified
+- no full design-system rewrite
+- no brand redesign
+- no decorative animation pass
+- no replacing the entire router architecture unless a later approved micro-phase proves it unavoidable
+
+### Phase 5.8A — UX / Navigation Diagnostic and Target Plan
+
+Status: `Next active phase`
+
+Goal:
+
+Run a code-first and behavior-first audit of the current app experience and define a targeted refinement plan before implementing changes.
+
+Scope:
+
+- inspect Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, Demo
+- assess role-specific flows for Manager, Project Manager, and User
+- identify page-hopping, context loss, unclear role responsibilities, and confusing action visibility
+- classify findings by severity
+- decide which improvements belong in 5.8 and which are post-MVP
+
+Explicit exclusions:
+
+- no implementation
+- no redesign
+- no source changes unless only documentation notes are updated
+
+Acceptance criteria:
+
+- clear verdict on whether the app is assistant-like enough
+- prioritized 5.8 implementation plan
+- no product-scope expansion
+
+Verification requirements:
+
+- docs-only task unless implementation files are explicitly changed during an approved follow-up
+
+Suggested commit message:
+
+- `docs: plan app experience refinement`
+
+### Phase 5.8B — Assistant Home and Role-aware Action Clarity
+
+Status: `Later`
+
+Goal:
+
+Make the app entry experience and Dashboard/Personal surfaces clearly show what the selected demo user should pay attention to next.
+
+Scope:
+
+- clarify selected-user context
+- surface "my next actions" or equivalent role-aware action summaries
+- make needs-update / confirmation-needed / blocked / delayed visibility easier to understand
+- keep behavior local to existing data and routes
+
+Explicit exclusions:
+
+- no real permissions
+- no notification system
+- no new workflow engine
+- no employee scoring
+
+Acceptance criteria:
+
+- selected user can identify relevant work within 10 seconds
+- assistant-like operational cues are visible without hunting through pages
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: clarify role aware action experience`
+
+### Phase 5.8C — Navigation and Context Recovery Refinement
+
+Status: `Later`
+
+Goal:
+
+Reduce user disorientation when moving between Dashboard, Projects, Issues, Edit, and Teams.
+
+Scope:
+
+- improve contextual headers, breadcrumbs, back paths, or route labels
+- make list -> detail -> edit -> return flows more coherent
+- reduce dead-end feeling
+- clarify where the user is and why they are there
+- preserve HashRouter and existing GitHub Pages compatibility
+
+Explicit exclusions:
+
+- no full router rewrite
+- no new global issue-list route unless explicitly approved after audit
+- no app-wide command palette
+
+Acceptance criteria:
+
+- major routes preserve or restore user context clearly
+- common flows require less guessing
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: refine navigation context`
+
+### Phase 5.8D — Inline Inspection and Reduced Route-hopping
+
+Status: `Later`
+
+Goal:
+
+Reduce unnecessary full-page navigation by using modern interaction patterns only where they improve operational flow.
+
+Scope:
+
+- evaluate and implement scoped inline expansion, collapsible sections, dropdown show/hide, or drawer-style previews where appropriate
+- prefer quick inspection over full route hops for lightweight issue/project context
+- keep full pages only where deep detail/editing is justified
+- avoid adding new product features
+
+Explicit exclusions:
+
+- no modal/drawer framework rewrite
+- no replacing every detail route
+- no complex state machine
+- no new workflow types
+
+Acceptance criteria:
+
+- common inspection flows feel faster and less fragmented
+- route tree remains stable
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: reduce route hopping in app experience`
+
+### Phase 5.8E — Responsive Interaction and Working-layout Pass
+
+Status: `Later`
+
+Goal:
+
+Ensure navigation and refined interaction patterns remain usable across desktop, tablet, and mobile widths.
+
+Scope:
+
+- check sidebar/topbar behavior
+- refine dashboard/project/issue/team layout responsiveness after navigation changes
+- preserve readability and action visibility on smaller screens
+- fix only responsive issues exposed by the app-experience pass
+
+Explicit exclusions:
+
+- no separate mobile product
+- no unrelated visual redesign
+- no new feature scope
+
+Acceptance criteria:
+
+- major workflows remain usable at target viewport sizes
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `style: refine responsive app experience`
+
+### Phase 5.8F — Final App Experience Audit
+
+Status: `Later`
+
+Goal:
+
+Verify the refined app experience is ready to enter Phase 6 quality, tests, deployment, and release work.
+
+Scope:
+
+- verify app feels coherent and assistant-like
+- verify role-aware action visibility
+- verify reduced navigation friction
+- verify no scope creep
+- verify no backend/auth/notification/org/employee-scoring behavior was added
+- verify build / typecheck / lint
+
+Explicit exclusions:
+
+- no new feature implementation
+- no deployment work
+- no final release docs unless needed for handoff metadata
+
+Acceptance criteria:
+
+- selected user can understand next actions quickly
+- Dashboard works as an operational home
+- confirmation/update responsibilities are discoverable
+- project/issue/team navigation is coherent
+- app is ready to enter Phase 6
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `chore: audit app experience refinement`
 
 ---
 

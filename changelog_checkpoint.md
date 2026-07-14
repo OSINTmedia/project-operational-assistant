@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 5 — Portfolio Polish: `In progress`
+Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.6 — README Presentation Update`
+- `Phase 5.7 — Phase 5 Polish Audit`
 
 Next concrete micro-phase:
 
-- `Phase 5.7 — Phase 5 Polish Audit`
+- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`
 
 ## Documentation Trust Order
 
@@ -28,6 +28,8 @@ Use the project docs in this order when deciding what is current and what should
 - Older completed sections in `BUILD_PLAN.md` still contain some historical micro-phase `Planned` labels. Treat those as historical plan artifacts, not active next-step guidance.
 - Frozen docs intentionally remain broader than the live implementation state. They describe product intent and constraints, not the live completion checkpoint.
 - `README.md` may summarize progress at a high level, but the live implementation state and next concrete micro-phase must always come from this file first.
+- `Phase 5.8` was added after `Phase 5` because the full app surface revealed a usability and navigation gap that should be addressed before final QA, tests, deployment, and release.
+- `Phase 5.8` is a controlled app-experience refinement phase, not scope creep and not a new product-feature phase.
 
 ## Completed Work
 
@@ -213,10 +215,17 @@ Use the project docs in this order when deciding what is current and what should
 - Preserved `Needs Update` and `Ready for Confirmation` as system labels while only changing their visual badge rendering.
 - Kept the visual polish pass free of route changes, domain changes, repository changes, persistence changes, animation work, marketing hero work, and brand redesign.
 - Rewrote `README.md` as a public-facing portfolio presentation artifact instead of an internal work log.
-- Updated the README progress block to reflect Phase 5 polish as nearly complete, with Phase 5.6 complete and Phase 5.7 / Phase 6 remaining.
+- Updated the README progress block to reflect Phase 5 portfolio polish as complete, with Phase 5.8 app-experience refinement active before Phase 6 quality, deployment, and release-readiness work.
 - Added README sections for:
   live demo target, demo accounts, architecture, local setup, project structure, roadmap, scope exclusions, and lessons captured.
 - Kept the README update free of source-code changes, frozen-doc rewrites, backend/auth claims, deployment implementation, or internal handoff language.
+- Completed the Phase 5 polish audit as a documentation/status closure after confirming:
+  no Phase 5 scope creep, README remains public-facing rather than a work log, and the product remains understandable from the Dashboard, README, and current screen set.
+- Confirmed Phase 5 introduced no backend, real authentication, external integrations, notification hub, organization workspace behavior, employee scoring, frozen-doc rewrites, or source-code changes during the README/status closure.
+- Added `Phase 5.8 — App Experience Refinement Before Final QA` as a controlled intermediate roadmap phase between completed `Phase 5` and later `Phase 6`.
+- Documented the rationale for `Phase 5.8`:
+  the app is functional and portfolio-polished, but navigation, selected-user orientation, role-aware next actions, update/confirmation visibility, and context recovery need a focused pass before final QA and deployment.
+- Kept the `Phase 5.8` roadmap update documentation-only; no source code, frozen docs, backend/auth behavior, notification behavior, organization scope, employee scoring, deployment work, or Phase 6 work was added.
 
 ## Changed Files
 
@@ -224,6 +233,7 @@ Latest implementation slice:
 
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
+- `DEVELOPMENT_NOTES.md`
 - `README.md`
 
 Full implementation history:
@@ -400,6 +410,8 @@ Full implementation history:
 - Phase 5.4 responsive polish intentionally used existing routes, screen hierarchy, and feature surfaces. It did not add a mobile drawer, redesign information architecture, or introduce mobile-only workflows.
 - Phase 5.5 visual polish intentionally centralizes badge presentation and light card consistency only. It did not introduce a broader component library, brand redesign, animation system, or workflow behavior.
 - Phase 5.6 README work intentionally updates only public portfolio documentation. It does not claim final deployment is complete, and it keeps live implementation handoff guidance in `changelog_checkpoint.md`.
+- Phase 5.7 polish audit closed Phase 5 without new feature work. Remaining pre-QA app-experience work now belongs to Phase 5.8, with Phase 6 quality, validation, deployment setup, live-demo verification, and final release readiness preserved after that refinement phase.
+- Phase 5.8 was inserted before Phase 6 to address app-experience friction revealed after the full functional and polish surface was visible. It is bounded to navigation, information architecture, role-aware workflow clarity, context recovery, and responsive usability without changing MVP product scope.
 
 ## Verification Results
 
@@ -453,22 +465,29 @@ Full implementation history:
 - `Phase 5.4 — Responsive Layout Polish` is now complete.
 - `Phase 5.5 — Visual Portfolio Polish` is now complete.
 - `Phase 5.6 — README Presentation Update` is now complete.
+- `Phase 5.7 — Phase 5 Polish Audit` is now complete.
+- `Phase 5 — Portfolio Polish` is now complete.
+- `Phase 5.8 — App Experience Refinement Before Final QA` is now the active roadmap phase.
+- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan` is the next concrete micro-phase.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.7 — Phase 5 Polish Audit`.
+- `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
+- The next allowed implementation slice is `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`.
 
 ## Next Recommended Task
 
-`Phase 5` is the next active umbrella phase.
+`Phase 5.8` is the next active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 5.7 — Phase 5 Polish Audit`
+- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`
 
 Scope for the next task only:
 
-- verify no Phase 5 scope creep
-- verify README is public-facing and not a work log
-- verify a demo visitor can understand the product in 5-10 minutes
+- inspect Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, and Demo
+- assess role-specific flows for Manager, Project Manager, and User
+- identify page-hopping, context loss, unclear role responsibilities, and confusing action visibility
+- classify findings by severity
+- define which refinements belong in `Phase 5.8` and which remain post-MVP
 
-Do not implement the whole of `Phase 5` in one task.
+Do not implement the whole of `Phase 5.8` in one task.
