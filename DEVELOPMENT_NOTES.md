@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep Phase 5.2 search local to existing list surfaces
+
+**Context:**  
+`Phase 5.2` calls for basic search and filter polish, while the current app still does not have a dedicated global issue-list route or shared query model.
+
+**Decision:**  
+Add local search to the Dashboard operational queue and Project Detail issue list, and keep it composed with each screen's existing structured filters instead of introducing shared search infrastructure or saved filter state.
+
+**Reasoning:**  
+This improves demo scanability while staying inside the approved polish slice. It avoids turning a UI clarity task into a broader information architecture, route, or persistence feature.
+
+**Alternatives considered:**  
+Adding a global issue search route, building a reusable query engine, or storing saved filter/search state.
+
+**Impact:**  
+Phase 5.2 improves findability on the two active issue-list surfaces without creating new route contracts or changing repository/domain boundaries. Broader search architecture remains deferred unless a later roadmap slice explicitly requires it.
+
 ### 2026-07-14 — Keep dashboard click-throughs on existing issue and project routes
 
 **Context:**  

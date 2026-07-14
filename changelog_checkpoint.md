@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.1 — Empty States and Helper Text`
+- `Phase 5.2 — Filter / Search Polish`
 
 Next concrete micro-phase:
 
-- `Phase 5.2 — Filter / Search Polish`
+- `Phase 5.3 — Quick Action Polish`
 
 ## Documentation Trust Order
 
@@ -190,17 +190,20 @@ Use the project docs in this order when deciding what is current and what should
 - Added a Projects page empty state for datasets with no visible project records.
 - Added Team Workspace helper text clarifying the curator role on group issues without redefining ownership or execution responsibility.
 - Added Issue Detail helper cards for `Curator` and `Needs Update` so first-time demo visitors can understand those concepts in context.
+- Added local Dashboard queue search across issue title, project, owner, status, priority, and `Needs Update` attention text.
+- Added local Project Detail issue-list search across title, owner, curator, status, priority, type, labels, and tags.
+- Clarified Project Detail filter copy so it accurately describes local search and structured filters without suggesting saved filters or broader query behavior.
+- Added counts to Project Detail status, priority, and type filter options for better scanability.
 
 ## Changed Files
 
 Latest implementation slice:
 
 - `src/features/dashboard/DashboardPage.tsx`
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/projects/ProjectsPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
+- `DEVELOPMENT_NOTES.md`
 
 Full implementation history:
 
@@ -369,8 +372,9 @@ Full implementation history:
 - Dashboard click-through behavior currently targets the existing issue detail, project detail, and projects list routes; no dedicated global issue-list surface exists yet.
 - Dashboard chart rendering increases the existing build chunk-size warning pressure, but the current warning remains non-blocking for the portfolio MVP.
 - The existing build chunk-size warning remains non-blocking and has grown slightly as the dashboard surface expanded.
-- The dashboard audit did not surface any new product or architecture blockers, but the dashboard still intentionally stops short of saved filters, broader reporting workflows, and portfolio-polish helper text.
+- The dashboard audit did not surface any new product or architecture blockers, but the dashboard still intentionally stops short of saved filters and broader reporting workflows.
 - Phase 5.1 helper text is intentionally concise and screen-local. Broader onboarding, marketing copy, and additional workflow education remain out of scope unless a later roadmap slice explicitly adds them.
+- Phase 5.2 search is intentionally local to the Dashboard queue and Project Detail issue list. No shared query engine, saved filter state, fuzzy search, or global issue-list route exists yet.
 
 ## Verification Results
 
@@ -419,9 +423,10 @@ Full implementation history:
 - `Phase 4.5 — Dashboard Filters and Click-throughs` is now complete.
 - `Phase 4.6 — Phase 4 Dashboard Audit` is now complete.
 - `Phase 5.1 — Empty States and Helper Text` is now complete.
+- `Phase 5.2 — Filter / Search Polish` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.2 — Filter / Search Polish`.
+- The next allowed implementation slice is `Phase 5.3 — Quick Action Polish`.
 
 ## Next Recommended Task
 
@@ -429,12 +434,12 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.2 — Filter / Search Polish`
+- `Phase 5.3 — Quick Action Polish`
 
 Scope for the next task only:
 
-- improve basic search and filter scanability
-- clarify structured-field filter UX
-- keep the slice free of advanced search syntax, saved filters, and fuzzy enterprise query-builder behavior
+- add narrow quick status or action affordances where the current UI already supports the underlying workflow
+- clarify action availability and disabled states where needed
+- keep the slice free of new workflow types, notifications, and advanced shortcut documentation
 
 Do not implement the whole of `Phase 5` in one task.

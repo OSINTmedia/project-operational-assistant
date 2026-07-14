@@ -6,6 +6,7 @@ import {
   FolderKanban,
   Plus,
   RefreshCcw,
+  Search,
   ShieldAlert,
   Users,
 } from 'lucide-react'
@@ -21,6 +22,24 @@ const ATTENTION_FILTER_OPTIONS = [
 ] as const
 
 type AttentionFilter = (typeof ATTENTION_FILTER_OPTIONS)[number]['value']
+
+function normalizeSearchText(value: string): string {
+  return value.trim().toLocaleLowerCase()
+}
+
+function countOptions<TItem>(
+  items: TItem[],
+  getValue: (item: TItem) => string,
+): Map<string, number> {
+  const counts = new Map<string, number>()
+
+  items.forEach((item) => {
+    const value = getValue(item)
+    counts.set(value, (counts.get(value) ?? 0) + 1)
+  })
+
+  return counts
+}
 
 function formatUpdatedAt(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -113,10 +132,12 @@ export function ProjectDetailPage() {
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [typeFilter, setTypeFilter] = useState('all')
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
+  const [searchQuery, setSearchQuery] = useState('')
   const issues = useMemo(
     () => (projectView.status === 'ready' ? projectView.data.issues : []),
     [projectView],
   )
+  const normalizedSearchQuery = useMemo(() => normalizeSearchText(searchQuery), [searchQuery])
   const statusOptions = useMemo(
     () => ['all', ...new Set(issues.map((issue) => issue.statusLabel))],
     [issues],
@@ -129,6 +150,12 @@ export function ProjectDetailPage() {
     () => ['all', ...new Set(issues.map((issue) => issue.typeLabel))],
     [issues],
   )
+  const statusCounts = useMemo(() => countOptions(issues, (issue) => issue.statusLabel), [issues])
+  const priorityCounts = useMemo(
+    () => countOptions(issues, (issue) => issue.priorityLabel),
+    [issues],
+  )
+  const typeCounts = useMemo(() => countOptions(issues, (issue) => issue.typeLabel), [issues])
   const filteredIssues = useMemo(() => {
     return issues.filter((issue) => {
       if (statusFilter !== 'all' && issue.statusLabel !== statusFilter) {
@@ -154,14 +181,34 @@ export function ProjectDetailPage() {
         return false
       }
 
+      if (normalizedSearchQuery) {
+        const searchableText = [
+          issue.title,
+          issue.typeLabel,
+          issue.statusLabel,
+          issue.priorityLabel,
+          issue.ownerName,
+          issue.curatorName ?? '',
+          ...issue.labelNames,
+          ...issue.tagNames,
+        ]
+          .join(' ')
+          .toLocaleLowerCase()
+
+        if (!searchableText.includes(normalizedSearchQuery)) {
+          return false
+        }
+      }
+
       return true
     })
-  }, [attentionFilter, issues, priorityFilter, statusFilter, typeFilter])
+  }, [attentionFilter, issues, normalizedSearchQuery, priorityFilter, statusFilter, typeFilter])
   const hasActiveFilters =
     statusFilter !== 'all' ||
     priorityFilter !== 'all' ||
     typeFilter !== 'all' ||
-    attentionFilter !== 'all'
+    attentionFilter !== 'all' ||
+    normalizedSearchQuery !== ''
 
   if (projectView.status === 'loading') {
     return (
@@ -226,6 +273,7 @@ export function ProjectDetailPage() {
     setPriorityFilter('all')
     setTypeFilter('all')
     setAttentionFilter('all')
+    setSearchQuery('')
   }
 
   return (
@@ -345,9 +393,9 @@ export function ProjectDetailPage() {
           <div>
             <p className="text-sm font-medium text-slate-950">Project issues</p>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              Read-only project issues for the selected project. This slice keeps the list
-              navigable and descriptive without introducing issue actions, inline edits, or Issue
-              Detail implementation.
+              Read-only project issues for the selected project. Search and structured filters help
+              scan the list without introducing saved filters, inline actions, or broader query
+              behavior.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -374,6 +422,25 @@ export function ProjectDetailPage() {
             </div>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              <label className="grid gap-2 text-sm text-slate-600 md:col-span-2 xl:col-span-4">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Search
+                </span>
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Search issue title, owner, curator, label, tag, status, or priority"
+                    className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
+                  />
+                </div>
+                <span className="text-xs leading-5 text-slate-500">
+                  Search stays local to this project list and combines with the structured filters.
+                </span>
+              </label>
+
               <label className="grid gap-2 text-sm text-slate-600">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                   Status
@@ -385,7 +452,9 @@ export function ProjectDetailPage() {
                 >
                   {statusOptions.map((option) => (
                     <option key={option} value={option}>
-                      {option === 'all' ? 'All statuses' : option}
+                      {option === 'all'
+                        ? 'All statuses'
+                        : `${option} (${statusCounts.get(option) ?? 0})`}
                     </option>
                   ))}
                 </select>
@@ -402,7 +471,9 @@ export function ProjectDetailPage() {
                 >
                   {priorityOptions.map((option) => (
                     <option key={option} value={option}>
-                      {option === 'all' ? 'All priorities' : option}
+                      {option === 'all'
+                        ? 'All priorities'
+                        : `${option} (${priorityCounts.get(option) ?? 0})`}
                     </option>
                   ))}
                 </select>
@@ -419,7 +490,9 @@ export function ProjectDetailPage() {
                 >
                   {typeOptions.map((option) => (
                     <option key={option} value={option}>
-                      {option === 'all' ? 'All types' : option}
+                      {option === 'all'
+                        ? 'All types'
+                        : `${option} (${typeCounts.get(option) ?? 0})`}
                     </option>
                   ))}
                 </select>

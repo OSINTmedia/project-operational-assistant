@@ -1651,7 +1651,7 @@ Suggested commit message:
 
 ### Phase 5.2 — Filter / Search Polish
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1686,7 +1686,7 @@ Suggested commit message:
 
 ### Phase 5.3 — Quick Action Polish
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

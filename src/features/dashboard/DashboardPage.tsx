@@ -6,6 +6,7 @@ import {
   Clock3,
   FolderKanban,
   OctagonAlert,
+  Search,
   SlidersHorizontal,
   TimerReset,
   UserCircle2,
@@ -43,6 +44,10 @@ const ATTENTION_FILTER_OPTIONS = [
 
 type AttentionFilter = (typeof ATTENTION_FILTER_OPTIONS)[number]['value']
 
+function normalizeSearchText(value: string): string {
+  return value.trim().toLocaleLowerCase()
+}
+
 function formatUpdatedAt(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -58,11 +63,13 @@ export function DashboardPage() {
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [projectFilter, setProjectFilter] = useState('all')
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
+  const [searchQuery, setSearchQuery] = useState('')
   const dashboardMetrics = useDashboardMetrics({
     currentUserName: currentUser?.name ?? null,
     currentUserRole: currentUser?.role ?? null,
   })
   const data = dashboardMetrics.status === 'ready' ? dashboardMetrics.data : null
+  const normalizedSearchQuery = useMemo(() => normalizeSearchText(searchQuery), [searchQuery])
   const filteredIssues = useMemo(() => {
     if (!data) {
       return []
@@ -85,9 +92,26 @@ export function DashboardPage() {
         return false
       }
 
+      if (normalizedSearchQuery) {
+        const searchableText = [
+          issue.title,
+          issue.projectName,
+          issue.statusLabel,
+          issue.priorityLabel,
+          issue.ownerName,
+          issue.hasNeedsUpdateLabel ? 'Needs Update' : '',
+        ]
+          .join(' ')
+          .toLocaleLowerCase()
+
+        if (!searchableText.includes(normalizedSearchQuery)) {
+          return false
+        }
+      }
+
       return true
     })
-  }, [attentionFilter, data, priorityFilter, projectFilter, statusFilter])
+  }, [attentionFilter, data, normalizedSearchQuery, priorityFilter, projectFilter, statusFilter])
 
   if (dashboardMetrics.status === 'loading') {
     return (
@@ -129,7 +153,8 @@ export function DashboardPage() {
     statusFilter !== 'all' ||
     priorityFilter !== 'all' ||
     projectFilter !== 'all' ||
-    attentionFilter !== 'all'
+    attentionFilter !== 'all' ||
+    normalizedSearchQuery !== ''
   const cards = [
     {
       title: 'Total issues',
@@ -180,6 +205,7 @@ export function DashboardPage() {
     setPriorityFilter('all')
     setProjectFilter('all')
     setAttentionFilter('all')
+    setSearchQuery('')
   }
 
   return (
@@ -258,6 +284,23 @@ export function DashboardPage() {
         </div>
 
         <div className="mt-5 grid gap-4 lg:grid-cols-4">
+          <label className="grid gap-2 text-sm text-slate-600 lg:col-span-4">
+            <span className="font-medium text-slate-950">Search</span>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search issue title, project, owner, status, or priority"
+                className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
+              />
+            </div>
+            <span className="text-xs leading-5 text-slate-500">
+              Search is local to this queue and works with the structured filters below.
+            </span>
+          </label>
+
           <label className="grid gap-2 text-sm text-slate-600">
             <span className="font-medium text-slate-950">Status</span>
             <select
