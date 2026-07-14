@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.6 — Phase 4 Dashboard Audit`
+- `Phase 5.1 — Empty States and Helper Text`
 
 Next concrete micro-phase:
 
-- `Phase 5.1 — Empty States and Helper Text`
+- `Phase 5.2 — Filter / Search Polish`
 
 ## Documentation Trust Order
 
@@ -185,8 +185,24 @@ Use the project docs in this order when deciding what is current and what should
 - Completed a strict dashboard audit against:
   product semantics, role framing, system-label treatment, route boundaries, and verification requirements.
 - Corrected dashboard copy that had become stale after the filters slice so the live UI now matches the actual dashboard behavior.
+- Added concise dashboard helper text explaining `Needs Update` as a system attention label rather than a workflow status.
+- Improved the dashboard filtered-queue empty state so it explains the queue is current issue visibility, not a saved report.
+- Added a Projects page empty state for datasets with no visible project records.
+- Added Team Workspace helper text clarifying the curator role on group issues without redefining ownership or execution responsibility.
+- Added Issue Detail helper cards for `Curator` and `Needs Update` so first-time demo visitors can understand those concepts in context.
 
 ## Changed Files
+
+Latest implementation slice:
+
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/issues/IssueDetailPage.tsx`
+- `src/features/projects/ProjectsPage.tsx`
+- `src/features/teams/TeamsPage.tsx`
+- `BUILD_PLAN.md`
+- `changelog_checkpoint.md`
+
+Full implementation history:
 
 - `package.json`
 - `package-lock.json`
@@ -354,6 +370,7 @@ Use the project docs in this order when deciding what is current and what should
 - Dashboard chart rendering increases the existing build chunk-size warning pressure, but the current warning remains non-blocking for the portfolio MVP.
 - The existing build chunk-size warning remains non-blocking and has grown slightly as the dashboard surface expanded.
 - The dashboard audit did not surface any new product or architecture blockers, but the dashboard still intentionally stops short of saved filters, broader reporting workflows, and portfolio-polish helper text.
+- Phase 5.1 helper text is intentionally concise and screen-local. Broader onboarding, marketing copy, and additional workflow education remain out of scope unless a later roadmap slice explicitly adds them.
 
 ## Verification Results
 
@@ -401,9 +418,10 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 4.4 — Dashboard Charts` is now complete.
 - `Phase 4.5 — Dashboard Filters and Click-throughs` is now complete.
 - `Phase 4.6 — Phase 4 Dashboard Audit` is now complete.
+- `Phase 5.1 — Empty States and Helper Text` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.1 — Empty States and Helper Text`.
+- The next allowed implementation slice is `Phase 5.2 — Filter / Search Polish`.
 
 ## Next Recommended Task
 
@@ -411,12 +429,12 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 5.1 — Empty States and Helper Text`
+- `Phase 5.2 — Filter / Search Polish`
 
 Scope for the next task only:
 
-- add minimal helper text where first-time portfolio visitors need it
-- improve empty states without turning the product into documentation
-- keep the slice free of feature expansion, long onboarding, and marketing copy
+- improve basic search and filter scanability
+- clarify structured-field filter UX
+- keep the slice free of advanced search syntax, saved filters, and fuzzy enterprise query-builder behavior
 
-Do not implement the whole of `Phase 4` in one task.
+Do not implement the whole of `Phase 5` in one task.

@@ -1616,7 +1616,7 @@ Polish the product into a clean public demo without changing the frozen MVP scop
 
 ### Phase 5.1 — Empty States and Helper Text
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1651,7 +1651,7 @@ Suggested commit message:
 
 ### Phase 5.2 — Filter / Search Polish
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

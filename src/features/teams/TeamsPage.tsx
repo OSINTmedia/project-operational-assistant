@@ -240,6 +240,11 @@ export function TeamsPage() {
                   <p className="mt-1 text-sm text-slate-600">
                     Team work that depends on coordinated ownership rather than one isolated assignee.
                   </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    On group issues, the <span className="font-medium text-slate-700">Curator</span>{' '}
+                    is the person holding operational context together. The curator is not
+                    automatically the owner or executor.
+                  </p>
 
                   <div className="mt-4 grid gap-3">
                     {team.groupIssues.length > 0 ? (

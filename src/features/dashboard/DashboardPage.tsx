@@ -220,6 +220,15 @@ export function DashboardPage() {
         ))}
       </div>
 
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <p className="text-sm font-medium text-slate-950">How to read this dashboard</p>
+        <p className="mt-2 text-sm leading-6 text-slate-600">
+          <span className="font-medium text-slate-950">Needs Update</span> is a system attention
+          label, not a status. It marks issues whose latest information is no longer reliable
+          enough for confident operational decisions.
+        </p>
+      </div>
+
       <DashboardCharts distributions={data.distributions} />
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
@@ -384,7 +393,8 @@ export function DashboardPage() {
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
               No issues match the current dashboard filters. Clear filters or switch the selected
-              dashboard slice to continue.
+              dashboard slice to continue. This queue is intentionally narrow: it shows current
+              issue visibility, not a saved report.
             </div>
           )}
         </div>

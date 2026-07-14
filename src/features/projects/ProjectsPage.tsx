@@ -127,6 +127,13 @@ export function ProjectsPage() {
         </div>
       </div>
 
+      {data.projects.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-sm leading-6 text-slate-500 shadow-panel">
+          No projects are visible in the current demo dataset. This screen is meant to summarize
+          project status, issue load, and attention signals once project records exist.
+        </div>
+      ) : null}
+
       <div className="grid gap-4 xl:hidden">
         {data.projects.map((project) => (
           <article

@@ -191,6 +191,23 @@ export function IssueDetailPage() {
         <MetadataCard label="Updated by" value={data.updatedByName} />
       </div>
 
+      <div className="grid gap-4 xl:grid-cols-2">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+          <p className="text-sm font-medium text-slate-950">Curator</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            The curator keeps operational context coherent, especially on group issues. This role
+            does not automatically mean the curator is the owner or the person doing the work.
+          </p>
+        </div>
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+          <p className="text-sm font-medium text-slate-950">Needs Update</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Needs Update is a system label used when the latest issue context is no longer reliable
+            enough. It is an attention signal, not a workflow status.
+          </p>
+        </div>
+      </div>
+
       <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
         <div className="grid gap-6">
           <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
