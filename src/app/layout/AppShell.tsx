@@ -29,20 +29,20 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto grid min-h-screen max-w-[1600px] lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="border-b border-slate-200 bg-slate-950 px-5 py-6 text-slate-100 lg:border-b-0 lg:border-r lg:border-slate-800">
-          <div className="flex items-start justify-between gap-4 lg:block">
-            <div>
+        <aside className="border-b border-slate-200 bg-slate-950 px-4 py-5 text-slate-100 sm:px-5 lg:border-b-0 lg:border-r lg:border-slate-800 lg:py-6">
+          <div className="grid gap-4 lg:block">
+            <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                 Portfolio MVP
               </p>
-              <h1 className="mt-2 text-xl font-semibold text-white">
+              <h1 className="mt-2 text-lg font-semibold leading-7 text-white sm:text-xl">
                 Project Operational Assistant
               </h1>
-              <p className="mt-2 text-sm leading-6 text-slate-400">
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400 lg:max-w-none">
                 Foundation shell for a local-first operational dashboard demo.
               </p>
             </div>
-            <div className="lg:mt-6">
+            <div className="max-w-full lg:mt-6">
               <DemoRoleSwitcher
                 demoUsers={demoUsers}
                 currentUserId={currentUserId}
@@ -54,7 +54,7 @@ export function AppShell() {
             </div>
           </div>
 
-          <nav className="mt-6 grid gap-1">
+          <nav className="mt-5 flex gap-2 overflow-x-auto pb-1 lg:mt-6 lg:grid lg:gap-1 lg:overflow-visible lg:pb-0">
             {appNavigation.map((item) => {
               const Icon = iconMap[item.icon]
 
@@ -64,7 +64,7 @@ export function AppShell() {
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors',
+                      'flex shrink-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors lg:shrink',
                       isActive ? 'bg-slate-800 text-white' : 'hover:bg-slate-900 hover:text-white',
                     )
                   }
@@ -78,9 +78,9 @@ export function AppShell() {
         </aside>
 
         <main className="flex min-w-0 flex-col">
-          <header className="border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur">
+          <header className="border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div>
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                   Demo Lifecycle
                 </p>
@@ -90,13 +90,13 @@ export function AppShell() {
                     : 'Local demo bootstrap has not completed yet.'}
                 </p>
               </div>
-              <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-500">
+              <div className="w-full rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-500 md:w-auto">
                 Real authentication intentionally excluded
               </div>
             </div>
           </header>
 
-          <div className="flex-1 px-4 py-4 sm:px-6 sm:py-6">
+          <div className="min-w-0 flex-1 px-3 py-4 sm:px-6 sm:py-6">
             <Outlet />
           </div>
         </main>

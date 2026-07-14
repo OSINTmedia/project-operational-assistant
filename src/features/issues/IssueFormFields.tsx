@@ -74,7 +74,7 @@ export function IssueFormFields({
             value={title}
             onChange={(event) => onTitleChange(event.target.value)}
             placeholder="Summarize the issue briefly"
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           />
         </label>
 
@@ -87,7 +87,7 @@ export function IssueFormFields({
             onChange={(event) => onDescriptionChange(event.target.value)}
             rows={4}
             placeholder="Add optional context for the issue"
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           />
         </label>
 
@@ -99,7 +99,7 @@ export function IssueFormFields({
             value={selectedProjectId}
             onChange={(event) => onSelectedProjectIdChange(event.target.value)}
             disabled={data.projectOptions.length === 0}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {data.projectOptions.length === 0 ? (
               <option value="">No projects available</option>
@@ -121,7 +121,7 @@ export function IssueFormFields({
             value={selectedStatusId}
             onChange={(event) => onSelectedStatusIdChange(event.target.value)}
             disabled={data.statusOptions.length === 0}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {data.statusOptions.length === 0 ? (
               <option value="">No statuses available</option>
@@ -142,7 +142,7 @@ export function IssueFormFields({
           <select
             value={type}
             onChange={(event) => onTypeChange(event.target.value as IssueTypeId)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {Object.entries(issueCreateFormShellLabels.type).map(([value, label]) => (
               <option key={value} value={value}>
@@ -159,7 +159,7 @@ export function IssueFormFields({
           <select
             value={priority}
             onChange={(event) => onPriorityChange(event.target.value as PriorityId)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {Object.entries(issueCreateFormShellLabels.priority).map(([value, label]) => (
               <option key={value} value={value}>
@@ -177,7 +177,7 @@ export function IssueFormFields({
             value={selectedOwnerId}
             onChange={(event) => onSelectedOwnerIdChange(event.target.value)}
             disabled={data.ownerOptions.length === 0}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {data.ownerOptions.length === 0 ? (
               <option value="">No owners available</option>
@@ -199,7 +199,7 @@ export function IssueFormFields({
             value={type === 'group' ? selectedCuratorId : ''}
             onChange={(event) => onSelectedCuratorIdChange(event.target.value)}
             disabled={type !== 'group' || data.curatorOptions.length === 0}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
           >
             {type !== 'group' ? (
               <option value="">Only relevant for group issues</option>
@@ -222,7 +222,7 @@ export function IssueFormFields({
           <select
             value={dependencyType}
             onChange={(event) => onDependencyTypeChange(event.target.value as DependencyTypeId)}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
           >
             {Object.entries(issueCreateFormShellLabels.dependency).map(([value, label]) => (
               <option key={value} value={value}>
@@ -240,7 +240,7 @@ export function IssueFormFields({
             value={selectedDependencyTargetId}
             onChange={(event) => onSelectedDependencyTargetIdChange(event.target.value)}
             disabled={dependencyType === 'none' || dependencyTargetOptions.length === 0}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
           >
             {dependencyType === 'none' ? (
               <option value="">No dependency target needed</option>
@@ -270,14 +270,14 @@ export function IssueFormFields({
               <p className="text-sm text-slate-500">No reusable tags are available yet.</p>
             ) : (
               data.tagOptions.map((tag) => (
-                <label key={tag.id} className="flex items-center gap-3 text-sm text-slate-700">
+                <label key={tag.id} className="flex min-w-0 items-center gap-3 text-sm text-slate-700">
                   <input
                     type="checkbox"
                     checked={selectedTagIds.includes(tag.id)}
                     onChange={() => onToggleTagId(tag.id)}
                     className="h-4 w-4 rounded border-slate-300"
                   />
-                  <span>{tag.name}</span>
+                  <span className="min-w-0 break-words">{tag.name}</span>
                 </label>
               ))
             )}
@@ -293,14 +293,14 @@ export function IssueFormFields({
               <p className="text-sm text-slate-500">No editable labels are available yet.</p>
             ) : (
               data.labelOptions.map((label) => (
-                <label key={label.id} className="flex items-center gap-3 text-sm text-slate-700">
+                <label key={label.id} className="flex min-w-0 items-center gap-3 text-sm text-slate-700">
                   <input
                     type="checkbox"
                     checked={selectedLabelIds.includes(label.id)}
                     onChange={() => onToggleLabelId(label.id)}
                     className="h-4 w-4 rounded border-slate-300"
                   />
-                  <span>{label.name}</span>
+                  <span className="min-w-0 break-words">{label.name}</span>
                 </label>
               ))
             )}

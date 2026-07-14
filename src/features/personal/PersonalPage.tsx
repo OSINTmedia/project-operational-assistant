@@ -66,9 +66,9 @@ function PersonalIssueCard({ issue }: { issue: PersonalIssueSummary }) {
 
 function PersonalSectionCard({ section }: { section: PersonalSection }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-panel p-5 shadow-panel">
-      <div className="flex items-start justify-between gap-4">
-        <div>
+    <section className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <p className="text-sm font-medium text-slate-950">{section.title}</p>
           <p className="mt-1 text-sm leading-6 text-slate-600">{section.description}</p>
         </div>
@@ -139,7 +139,7 @@ export function PersonalPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           My work surface
         </p>
@@ -151,10 +151,10 @@ export function PersonalPage() {
               creation, curation, and attention signals without broadening into dashboard metrics.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto">
+            <div className="flex min-w-0 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
               <UserCircle2 className="h-4 w-4 text-accent" />
-              <span className="font-medium text-slate-950">{data.currentUserName}</span>
+              <span className="min-w-0 font-medium text-slate-950">{data.currentUserName}</span>
               <span className="text-slate-400">·</span>
               <span>{data.currentUserRoleLabel}</span>
             </div>
@@ -207,9 +207,9 @@ export function PersonalPage() {
         ))}
 
         {confirmationSection ? (
-          <section className="rounded-xl border border-dashed border-slate-300 bg-white p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div>
+          <section className="rounded-xl border border-dashed border-slate-300 bg-white p-4 sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-950">{confirmationSection.title}</p>
                 <p className="mt-1 text-sm leading-6 text-slate-600">
                   {confirmationSection.description}

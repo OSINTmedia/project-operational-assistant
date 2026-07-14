@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep responsive polish inside existing navigation and screen structure
+
+**Context:**
+`Phase 5.4` required responsive layout polish for sidebar/topbar behavior, tables/cards, and mobile/tablet readability without changing information architecture.
+
+**Decision:**
+Polish the existing app shell and screen layouts with responsive spacing, wrapping, full-width mobile controls, and horizontal mobile navigation instead of adding a new mobile drawer, new route structure, or mobile-only workflows.
+
+**Reasoning:**
+This keeps the slice focused on demo readability and avoids turning a responsive pass into an information-architecture redesign. The existing route model remains easier to audit for GitHub Pages and portfolio demo behavior.
+
+**Alternatives considered:**
+Adding a collapsible mobile drawer, changing the sidebar into a new top-level mobile navigation pattern, or redesigning dense screens into separate mobile-specific views.
+
+**Impact:**
+Phase 5.4 improves mobile and tablet usability while preserving existing domain, repository, route, and workflow boundaries. Broader visual consistency remains deferred to `Phase 5.5`.
+
 ### 2026-07-14 — Keep Phase 5.3 quick actions on Issue Detail only
 
 **Context:**

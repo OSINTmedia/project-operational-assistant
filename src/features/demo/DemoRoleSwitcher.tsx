@@ -28,7 +28,7 @@ export function DemoRoleSwitcher({
   return (
     <div
       className={cn(
-        'rounded-lg border p-4',
+        'rounded-lg border p-3 sm:p-4',
         isSidebar
           ? 'border-slate-800 bg-slate-900 text-slate-300'
           : 'border-slate-200 bg-white text-slate-600 shadow-panel',
@@ -58,7 +58,7 @@ export function DemoRoleSwitcher({
               onSelectRole(role)
             }}
             className={cn(
-              'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
+              'min-h-8 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
               selectedRole === role
                 ? 'border-accent bg-accent text-white'
                 : isSidebar

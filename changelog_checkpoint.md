@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.3 — Quick Action Polish`
+- `Phase 5.4 — Responsive Layout Polish`
 
 Next concrete micro-phase:
 
-- `Phase 5.4 — Responsive Layout Polish`
+- `Phase 5.5 — Visual Portfolio Polish`
 
 ## Documentation Trust Order
 
@@ -202,13 +202,28 @@ Use the project docs in this order when deciding what is current and what should
 - Added disabled-state explanations for already-current statuses, missing demo user context, pending actions, missing confirmation requests, and already-confirmed issues.
 - Kept owner and curator changes as a clear shortcut into the existing structured edit flow instead of duplicating responsibility mutations inline.
 - Added Issue Detail read-model reload support so quick actions refresh structured fields and activity history after domain-backed updates.
+- Improved responsive behavior for the app shell, including smaller mobile spacing and horizontally scrollable mobile navigation without changing the route model.
+- Tightened Dashboard card, chart, filter, and queue layouts for smaller viewport widths.
+- Improved mobile and tablet stacking for Projects, Project Detail, Personal, Issue Detail, Team Workspace, Create Issue, and Edit Issue surfaces.
+- Made dense form controls and action rows full-width where needed on mobile while preserving existing structured form behavior.
+- Kept the responsive pass free of information-architecture redesign, new workflow behavior, domain logic changes, and persistence changes.
 
 ## Changed Files
 
 Latest implementation slice:
 
+- `src/app/layout/AppShell.tsx`
+- `src/features/demo/DemoRoleSwitcher.tsx`
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/dashboard/DashboardCharts.tsx`
+- `src/features/projects/ProjectsPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/issues/IssueCreatePage.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/useIssueDetailView.ts`
+- `src/features/issues/IssueEditPage.tsx`
+- `src/features/issues/IssueFormFields.tsx`
+- `src/features/teams/TeamsPage.tsx`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
@@ -384,6 +399,7 @@ Full implementation history:
 - Phase 5.1 helper text is intentionally concise and screen-local. Broader onboarding, marketing copy, and additional workflow education remain out of scope unless a later roadmap slice explicitly adds them.
 - Phase 5.2 search is intentionally local to the Dashboard queue and Project Detail issue list. No shared query engine, saved filter state, fuzzy search, or global issue-list route exists yet.
 - Phase 5.3 quick actions are intentionally limited to Issue Detail status and confirmation actions. Owner and curator changes still route through the structured edit form.
+- Phase 5.4 responsive polish intentionally used existing routes, screen hierarchy, and feature surfaces. It did not add a mobile drawer, redesign information architecture, or introduce mobile-only workflows.
 
 ## Verification Results
 
@@ -434,9 +450,10 @@ Full implementation history:
 - `Phase 5.1 — Empty States and Helper Text` is now complete.
 - `Phase 5.2 — Filter / Search Polish` is now complete.
 - `Phase 5.3 — Quick Action Polish` is now complete.
+- `Phase 5.4 — Responsive Layout Polish` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.4 — Responsive Layout Polish`.
+- The next allowed implementation slice is `Phase 5.5 — Visual Portfolio Polish`.
 
 ## Next Recommended Task
 
@@ -444,12 +461,12 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.4 — Responsive Layout Polish`
+- `Phase 5.5 — Visual Portfolio Polish`
 
 Scope for the next task only:
 
-- improve sidebar and topbar responsiveness
-- clean up table and card layouts for smaller viewports
-- improve mobile and tablet readability without changing information architecture
+- improve dashboard screenshot readiness
+- improve badge, card, and table visual consistency
+- apply calm SaaS UI polish without changing product scope
 
 Do not implement the whole of `Phase 5` in one task.

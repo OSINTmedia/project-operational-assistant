@@ -1721,7 +1721,7 @@ Suggested commit message:
 
 ### Phase 5.4 — Responsive Layout Polish
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1755,7 +1755,7 @@ Suggested commit message:
 
 ### Phase 5.5 — Visual Portfolio Polish
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

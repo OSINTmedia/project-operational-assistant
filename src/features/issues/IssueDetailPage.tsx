@@ -42,9 +42,9 @@ function MetadataCard({
   value: string
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
+    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-4 py-3">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</p>
-      <p className="mt-1 font-medium text-slate-950">{value}</p>
+      <p className="mt-1 break-words font-medium text-slate-950">{value}</p>
     </div>
   )
 }
@@ -128,8 +128,8 @@ function QuickActionButton({
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950',
       )}
     >
-      <span className="flex items-center gap-2 text-sm font-medium">
-        <Icon className={cn('h-4 w-4', isDisabled ? 'text-slate-400' : 'text-accent')} />
+      <span className="flex min-w-0 items-center gap-2 text-sm font-medium">
+        <Icon className={cn('h-4 w-4 shrink-0', isDisabled ? 'text-slate-400' : 'text-accent')} />
         {label}
       </span>
       <span className="text-xs leading-5 text-slate-500">
@@ -313,7 +313,7 @@ export function IssueDetailPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <Link
@@ -338,10 +338,10 @@ export function IssueDetailPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto">
             <Link
               to={`/issues/${data.id}/edit`}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <FilePenLine className="h-4 w-4" />
               Edit issue
@@ -378,7 +378,7 @@ export function IssueDetailPage() {
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-sm font-medium text-slate-950">Quick actions</p>
@@ -390,7 +390,7 @@ export function IssueDetailPage() {
           </div>
           <Link
             to={`/issues/${data.id}/edit`}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
           >
             <FilePenLine className="h-4 w-4" />
             Change owner or curator
@@ -465,7 +465,7 @@ export function IssueDetailPage() {
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
         <div className="grid gap-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
             <div className="flex items-center gap-2 text-slate-950">
               <FolderKanban className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Structured issue context</p>
@@ -529,7 +529,7 @@ export function IssueDetailPage() {
             ) : null}
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+          <section className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
             <div className="flex items-center gap-2 text-slate-950">
               <History className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Activity history</p>
@@ -557,7 +557,7 @@ export function IssueDetailPage() {
         </div>
 
         <aside className="grid gap-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
             <div className="flex items-center gap-2 text-slate-950">
               <Tag className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Tags</p>
@@ -578,7 +578,7 @@ export function IssueDetailPage() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
             <div className="flex items-center gap-2 text-slate-950">
               <Link2 className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Labels</p>
@@ -606,7 +606,7 @@ export function IssueDetailPage() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
             <div className="flex items-center gap-2 text-slate-950">
               <Clock3 className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Timeline summary</p>

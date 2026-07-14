@@ -25,12 +25,12 @@ interface ChartPanelProps {
 
 function ChartPanel({ title, description, children }: ChartPanelProps) {
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+    <article className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
       <div>
         <h3 className="text-sm font-semibold text-slate-950">{title}</h3>
         <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p>
       </div>
-      <div className="mt-4 h-72">{children}</div>
+      <div className="mt-4 h-64 sm:h-72">{children}</div>
     </article>
   )
 }
@@ -82,13 +82,17 @@ function renderPieLabel({
   return `${name} ${Math.round(percent * 100)}%`
 }
 
+function truncateChartLabel(value: string, maxLength = 14): string {
+  return value.length > maxLength ? `${value.slice(0, maxLength - 1)}...` : value
+}
+
 export function DashboardCharts({ distributions }: { distributions: DashboardDistributions }) {
   const statusData = distributions.issuesByStatus
   const priorityData = distributions.issuesByPriority
   const projectData = distributions.issuesByProject
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr]">
+    <div className="grid min-w-0 gap-4 xl:grid-cols-[1.2fr_1fr]">
       <ChartPanel
         title="Issues by status"
         description="Current operational spread across the status model, kept readable rather than decorative."
@@ -104,6 +108,7 @@ export function DashboardCharts({ distributions }: { distributions: DashboardDis
                 tick={{ fill: '#475569', fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(value: string) => truncateChartLabel(value, 12)}
               />
               <YAxis
                 allowDecimals={false}
@@ -182,10 +187,11 @@ export function DashboardCharts({ distributions }: { distributions: DashboardDis
               <YAxis
                 dataKey="label"
                 type="category"
-                width={132}
+                width={96}
                 tick={{ fill: '#475569', fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(value: string) => truncateChartLabel(value, 13)}
               />
               <Tooltip content={<DistributionTooltip />} cursor={{ fill: '#f8fafc' }} />
               <Bar dataKey="count" fill={PROJECT_CHART_COLOR} radius={[0, 8, 8, 0]} />

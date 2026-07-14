@@ -118,7 +118,7 @@ function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
       ) : null}
 
       <div className="flex items-center justify-end gap-2 text-sm font-medium text-slate-600">
-        <span>Open issue</span>
+        <span className="text-right">Open issue</span>
         <ArrowRight className="h-4 w-4" />
       </div>
     </Link>
@@ -278,7 +278,7 @@ export function ProjectDetailPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <Link
           to="/projects"
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
@@ -301,7 +301,7 @@ export function ProjectDetailPage() {
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{data.description}</p>
           </div>
 
-          <div className="grid gap-3 text-sm text-slate-600 sm:grid-cols-2">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
             <Link
               to={`/projects/${data.id}/issues/new`}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
@@ -388,7 +388,7 @@ export function ProjectDetailPage() {
         </div>
       </div>
 
-      <section className="rounded-xl border border-dashed border-slate-300 bg-white p-6">
+      <section className="rounded-xl border border-dashed border-slate-300 bg-white p-4 sm:p-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-sm font-medium text-slate-950">Project issues</p>
@@ -398,7 +398,7 @@ export function ProjectDetailPage() {
               behavior.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 sm:justify-end">
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
               {filteredIssues.length} of {data.issues.length} visible
             </span>
@@ -421,7 +421,7 @@ export function ProjectDetailPage() {
               <span>Issue filters</span>
             </div>
 
-            <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <label className="grid gap-2 text-sm text-slate-600 md:col-span-2 xl:col-span-4">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                   Search
@@ -433,7 +433,7 @@ export function ProjectDetailPage() {
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder="Search issue title, owner, curator, label, tag, status, or priority"
-                    className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
+                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
                   />
                 </div>
                 <span className="text-xs leading-5 text-slate-500">
@@ -448,7 +448,7 @@ export function ProjectDetailPage() {
                 <select
                   value={statusFilter}
                   onChange={(event) => setStatusFilter(event.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
                 >
                   {statusOptions.map((option) => (
                     <option key={option} value={option}>
@@ -467,7 +467,7 @@ export function ProjectDetailPage() {
                 <select
                   value={priorityFilter}
                   onChange={(event) => setPriorityFilter(event.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
                 >
                   {priorityOptions.map((option) => (
                     <option key={option} value={option}>
@@ -486,7 +486,7 @@ export function ProjectDetailPage() {
                 <select
                   value={typeFilter}
                   onChange={(event) => setTypeFilter(event.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
                 >
                   {typeOptions.map((option) => (
                     <option key={option} value={option}>
@@ -505,7 +505,7 @@ export function ProjectDetailPage() {
                 <select
                   value={attentionFilter}
                   onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
                 >
                   {ATTENTION_FILTER_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>

@@ -226,7 +226,7 @@ function IssueEditPageReady({
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <Link
           to={getIssueDetailLink(issueId)}
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
@@ -236,7 +236,7 @@ function IssueEditPageReady({
         </Link>
 
         <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-          <div>
+          <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue edit
             </p>
@@ -247,7 +247,7 @@ function IssueEditPageReady({
             </p>
           </div>
 
-          <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+          <div className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 lg:w-auto">
             <p className="font-medium text-slate-950">{data.currentUserName}</p>
             <p className="mt-1">
               Existing issue values are prefilled through repository-backed reads.
@@ -256,7 +256,7 @@ function IssueEditPageReady({
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
         <div className="flex items-start gap-3">
           <FilePenLine className="mt-1 h-5 w-5 text-accent" />
           <div>
@@ -343,15 +343,15 @@ function IssueEditPageReady({
             ) : null}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-6">
-            <p className="text-sm leading-6 text-slate-500">
+          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
+            <p className="text-sm leading-6 text-slate-500 lg:max-w-2xl">
               Edit save stays inside domain and repository boundaries. System labels remain
               read-only context rather than editable form inputs.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="grid w-full gap-3 sm:grid-cols-2 lg:w-auto">
               <Link
                 to={getIssueDetailLink(issueId)}
-                className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
               >
                 Cancel
               </Link>

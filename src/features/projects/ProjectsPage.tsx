@@ -30,7 +30,7 @@ export function ProjectsPage() {
   if (projectsView.status === 'loading') {
     return (
       <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+        <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Project navigation
           </p>
@@ -63,7 +63,7 @@ export function ProjectsPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Project navigation
         </p>
@@ -76,7 +76,7 @@ export function ProjectsPage() {
               filters or project administration yet.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
             <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
               <span className="font-medium text-slate-950">{data.currentUserName}</span>
               <span className="mx-2 text-slate-400">·</span>
@@ -153,7 +153,7 @@ export function ProjectsPage() {
 
               <Link
                 to={`/projects/${project.id}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
               >
                 View project
                 <ArrowRight className="h-4 w-4" />

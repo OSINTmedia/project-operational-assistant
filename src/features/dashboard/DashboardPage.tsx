@@ -26,10 +26,10 @@ interface MetricCardProps {
 
 function MetricCard({ title, value, description, icon: Icon }: MetricCardProps) {
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+    <article className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
       <div className="flex items-center gap-2 text-slate-950">
-        <Icon className="h-4 w-4 text-accent" />
-        <p className="text-sm font-medium">{title}</p>
+        <Icon className="h-4 w-4 shrink-0 text-accent" />
+        <p className="min-w-0 text-sm font-medium">{title}</p>
       </div>
       <p className="mt-3 text-2xl font-semibold text-slate-950">{value}</p>
       <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p>
@@ -210,7 +210,7 @@ export function DashboardPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Operational entry point
         </p>
@@ -257,7 +257,7 @@ export function DashboardPage() {
 
       <DashboardCharts distributions={data.distributions} />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-slate-950">
@@ -269,13 +269,13 @@ export function DashboardPage() {
               widening into saved reports or notification behavior.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
-            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
+            <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center sm:text-left">
               {filteredIssues.length} matching issue{filteredIssues.length === 1 ? '' : 's'}
             </div>
             <Link
               to="/projects"
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               View all projects
               <ArrowRight className="h-4 w-4" />
@@ -283,7 +283,7 @@ export function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <label className="grid gap-2 text-sm text-slate-600 lg:col-span-4">
             <span className="font-medium text-slate-950">Search</span>
             <div className="relative">
@@ -306,7 +306,7 @@ export function DashboardPage() {
             <select
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
             >
               <option value="all">All statuses</option>
               {data.filterOptions.statuses.map((option) => (
@@ -322,7 +322,7 @@ export function DashboardPage() {
             <select
               value={priorityFilter}
               onChange={(event) => setPriorityFilter(event.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
             >
               <option value="all">All priorities</option>
               {data.filterOptions.priorities.map((option) => (
@@ -338,7 +338,7 @@ export function DashboardPage() {
             <select
               value={projectFilter}
               onChange={(event) => setProjectFilter(event.target.value)}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
             >
               <option value="all">All projects</option>
               {data.filterOptions.projects.map((option) => (
@@ -354,7 +354,7 @@ export function DashboardPage() {
             <select
               value={attentionFilter}
               onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
             >
               {ATTENTION_FILTER_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -366,11 +366,11 @@ export function DashboardPage() {
         </div>
 
         {hasActiveFilters ? (
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 flex justify-stretch sm:justify-end">
             <button
               type="button"
               onClick={resetFilters}
-              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
             >
               Clear filters
             </button>
@@ -414,17 +414,17 @@ export function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
+                  <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
                     <Link
                       to={`/projects/${issue.projectId}`}
-                      className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
                     >
                       Open project
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
                       to={`/issues/${issue.id}`}
-                      className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
                     >
                       Open issue
                       <ArrowRight className="h-4 w-4" />

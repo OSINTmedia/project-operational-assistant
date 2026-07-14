@@ -67,7 +67,7 @@ export function TeamsPage() {
 
   return (
     <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Team workspace
         </p>
@@ -80,7 +80,7 @@ export function TeamsPage() {
               behavior.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm text-slate-600">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
             <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
               <span className="font-medium text-slate-950">{data.currentUserName}</span>
               <span className="mx-2 text-slate-400">·</span>
@@ -143,7 +143,10 @@ export function TeamsPage() {
 
       <div className="grid gap-6">
         {data.teams.map((team) => (
-          <article key={team.id} className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+          <article
+            key={team.id}
+            className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6"
+          >
             <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
@@ -159,7 +162,7 @@ export function TeamsPage() {
                 </p>
               </div>
 
-              <div className="grid gap-2 text-sm text-slate-600 sm:grid-cols-2 xl:grid-cols-1">
+              <div className="grid w-full gap-2 text-sm text-slate-600 sm:grid-cols-2 xl:w-auto xl:grid-cols-1">
                 <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
                   {team.activeIssueCount} active · {team.groupIssueCount} group
                 </div>
@@ -172,7 +175,7 @@ export function TeamsPage() {
 
             <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
               <div className="grid gap-6">
-                <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-panel">
+                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Team issue visibility</p>
                   <p className="mt-1 text-sm text-slate-600">
                     Recent team-scoped issues, including the next responsible owner and attention context.
@@ -214,11 +217,11 @@ export function TeamsPage() {
                               ) : null}
                             </div>
 
-                            <div className="flex flex-col items-start gap-3 lg:items-end">
+                            <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
                               <p className="text-xs text-slate-500">{formatUpdatedAt(issue.updatedAt)}</p>
                               <Link
                                 to={`/issues/${issue.id}`}
-                                className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
                               >
                                 View issue
                                 <ArrowRight className="h-4 w-4" />
@@ -235,7 +238,7 @@ export function TeamsPage() {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-panel">
+                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Group issues</p>
                   <p className="mt-1 text-sm text-slate-600">
                     Team work that depends on coordinated ownership rather than one isolated assignee.
@@ -280,7 +283,7 @@ export function TeamsPage() {
               </div>
 
               <aside className="grid gap-6">
-                <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-panel">
+                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Team members</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {team.memberNames.map((memberName) => (
@@ -294,7 +297,7 @@ export function TeamsPage() {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-panel">
+                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Status summary</p>
                   <div className="mt-4 grid gap-2">
                     {team.statusSummary.length > 0 ? (
