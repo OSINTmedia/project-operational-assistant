@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
+import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { useTeamWorkspaceView } from './useTeamWorkspaceView'
 
 function formatUpdatedAt(value: string): string {
@@ -15,6 +16,18 @@ function formatUpdatedAt(value: string): string {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
+}
+
+function getAttentionBadgeVariant(label: string): BadgeVariant {
+  if (label === 'Needs Update') {
+    return 'warning'
+  }
+
+  if (label === 'Ready for Confirmation') {
+    return 'violet'
+  }
+
+  return 'info'
 }
 
 export function TeamsPage() {
@@ -206,12 +219,12 @@ export function TeamsPage() {
                               {issue.attentionLabels.length > 0 ? (
                                 <div className="mt-3 flex flex-wrap gap-2">
                                   {issue.attentionLabels.map((label) => (
-                                    <span
+                                    <Badge
                                       key={`${issue.id}-${label}`}
-                                      className="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700"
+                                      variant={getAttentionBadgeVariant(label)}
                                     >
                                       {label}
-                                    </span>
+                                    </Badge>
                                   ))}
                                 </div>
                               ) : null}
@@ -287,12 +300,9 @@ export function TeamsPage() {
                   <p className="text-sm font-medium text-slate-950">Team members</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {team.memberNames.map((memberName) => (
-                      <span
-                        key={`${team.id}-${memberName}`}
-                        className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-                      >
+                      <Badge key={`${team.id}-${memberName}`}>
                         {memberName}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </section>

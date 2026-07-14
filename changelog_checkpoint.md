@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.4 — Responsive Layout Polish`
+- `Phase 5.5 — Visual Portfolio Polish`
 
 Next concrete micro-phase:
 
-- `Phase 5.5 — Visual Portfolio Polish`
+- `Phase 5.6 — README Presentation Update`
 
 ## Documentation Trust Order
 
@@ -207,23 +207,24 @@ Use the project docs in this order when deciding what is current and what should
 - Improved mobile and tablet stacking for Projects, Project Detail, Personal, Issue Detail, Team Workspace, Create Issue, and Edit Issue surfaces.
 - Made dense form controls and action rows full-width where needed on mobile while preserving existing structured form behavior.
 - Kept the responsive pass free of information-architecture redesign, new workflow behavior, domain logic changes, and persistence changes.
+- Added a shared `Badge` presentation component for consistent badge/chip rendering across existing demo screens.
+- Replaced repeated ad hoc badge markup across Dashboard, Demo, Projects, Project Detail, Personal, Issue Detail, and Team Workspace surfaces.
+- Polished Dashboard and Projects metric cards for more consistent portfolio screenshot readiness.
+- Preserved `Needs Update` and `Ready for Confirmation` as system labels while only changing their visual badge rendering.
+- Kept the visual polish pass free of route changes, domain changes, repository changes, persistence changes, animation work, marketing hero work, and brand redesign.
 
 ## Changed Files
 
 Latest implementation slice:
 
-- `src/app/layout/AppShell.tsx`
-- `src/features/demo/DemoRoleSwitcher.tsx`
 - `src/features/dashboard/DashboardPage.tsx`
-- `src/features/dashboard/DashboardCharts.tsx`
-- `src/features/projects/ProjectsPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/personal/PersonalPage.tsx`
-- `src/features/issues/IssueCreatePage.tsx`
+- `src/features/demo/DemoPage.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueEditPage.tsx`
-- `src/features/issues/IssueFormFields.tsx`
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/projects/ProjectsPage.tsx`
 - `src/features/teams/TeamsPage.tsx`
+- `src/shared/components/Badge.tsx`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
@@ -400,6 +401,7 @@ Full implementation history:
 - Phase 5.2 search is intentionally local to the Dashboard queue and Project Detail issue list. No shared query engine, saved filter state, fuzzy search, or global issue-list route exists yet.
 - Phase 5.3 quick actions are intentionally limited to Issue Detail status and confirmation actions. Owner and curator changes still route through the structured edit form.
 - Phase 5.4 responsive polish intentionally used existing routes, screen hierarchy, and feature surfaces. It did not add a mobile drawer, redesign information architecture, or introduce mobile-only workflows.
+- Phase 5.5 visual polish intentionally centralizes badge presentation and light card consistency only. It did not introduce a broader component library, brand redesign, animation system, or workflow behavior.
 
 ## Verification Results
 
@@ -451,9 +453,10 @@ Full implementation history:
 - `Phase 5.2 — Filter / Search Polish` is now complete.
 - `Phase 5.3 — Quick Action Polish` is now complete.
 - `Phase 5.4 — Responsive Layout Polish` is now complete.
+- `Phase 5.5 — Visual Portfolio Polish` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.5 — Visual Portfolio Polish`.
+- The next allowed implementation slice is `Phase 5.6 — README Presentation Update`.
 
 ## Next Recommended Task
 
@@ -461,12 +464,12 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.5 — Visual Portfolio Polish`
+- `Phase 5.6 — README Presentation Update`
 
 Scope for the next task only:
 
-- improve dashboard screenshot readiness
-- improve badge, card, and table visual consistency
-- apply calm SaaS UI polish without changing product scope
+- update the public README as a portfolio presentation artifact
+- include demo/setup/project structure/architecture/out-of-scope/roadmap context where appropriate
+- keep README public-facing and avoid internal work-log or handoff notes
 
 Do not implement the whole of `Phase 5` in one task.

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
+import { Badge } from '../../shared/components/Badge'
 import { useProjectsListView } from './useProjectsListView'
 
 function formatUpdatedAt(value: string): string {
@@ -90,7 +91,7 @@ export function ProjectsPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <FolderKanban className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Projects</p>
@@ -99,7 +100,7 @@ export function ProjectsPage() {
           <p className="mt-1 text-sm text-slate-500">{data.totalIssueCount} total issues</p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <RefreshCcw className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Active issues</p>
@@ -108,7 +109,7 @@ export function ProjectsPage() {
           <p className="mt-1 text-sm text-slate-500">Open work across all project surfaces</p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <ShieldAlert className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Blocked or delayed</p>
@@ -117,7 +118,7 @@ export function ProjectsPage() {
           <p className="mt-1 text-sm text-slate-500">Project issues that need intervention</p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <Users className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Needs update</p>
@@ -145,7 +146,7 @@ export function ProjectsPage() {
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                   <span>{project.teamName}</span>
                   <span className="text-slate-300">•</span>
-                  <span>{project.statusLabel}</span>
+                  <Badge>{project.statusLabel}</Badge>
                 </div>
                 <h3 className="mt-2 text-lg font-semibold text-slate-950">{project.name}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{project.description}</p>
@@ -227,9 +228,7 @@ export function ProjectsPage() {
                     </div>
                   </td>
                   <td className="px-5 py-4">
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                      {project.statusLabel}
-                    </span>
+                    <Badge>{project.statusLabel}</Badge>
                   </td>
                   <td className="px-5 py-4 text-sm text-slate-700">{project.ownerName}</td>
                   <td className="px-5 py-4 text-sm text-slate-700">

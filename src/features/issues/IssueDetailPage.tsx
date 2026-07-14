@@ -23,6 +23,7 @@ import {
   reopenIssueFromConfirmation,
   updateIssueStatus,
 } from '../../domain/issueRules'
+import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { STATUS_LABELS, type StatusId } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
 import { useIssueDetailView } from './useIssueDetailView'
@@ -32,6 +33,18 @@ function formatDateTime(value: string): string {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
+}
+
+function getLabelBadgeVariant(label: string): BadgeVariant {
+  if (label === 'Needs Update') {
+    return 'warning'
+  }
+
+  if (label === 'Ready for Confirmation') {
+    return 'violet'
+  }
+
+  return 'info'
 }
 
 function MetadataCard({
@@ -517,12 +530,9 @@ export function IssueDetailPage() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {data.participantNames.map((participantName) => (
-                    <span
-                      key={`${data.id}-participant-${participantName}`}
-                      className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700"
-                    >
+                    <Badge key={`${data.id}-participant-${participantName}`}>
                       {participantName}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -565,12 +575,9 @@ export function IssueDetailPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               {data.tagNames.length > 0 ? (
                 data.tagNames.map((tagName) => (
-                  <span
-                    key={`${data.id}-tag-${tagName}`}
-                    className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-                  >
+                  <Badge key={`${data.id}-tag-${tagName}`}>
                     #{tagName}
-                  </span>
+                  </Badge>
                 ))
               ) : (
                 <p className="text-sm text-slate-500">No tags assigned.</p>
@@ -586,19 +593,12 @@ export function IssueDetailPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               {data.labelNames.length > 0 ? (
                 data.labelNames.map((labelName) => (
-                  <span
+                  <Badge
                     key={`${data.id}-label-${labelName}`}
-                    className={cn(
-                      'rounded-full px-3 py-1 text-xs font-medium',
-                      labelName === 'Needs Update'
-                        ? 'bg-orange-50 text-orange-700'
-                        : labelName === 'Ready for Confirmation'
-                          ? 'bg-violet-50 text-violet-700'
-                          : 'bg-sky-50 text-sky-700',
-                    )}
+                    variant={getLabelBadgeVariant(labelName)}
                   >
                     {labelName}
-                  </span>
+                  </Badge>
                 ))
               ) : (
                 <p className="text-sm text-slate-500">No labels assigned.</p>

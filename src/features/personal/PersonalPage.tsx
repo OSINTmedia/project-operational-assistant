@@ -1,7 +1,7 @@
 import { AlertCircle, ArrowRightLeft, FolderKanban, RefreshCcw, UserCircle2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
-import { cn } from '../../shared/utils/cn'
+import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { usePersonalView, type PersonalIssueSummary, type PersonalSection } from './usePersonalView'
 
 function formatUpdatedAt(value: string): string {
@@ -9,6 +9,18 @@ function formatUpdatedAt(value: string): string {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
+}
+
+function getAttentionBadgeVariant(label: string): BadgeVariant {
+  if (label === 'Needs Update') {
+    return 'warning'
+  }
+
+  if (label === 'Ready for Confirmation') {
+    return 'violet'
+  }
+
+  return 'info'
 }
 
 function PersonalIssueCard({ issue }: { issue: PersonalIssueSummary }) {
@@ -28,36 +40,22 @@ function PersonalIssueCard({ issue }: { issue: PersonalIssueSummary }) {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-            {issue.statusLabel}
-          </span>
-          <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-            {issue.priorityLabel}
-          </span>
+          <Badge>{issue.statusLabel}</Badge>
+          <Badge variant="warning">{issue.priorityLabel}</Badge>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
         <span>Updated {formatUpdatedAt(issue.updatedAt)}</span>
         {issue.confirmationRequired ? (
-          <span className="rounded-full bg-violet-50 px-3 py-1 font-medium text-violet-700">
+          <Badge variant="violet">
             Confirmation required
-          </span>
+          </Badge>
         ) : null}
         {issue.attentionLabels.map((label) => (
-          <span
-            key={`${issue.id}-${label}`}
-            className={cn(
-              'rounded-full px-3 py-1 font-medium',
-              label === 'Needs Update'
-                ? 'bg-orange-50 text-orange-700'
-                : label === 'Ready for Confirmation'
-                  ? 'bg-violet-50 text-violet-700'
-                  : 'bg-sky-50 text-sky-700',
-            )}
-          >
+          <Badge key={`${issue.id}-${label}`} variant={getAttentionBadgeVariant(label)}>
             {label}
-          </span>
+          </Badge>
         ))}
       </div>
     </Link>
@@ -72,9 +70,9 @@ function PersonalSectionCard({ section }: { section: PersonalSection }) {
           <p className="text-sm font-medium text-slate-950">{section.title}</p>
           <p className="mt-1 text-sm leading-6 text-slate-600">{section.description}</p>
         </div>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+        <Badge>
           {section.issues.length}
-        </span>
+        </Badge>
       </div>
 
       <div className="mt-4 grid gap-3">
@@ -215,9 +213,9 @@ export function PersonalPage() {
                   {confirmationSection.description}
                 </p>
               </div>
-              <span className="rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700">
+              <Badge variant="violet">
                 {confirmationSection.issues.length}
-              </span>
+              </Badge>
             </div>
 
             <div className="mt-4 grid gap-3">

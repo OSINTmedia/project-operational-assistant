@@ -1,6 +1,7 @@
 import { DatabaseZap, RefreshCcw, ShieldCheck, Users } from 'lucide-react'
 import { DemoRoleSwitcher } from './DemoRoleSwitcher'
 import { useDemoAppState } from '../../app/state/useDemoAppState'
+import { Badge } from '../../shared/components/Badge'
 import { cn } from '../../shared/utils/cn'
 
 function formatTimestamp(timestamp: string | null): string | null {
@@ -99,16 +100,9 @@ export function DemoPage() {
             <div className="mt-5 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
               <div className="flex items-center justify-between gap-4">
                 <span className="font-medium text-slate-900">Seed status</span>
-                <span
-                  className={cn(
-                    'rounded-full px-3 py-1 text-xs font-semibold',
-                    isSeedDataInitialized
-                      ? 'bg-accentSoft text-accent'
-                      : 'bg-amber-100 text-amber-700',
-                  )}
-                >
+                <Badge variant={isSeedDataInitialized ? 'accent' : 'warning'}>
                   {isSeedDataInitialized ? 'Initialized' : 'Pending'}
-                </span>
+                </Badge>
               </div>
 
               {formattedLastResetAt ? (

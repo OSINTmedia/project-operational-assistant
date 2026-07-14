@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep Phase 5.5 visual polish presentation-only
+
+**Context:**
+`Phase 5.5` required dashboard screenshot readiness, badge/card/table visual consistency, and calm SaaS polish without changing product scope.
+
+**Decision:**
+Add one small shared `Badge` presentation component and replace repeated ad hoc badge markup across existing screens instead of redesigning the UI system, adding new interaction behavior, or changing issue/status data semantics.
+
+**Reasoning:**
+Badges are visible across Dashboard, Demo, Projects, Project Detail, Personal, Issue Detail, and Team Workspace. Centralizing their visual treatment improves portfolio consistency while keeping the slice limited to presentation code.
+
+**Alternatives considered:**
+Creating a broader component library, restyling the full app shell, or introducing new card/table abstractions during the visual polish pass.
+
+**Impact:**
+Phase 5.5 improves screenshot readiness without changing routes, repositories, persistence, domain rules, or the separation between statuses, tags, labels, and system labels.
+
 ### 2026-07-14 — Keep responsive polish inside existing navigation and screen structure
 
 **Context:**
@@ -23,7 +40,7 @@ This keeps the slice focused on demo readability and avoids turning a responsive
 Adding a collapsible mobile drawer, changing the sidebar into a new top-level mobile navigation pattern, or redesigning dense screens into separate mobile-specific views.
 
 **Impact:**
-Phase 5.4 improves mobile and tablet usability while preserving existing domain, repository, route, and workflow boundaries. Broader visual consistency remains deferred to `Phase 5.5`.
+Phase 5.4 improved mobile and tablet usability while preserving existing domain, repository, route, and workflow boundaries. Broader visual consistency was left for the following `Phase 5.5` slice.
 
 ### 2026-07-14 — Keep Phase 5.3 quick actions on Issue Detail only
 

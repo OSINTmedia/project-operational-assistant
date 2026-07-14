@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { cn } from '../../shared/utils/cn'
+import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { useProjectDetailView, type ProjectIssueSummary } from './useProjectDetailView'
 
 const ATTENTION_FILTER_OPTIONS = [
@@ -48,6 +48,18 @@ function formatUpdatedAt(value: string): string {
   }).format(new Date(value))
 }
 
+function getLabelBadgeVariant(label: string): BadgeVariant {
+  if (label === 'Needs Update') {
+    return 'warning'
+  }
+
+  if (label === 'Ready for Confirmation') {
+    return 'violet'
+  }
+
+  return 'info'
+}
+
 function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
   return (
     <Link
@@ -71,12 +83,8 @@ function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-            {issue.statusLabel}
-          </span>
-          <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-            {issue.priorityLabel}
-          </span>
+          <Badge>{issue.statusLabel}</Badge>
+          <Badge variant="warning">{issue.priorityLabel}</Badge>
         </div>
       </div>
 
@@ -87,19 +95,9 @@ function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
       {issue.labelNames.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {issue.labelNames.map((label) => (
-            <span
-              key={`${issue.id}-label-${label}`}
-              className={cn(
-                'rounded-full px-3 py-1 text-xs font-medium',
-                label === 'Needs Update'
-                  ? 'bg-orange-50 text-orange-700'
-                  : label === 'Ready for Confirmation'
-                    ? 'bg-violet-50 text-violet-700'
-                    : 'bg-sky-50 text-sky-700',
-              )}
-            >
+            <Badge key={`${issue.id}-label-${label}`} variant={getLabelBadgeVariant(label)}>
               {label}
-            </span>
+            </Badge>
           ))}
         </div>
       ) : null}
@@ -107,12 +105,9 @@ function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
       {issue.tagNames.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {issue.tagNames.map((tag) => (
-            <span
-              key={`${issue.id}-tag-${tag}`}
-              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
-            >
+            <Badge key={`${issue.id}-tag-${tag}`}>
               #{tag}
-            </span>
+            </Badge>
           ))}
         </div>
       ) : null}
@@ -399,9 +394,9 @@ export function ProjectDetailPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+            <Badge>
               {filteredIssues.length} of {data.issues.length} visible
-            </span>
+            </Badge>
             {hasActiveFilters ? (
               <button
                 type="button"
