@@ -192,9 +192,9 @@ export function DashboardPage() {
           <div>
             <h2 className="text-2xl font-semibold text-slate-950">Dashboard</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Top-level operational counts and compact charts for the local-first portfolio demo:
-              enough to start the day with clarity, without slipping into filters or employee
-              scoring.
+              Top-level operational counts, compact charts, and a filtered work queue for the
+              local-first portfolio demo: enough to start the day with clarity, without slipping
+              into employee scoring.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-slate-600">

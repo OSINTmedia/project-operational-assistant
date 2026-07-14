@@ -160,7 +160,7 @@ export function DashboardCharts({ distributions }: { distributions: DashboardDis
 
       <ChartPanel
         title="Issues by project"
-        description="Project concentration stays visible without turning the dashboard into a navigation or filtering surface."
+        description="Project concentration stays visible without turning the dashboard into a broad report-builder surface."
       >
         {projectData.length === 0 ? (
           <EmptyChartState message="No project distribution is available yet." />

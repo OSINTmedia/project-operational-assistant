@@ -1388,7 +1388,7 @@ Suggested commit message:
 
 ## Phase 4 — Dashboard and Operational Metrics
 
-Status: `In progress`
+Status: `Completed`
 
 Goal:
 
@@ -1571,7 +1571,7 @@ Suggested commit message:
 
 ### Phase 4.6 — Phase 4 Dashboard Audit
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1608,7 +1608,7 @@ Suggested commit message:
 
 ## Phase 5 — Portfolio Polish
 
-Status: `Later`
+Status: `In progress`
 
 Goal:
 
@@ -1616,7 +1616,7 @@ Polish the product into a clean public demo without changing the frozen MVP scop
 
 ### Phase 5.1 — Empty States and Helper Text
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

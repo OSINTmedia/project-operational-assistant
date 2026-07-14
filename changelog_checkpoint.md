@@ -2,15 +2,15 @@
 
 ## Current Phase
 
-Phase 4 — Dashboard and Operational Metrics: `In progress`
+Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.5 — Dashboard Filters and Click-throughs`
+- `Phase 4.6 — Phase 4 Dashboard Audit`
 
 Next concrete micro-phase:
 
-- `Phase 4.6 — Phase 4 Dashboard Audit`
+- `Phase 5.1 — Empty States and Helper Text`
 
 ## Documentation Trust Order
 
@@ -182,6 +182,9 @@ Use the project docs in this order when deciding what is current and what should
   `status`, `priority`, `project`, and `Needs Update` attention visibility.
 - Added a filtered operational queue directly on the Dashboard without introducing saved filters, notification workflows, or a new global issue-list route.
 - Added dashboard click-through behavior into the existing project list, project detail, and issue detail routes so the dashboard is actionable without widening routing scope.
+- Completed a strict dashboard audit against:
+  product semantics, role framing, system-label treatment, route boundaries, and verification requirements.
+- Corrected dashboard copy that had become stale after the filters slice so the live UI now matches the actual dashboard behavior.
 
 ## Changed Files
 
@@ -350,6 +353,7 @@ Use the project docs in this order when deciding what is current and what should
 - Dashboard click-through behavior currently targets the existing issue detail, project detail, and projects list routes; no dedicated global issue-list surface exists yet.
 - Dashboard chart rendering increases the existing build chunk-size warning pressure, but the current warning remains non-blocking for the portfolio MVP.
 - The existing build chunk-size warning remains non-blocking and has grown slightly as the dashboard surface expanded.
+- The dashboard audit did not surface any new product or architecture blockers, but the dashboard still intentionally stops short of saved filters, broader reporting workflows, and portfolio-polish helper text.
 
 ## Verification Results
 
@@ -396,21 +400,23 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 4.3 — Status / Priority / Project / Owner Distributions` is now complete.
 - `Phase 4.4 — Dashboard Charts` is now complete.
 - `Phase 4.5 — Dashboard Filters and Click-throughs` is now complete.
+- `Phase 4.6 — Phase 4 Dashboard Audit` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.6 — Phase 4 Dashboard Audit`.
+- `Phase 4 — Dashboard and Operational Metrics` is now complete.
+- The next allowed implementation slice is `Phase 5.1 — Empty States and Helper Text`.
 
 ## Next Recommended Task
 
-`Phase 4` is the next active umbrella phase.
+`Phase 5` is the next active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 4.6 — Phase 4 Dashboard Audit`
+- `Phase 5.1 — Empty States and Helper Text`
 
 Scope for the next task only:
 
-- verify the dashboard is operational clarity, not employee scoring
-- verify dashboard metrics and interactions match frozen product rules
-- verify performance, build, typecheck, and lint before polish or deployment work
+- add minimal helper text where first-time portfolio visitors need it
+- improve empty states without turning the product into documentation
+- keep the slice free of feature expansion, long onboarding, and marketing copy
 
 Do not implement the whole of `Phase 4` in one task.
