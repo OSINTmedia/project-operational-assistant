@@ -6,13 +6,14 @@
 ![Stack: React + TS + Zustand]
 
 ### 📊 Portfolio MVP Build Progress:
-[▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░] Phase 3 complete, Phase 4.1 next
+[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░] Phase 4 complete, Phase 5.4 next
 
 - ✅ **Phase 0 & 1:** Product Scope & Technical Planning (100%)
 - ✅ **Phase 2A & 2B:** Architecture, Local Persistence & Issue-Domain Logic (100%)
-- ✅ **Phase 3:** Main Screens and screen audit complete
-- ⏳ **Phase 4:** Dashboard metrics and dashboard UI slices next
-- ⏳ **Phase 5 & 6:** Polishing, Testing, Deployment & Final Audit (Upcoming)
+- ✅ **Phase 3:** Main Screens and screen audit complete (100%)
+- ✅ **Phase 4:** Dashboard Metrics and Operational Dashboard Audit (100%)
+- ⏳ **Phase 5:** Portfolio Polish in progress
+- ⏳ **Phase 6:** Testing, Deployment & Final Audit (Upcoming)
 
 ---
 
@@ -166,7 +167,7 @@ This allows visitors to test the product without needing a backend, database ser
 
 ## Current Status
 
-The screen layer and pre-dashboard audit are complete, and the next planned implementation slice is `Phase 4.1 — Dashboard Metrics Domain Functions`.
+The screen layer, dashboard metrics, dashboard charts, dashboard filters, and Phase 4 dashboard audit are complete. The next planned implementation slice is `Phase 5.4 — Responsive Layout Polish`.
 
 Completed so far:
 
@@ -180,6 +181,8 @@ Completed so far:
 * local-first persistence and demo seed lifecycle
 * issue-domain operations and pre-screen hardening
 * main screen implementation through the Phase 3 screen audit
+* dashboard metrics, charts, filters, click-throughs, and Phase 4 dashboard audit
+* portfolio polish through Phase 5.3 quick actions
 
 For live implementation status and the next concrete micro-phase, trust `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. README remains public-facing portfolio context, not the live handoff record.
 
