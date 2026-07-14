@@ -9,6 +9,7 @@ import {
   UserCircle2,
 } from 'lucide-react'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
+import { DashboardCharts } from './DashboardCharts'
 import { useDashboardMetrics } from './useDashboardMetrics'
 
 interface MetricCardProps {
@@ -128,8 +129,9 @@ export function DashboardPage() {
           <div>
             <h2 className="text-2xl font-semibold text-slate-950">Dashboard</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Top-level operational counts for the local-first portfolio demo: enough to start the
-              day with clarity, without slipping into charts, filters, or employee scoring yet.
+              Top-level operational counts and compact charts for the local-first portfolio demo:
+              enough to start the day with clarity, without slipping into filters or employee
+              scoring.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-slate-600">
@@ -154,6 +156,8 @@ export function DashboardPage() {
           />
         ))}
       </div>
+
+      <DashboardCharts distributions={data.distributions} />
     </section>
   )
 }

@@ -6,11 +6,11 @@ Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
+- `Phase 4.4 — Dashboard Charts`
 
 Next concrete micro-phase:
 
-- `Phase 4.4 — Dashboard Charts`
+- `Phase 4.5 — Dashboard Filters and Click-throughs`
 
 ## Documentation Trust Order
 
@@ -174,6 +174,10 @@ Use the project docs in this order when deciding what is current and what should
 - Extended the dashboard feature hook so it loads project, status, and user reference data through repository boundaries and exposes distribution-ready dashboard data for the upcoming chart slice.
 - Kept the distribution slice data-only:
   no charts, no chart styling, no cross-screen search polish, and no click-through behavior were added early.
+- Added a feature-local dashboard chart layer using Recharts without widening the repository, persistence, or route boundaries.
+- Rendered the first operational dashboard visuals for:
+  `status`, `priority`, and `project` distributions.
+- Kept the first chart slice readable and portfolio-grade without introducing click-through behavior, saved dashboards, employee scoring, or broader dashboard analytics.
 
 ## Changed Files
 
@@ -270,6 +274,7 @@ Use the project docs in this order when deciding what is current and what should
 - `src/domain/dashboardMetrics/index.ts`
 - `src/domain/dashboardMetrics/types.ts`
 - `src/features/dashboard/DashboardPage.tsx`
+- `src/features/dashboard/DashboardCharts.tsx`
 - `src/features/dashboard/useDashboardMetrics.ts`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
@@ -338,7 +343,8 @@ Use the project docs in this order when deciding what is current and what should
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 - `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
 - The first Dashboard UI slice now shows top-level metric cards only; charts and click-through interactions are still deferred to later `Phase 4` slices.
-- Dashboard distribution data now exists in the domain layer and dashboard hook, but it is not rendered yet; the first visual chart work remains deferred to `Phase 4.4`.
+- The first dashboard chart slice now renders status, priority, and project visuals only; click-through filters and broader dashboard actionability remain deferred to `Phase 4.5`.
+- Dashboard chart rendering increases the existing build chunk-size warning pressure, but the current warning remains non-blocking for the portfolio MVP.
 
 ## Verification Results
 
@@ -383,8 +389,9 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 4.1 — Dashboard Metrics Domain Functions` is now complete.
 - `Phase 4.2 — Dashboard Metric Cards` is now complete.
 - `Phase 4.3 — Status / Priority / Project / Owner Distributions` is now complete.
+- `Phase 4.4 — Dashboard Charts` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.4 — Dashboard Charts`.
+- The next allowed implementation slice is `Phase 4.5 — Dashboard Filters and Click-throughs`.
 
 ## Next Recommended Task
 
@@ -392,13 +399,12 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 4.4 — Dashboard Charts`
+- `Phase 4.5 — Dashboard Filters and Click-throughs`
 
 Scope for the next task only:
 
-- turn metric and distribution data into readable dashboard visuals
-- add simple Recharts charts for:
-  `status`, `priority`, and `project`
-- keep the slice free of advanced analytics, saved dashboards, and decorative chart overload
+- add basic dashboard filters
+- add click-through behavior into relevant issue or project lists
+- keep the slice free of saved filters, notification workflows, and broader command-palette behavior
 
 Do not implement the whole of `Phase 4` in one task.

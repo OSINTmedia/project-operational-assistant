@@ -1501,7 +1501,7 @@ Suggested commit message:
 
 ### Phase 4.4 — Dashboard Charts
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1536,7 +1536,7 @@ Suggested commit message:
 
 ### Phase 4.5 — Dashboard Filters and Click-throughs
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

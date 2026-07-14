@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep owner distribution data-ready but out of the first chart slice
+
+**Context:**  
+`Phase 4.3` prepared dashboard distribution data for status, priority, project, and owner, while `Phase 4.4` in the roadmap narrows the first visual chart slice to readable `status / priority / project` charts.
+
+**Decision:**  
+Render charts for status, priority, and project in `Phase 4.4`, but leave owner distribution data unrendered and available through the existing dashboard hook for later use.
+
+**Reasoning:**  
+This matches the approved roadmap scope, keeps the first chart surface readable for portfolio screenshots, and avoids widening the dashboard into a denser reporting layout before filters and click-through behavior exist.
+
+**Alternatives considered:**  
+Rendering a fourth owner chart immediately, or dropping owner distribution preparation from the hook until a later phase.
+
+**Impact:**  
+`Phase 4.4` stays visually complete enough for the portfolio dashboard without pulling later dashboard density and interaction decisions forward.
+
 ### 2026-07-10 — Resolve dashboard needs-update metrics from persisted system labels
 
 **Context:**  
