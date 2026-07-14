@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.2 — Filter / Search Polish`
+- `Phase 5.3 — Quick Action Polish`
 
 Next concrete micro-phase:
 
-- `Phase 5.3 — Quick Action Polish`
+- `Phase 5.4 — Responsive Layout Polish`
 
 ## Documentation Trust Order
 
@@ -194,13 +194,21 @@ Use the project docs in this order when deciding what is current and what should
 - Added local Project Detail issue-list search across title, owner, curator, status, priority, type, labels, and tags.
 - Clarified Project Detail filter copy so it accurately describes local search and structured filters without suggesting saved filters or broader query behavior.
 - Added counts to Project Detail status, priority, and type filter options for better scanability.
+- Added an Issue Detail quick-actions panel for common status and confirmation updates.
+- Added domain-backed quick status actions for:
+  `In Progress`, `Waiting`, `Blocked`, and `Done`.
+- Added domain-backed confirmation actions for:
+  `Request confirmation` and `Confirm issue`.
+- Added disabled-state explanations for already-current statuses, missing demo user context, pending actions, missing confirmation requests, and already-confirmed issues.
+- Kept owner and curator changes as a clear shortcut into the existing structured edit flow instead of duplicating responsibility mutations inline.
+- Added Issue Detail read-model reload support so quick actions refresh structured fields and activity history after domain-backed updates.
 
 ## Changed Files
 
 Latest implementation slice:
 
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/issues/IssueDetailPage.tsx`
+- `src/features/issues/useIssueDetailView.ts`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
@@ -360,7 +368,7 @@ Full implementation history:
 - Project Detail filters remain intentionally local to this screen. No shared list/filter infrastructure exists yet, which is acceptable until a later broader slice actually requires it.
 - The Create Issue shell currently starts from Project Detail context only. A broader global create entry remains deferred unless a later slice explicitly requires it.
 - Issue creation currently returns users to Project Detail after success; broader post-create navigation patterns remain deferred until later create/edit slices require them.
-- The first Issue Detail slice is intentionally read-first; broader quick-action polish remains deferred.
+- The first Issue Detail slice is no longer read-only: Phase 5.3 added narrow domain-backed quick actions for status and confirmation updates while leaving broader workflow expansion out of scope.
 - The Issue Edit surface currently enters from the Issue Detail screen, but broader edit-entry patterns can still be revisited later if the workflow surface grows.
 - The first edit-save success path currently returns users to Project Detail rather than back into Issue Detail. This remains acceptable for now, but the navigation can be revisited if a later workflow slice requires a richer post-save detail surface.
 - Direct edit-save orchestration currently writes one generic `issue-updated` activity entry for changed freeform / structural fields, while status, priority, owner, curator, tag, and label updates continue to use their more specific existing activity helpers.
@@ -375,6 +383,7 @@ Full implementation history:
 - The dashboard audit did not surface any new product or architecture blockers, but the dashboard still intentionally stops short of saved filters and broader reporting workflows.
 - Phase 5.1 helper text is intentionally concise and screen-local. Broader onboarding, marketing copy, and additional workflow education remain out of scope unless a later roadmap slice explicitly adds them.
 - Phase 5.2 search is intentionally local to the Dashboard queue and Project Detail issue list. No shared query engine, saved filter state, fuzzy search, or global issue-list route exists yet.
+- Phase 5.3 quick actions are intentionally limited to Issue Detail status and confirmation actions. Owner and curator changes still route through the structured edit form.
 
 ## Verification Results
 
@@ -424,9 +433,10 @@ Full implementation history:
 - `Phase 4.6 — Phase 4 Dashboard Audit` is now complete.
 - `Phase 5.1 — Empty States and Helper Text` is now complete.
 - `Phase 5.2 — Filter / Search Polish` is now complete.
+- `Phase 5.3 — Quick Action Polish` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.3 — Quick Action Polish`.
+- The next allowed implementation slice is `Phase 5.4 — Responsive Layout Polish`.
 
 ## Next Recommended Task
 
@@ -434,12 +444,12 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.3 — Quick Action Polish`
+- `Phase 5.4 — Responsive Layout Polish`
 
 Scope for the next task only:
 
-- add narrow quick status or action affordances where the current UI already supports the underlying workflow
-- clarify action availability and disabled states where needed
-- keep the slice free of new workflow types, notifications, and advanced shortcut documentation
+- improve sidebar and topbar responsiveness
+- clean up table and card layouts for smaller viewports
+- improve mobile and tablet readability without changing information architecture
 
 Do not implement the whole of `Phase 5` in one task.

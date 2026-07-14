@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { IssueId } from '../../entities'
 import {
   activityHistoryRepository,
@@ -16,6 +16,7 @@ import {
   ISSUE_TYPE_LABELS,
   PRIORITY_LABELS,
   STATUS_LABELS,
+  type StatusId,
 } from '../../shared/types'
 
 export interface IssueDetailActivityEntry {
@@ -35,6 +36,7 @@ export interface IssueDetailData {
   projectName: string
   teamName: string
   typeLabel: string
+  statusId: StatusId
   statusLabel: string
   priorityLabel: string
   ownerName: string
@@ -60,6 +62,10 @@ type IssueDetailViewState =
   | { status: 'error'; message: string }
   | { status: 'missing'; message: string }
   | { status: 'ready'; data: IssueDetailData }
+
+type IssueDetailViewResult = IssueDetailViewState & {
+  reload: () => void
+}
 
 function resolveDependencyTargetLabel(params: {
   dependencyType: string
@@ -153,6 +159,7 @@ async function loadIssueDetailData(issueId: IssueId): Promise<IssueDetailData | 
     projectName: project?.name ?? 'Unknown project',
     teamName: teamNames.get(issue.teamId) ?? 'Unknown team',
     typeLabel: ISSUE_TYPE_LABELS[issue.type],
+    statusId: issue.statusId,
     statusLabel: statusNames.get(issue.statusId) ?? STATUS_LABELS[issue.statusId],
     priorityLabel: PRIORITY_LABELS[issue.priority],
     ownerName: userNames.get(issue.ownerId) ?? 'Unknown owner',
@@ -188,8 +195,12 @@ async function loadIssueDetailData(issueId: IssueId): Promise<IssueDetailData | 
   }
 }
 
-export function useIssueDetailView(issueId: IssueId | null): IssueDetailViewState {
+export function useIssueDetailView(issueId: IssueId | null): IssueDetailViewResult {
   const [state, setState] = useState<IssueDetailViewState>({ status: 'loading' })
+  const [reloadToken, setReloadToken] = useState(0)
+  const reload = useCallback(() => {
+    setReloadToken((currentReloadToken) => currentReloadToken + 1)
+  }, [])
 
   useEffect(() => {
     let isActive = true
@@ -238,7 +249,7 @@ export function useIssueDetailView(issueId: IssueId | null): IssueDetailViewStat
     return () => {
       isActive = false
     }
-  }, [issueId])
+  }, [issueId, reloadToken])
 
-  return useMemo(() => state, [state])
+  return useMemo(() => ({ ...state, reload }), [reload, state])
 }

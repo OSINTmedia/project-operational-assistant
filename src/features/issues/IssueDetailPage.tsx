@@ -2,15 +2,28 @@ import {
   AlertCircle,
   ArrowLeft,
   CheckCheck,
+  CheckCircle2,
+  CirclePlay,
   Clock3,
   FilePenLine,
   FolderKanban,
   History,
   Link2,
+  OctagonAlert,
+  PauseCircle,
   Tag,
   Users,
 } from 'lucide-react'
+import { useState, type ComponentType } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { useDemoAppState } from '../../app/state/useDemoAppState'
+import {
+  confirmIssue,
+  markIssueReadyForConfirmation,
+  reopenIssueFromConfirmation,
+  updateIssueStatus,
+} from '../../domain/issueRules'
+import { STATUS_LABELS, type StatusId } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
 import { useIssueDetailView } from './useIssueDetailView'
 
@@ -79,9 +92,60 @@ function ActivityCard({
   )
 }
 
+type QuickActionId =
+  | `status:${StatusId}`
+  | 'confirmation:request'
+  | 'confirmation:confirm'
+
+interface QuickActionButtonProps {
+  label: string
+  description: string
+  icon: ComponentType<{ className?: string }>
+  disabledReason: string | null
+  isPending: boolean
+  onClick: () => void
+}
+
+function QuickActionButton({
+  label,
+  description,
+  icon: Icon,
+  disabledReason,
+  isPending,
+  onClick,
+}: QuickActionButtonProps) {
+  const isDisabled = Boolean(disabledReason) || isPending
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={isDisabled}
+      className={cn(
+        'grid min-h-[92px] gap-2 rounded-xl border p-4 text-left transition-colors',
+        isDisabled
+          ? 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
+          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950',
+      )}
+    >
+      <span className="flex items-center gap-2 text-sm font-medium">
+        <Icon className={cn('h-4 w-4', isDisabled ? 'text-slate-400' : 'text-accent')} />
+        {label}
+      </span>
+      <span className="text-xs leading-5 text-slate-500">
+        {isPending ? 'Updating issue...' : disabledReason ?? description}
+      </span>
+    </button>
+  )
+}
+
 export function IssueDetailPage() {
   const { issueId } = useParams()
   const issueView = useIssueDetailView(issueId ?? null)
+  const currentUserId = useDemoAppState((state) => state.currentUserId)
+  const [pendingActionId, setPendingActionId] = useState<QuickActionId | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
+  const [actionMessage, setActionMessage] = useState<string | null>(null)
 
   if (issueView.status === 'loading') {
     return (
@@ -140,6 +204,112 @@ export function IssueDetailPage() {
   }
 
   const { data } = issueView
+  const actorDisabledReason = currentUserId ? null : 'Select a demo user before taking action.'
+  const statusActions: Array<{
+    statusId: StatusId
+    label: string
+    description: string
+    icon: ComponentType<{ className?: string }>
+  }> = [
+    {
+      statusId: 'in-progress',
+      label: 'Set in progress',
+      description: 'Move the issue back into active work.',
+      icon: CirclePlay,
+    },
+    {
+      statusId: 'waiting',
+      label: 'Set waiting',
+      description: 'Show that progress is paused on an external dependency.',
+      icon: PauseCircle,
+    },
+    {
+      statusId: 'blocked',
+      label: 'Set blocked',
+      description: 'Flag that intervention is needed before work can continue.',
+      icon: OctagonAlert,
+    },
+    {
+      statusId: 'done',
+      label: 'Mark done',
+      description: 'Close the issue as completed.',
+      icon: CheckCircle2,
+    },
+  ]
+
+  function getActionDisabledReason(
+    actionId: QuickActionId,
+    disabledReason: string | null,
+  ): string | null {
+    if (pendingActionId && pendingActionId !== actionId) {
+      return 'Another issue action is running.'
+    }
+
+    return disabledReason
+  }
+
+  async function runAction(
+    actionId: QuickActionId,
+    action: (actorId: string) => Promise<unknown>,
+  ) {
+    const actorId = currentUserId
+
+    if (!actorId || pendingActionId) {
+      return
+    }
+
+    setPendingActionId(actionId)
+    setActionError(null)
+    setActionMessage(null)
+
+    try {
+      await action(actorId)
+      issueView.reload()
+      setActionMessage('Issue action applied. Structured fields and activity history were refreshed.')
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : 'Issue action failed.')
+    } finally {
+      setPendingActionId(null)
+    }
+  }
+
+  function runStatusAction(statusId: StatusId) {
+    const actionId: QuickActionId = `status:${statusId}`
+
+    void runAction(actionId, (actorId) => {
+      if (statusId !== 'done' && (data.confirmationRequired || data.confirmedAt)) {
+        return reopenIssueFromConfirmation({
+          issueId: data.id,
+          actorId,
+          statusId,
+        })
+      }
+
+      return updateIssueStatus({
+        issueId: data.id,
+        actorId,
+        statusId,
+      })
+    })
+  }
+
+  function runRequestConfirmationAction() {
+    void runAction('confirmation:request', (actorId) =>
+      markIssueReadyForConfirmation({
+        issueId: data.id,
+        actorId,
+      }),
+    )
+  }
+
+  function runConfirmAction() {
+    void runAction('confirmation:confirm', (actorId) =>
+      confirmIssue({
+        issueId: data.id,
+        actorId,
+      }),
+    )
+  }
 
   return (
     <section className="grid gap-6">
@@ -207,6 +377,91 @@ export function IssueDetailPage() {
           </p>
         </div>
       </div>
+
+      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-panel">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="text-sm font-medium text-slate-950">Quick actions</p>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              Apply common status and confirmation updates through the existing domain rules. Owner
+              and curator changes stay in the structured edit flow so responsibility changes remain
+              explicit.
+            </p>
+          </div>
+          <Link
+            to={`/issues/${data.id}/edit`}
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+          >
+            <FilePenLine className="h-4 w-4" />
+            Change owner or curator
+          </Link>
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {statusActions.map((action) => {
+            const disabledReason =
+              actorDisabledReason ??
+              (data.statusId === action.statusId
+                ? `Already ${STATUS_LABELS[action.statusId].toLocaleLowerCase()}.`
+                : null)
+            const actionId: QuickActionId = `status:${action.statusId}`
+
+            return (
+              <QuickActionButton
+                key={action.statusId}
+                label={action.label}
+                description={action.description}
+                icon={action.icon}
+                disabledReason={getActionDisabledReason(actionId, disabledReason)}
+                isPending={pendingActionId === actionId}
+                onClick={() => runStatusAction(action.statusId)}
+              />
+            )
+          })}
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <QuickActionButton
+            label="Request confirmation"
+            description="Mark this issue done and ready for confirmation."
+            icon={CheckCheck}
+            disabledReason={getActionDisabledReason(
+              'confirmation:request',
+              actorDisabledReason ??
+                (data.confirmationRequired
+                  ? 'Already waiting for confirmation.'
+                  : data.confirmedAt
+                    ? 'Already confirmed.'
+                    : null),
+            )}
+            isPending={pendingActionId === 'confirmation:request'}
+            onClick={runRequestConfirmationAction}
+          />
+          <QuickActionButton
+            label="Confirm issue"
+            description="Clear the confirmation request and keep the issue done."
+            icon={CheckCircle2}
+            disabledReason={getActionDisabledReason(
+              'confirmation:confirm',
+              actorDisabledReason ??
+                (!data.confirmationRequired ? 'No confirmation pending.' : null),
+            )}
+            isPending={pendingActionId === 'confirmation:confirm'}
+            onClick={runConfirmAction}
+          />
+        </div>
+
+        {actionMessage ? (
+          <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+            {actionMessage}
+          </p>
+        ) : null}
+        {actionError ? (
+          <p className="mt-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+            {actionError}
+          </p>
+        ) : null}
+      </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
         <div className="grid gap-6">

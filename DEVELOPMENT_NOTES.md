@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-14 — Keep Phase 5.3 quick actions on Issue Detail only
+
+**Context:**
+`Phase 5.3` calls for quick status actions, ownership/action affordances, and clear disabled states, while the existing app already has structured edit behavior for owner and curator changes.
+
+**Decision:**
+Add quick actions only to Issue Detail for common status and confirmation updates, and keep owner/curator changes as a clear shortcut into the existing structured edit form instead of duplicating responsibility mutations inline.
+
+**Reasoning:**
+Issue Detail is the safest action surface because it already shows full issue context and activity history. Reusing existing domain operations keeps updates activity-safe, while routing responsibility changes through the edit form avoids widening a polish slice into a second ownership-transfer UI.
+
+**Alternatives considered:**
+Adding quick actions to project lists, adding inline owner/curator selectors, or creating a broader global action menu.
+
+**Impact:**
+Phase 5.3 improves operational action speed without adding new workflow types, notifications, or route contracts. Broader list-level actions remain deferred unless a later roadmap slice explicitly requires them.
+
 ### 2026-07-14 — Keep Phase 5.2 search local to existing list surfaces
 
 **Context:**  

@@ -1686,7 +1686,7 @@ Suggested commit message:
 
 ### Phase 5.3 — Quick Action Polish
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1721,7 +1721,7 @@ Suggested commit message:
 
 ### Phase 5.4 — Responsive Layout Polish
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 
