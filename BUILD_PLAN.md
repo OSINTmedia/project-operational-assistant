@@ -1465,7 +1465,7 @@ Suggested commit message:
 
 ### Phase 4.3 — Status / Priority / Project / Owner Distributions
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1501,7 +1501,7 @@ Suggested commit message:
 
 ### Phase 4.4 — Dashboard Charts
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

@@ -1,4 +1,10 @@
-import type { IssueRecord, LabelRecord } from '../../persistence/records'
+import type {
+  IssueRecord,
+  LabelRecord,
+  ProjectRecord,
+  StatusRecord,
+  UserRecord,
+} from '../../persistence/records'
 
 export interface DashboardMetricCounts {
   totalIssues: number
@@ -13,4 +19,24 @@ export interface DashboardMetricCounts {
 export interface CalculateDashboardMetricsInput {
   issues: IssueRecord[]
   labels: LabelRecord[]
+}
+
+export interface DashboardDistributionItem {
+  id: string
+  label: string
+  count: number
+}
+
+export interface DashboardDistributions {
+  issuesByStatus: DashboardDistributionItem[]
+  issuesByPriority: DashboardDistributionItem[]
+  issuesByProject: DashboardDistributionItem[]
+  issuesByOwner: DashboardDistributionItem[]
+}
+
+export interface CalculateDashboardDistributionsInput {
+  issues: IssueRecord[]
+  projects: ProjectRecord[]
+  users: UserRecord[]
+  statuses: StatusRecord[]
 }

@@ -1,13 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
-import { calculateDashboardMetrics, type DashboardMetricCounts } from '../../domain/dashboardMetrics'
+import {
+  calculateDashboardDistributions,
+  calculateDashboardMetrics,
+  type DashboardDistributions,
+  type DashboardMetricCounts,
+} from '../../domain/dashboardMetrics'
 import { issueRepository } from '../../repositories/issueRepository'
 import { labelRepository } from '../../repositories/labelRepository'
+import { projectRepository } from '../../repositories/projectRepository'
+import { statusRepository } from '../../repositories/statusRepository'
+import { userRepository } from '../../repositories/userRepository'
 import { USER_ROLE_LABELS, type UserRoleId } from '../../shared/types'
 
 export interface DashboardMetricsViewData {
   currentUserName: string
   currentUserRoleLabel: string
   metrics: DashboardMetricCounts
+  distributions: DashboardDistributions
 }
 
 type DashboardMetricsViewState =
@@ -20,7 +29,13 @@ async function loadDashboardMetricsViewData(params: {
   currentUserRole: UserRoleId
 }): Promise<DashboardMetricsViewData> {
   const { currentUserName, currentUserRole } = params
-  const [issues, labels] = await Promise.all([issueRepository.list(), labelRepository.list()])
+  const [issues, labels, projects, statuses, users] = await Promise.all([
+    issueRepository.list(),
+    labelRepository.list(),
+    projectRepository.list(),
+    statusRepository.list(),
+    userRepository.list(),
+  ])
 
   return {
     currentUserName,
@@ -28,6 +43,12 @@ async function loadDashboardMetricsViewData(params: {
     metrics: calculateDashboardMetrics({
       issues,
       labels,
+    }),
+    distributions: calculateDashboardDistributions({
+      issues,
+      projects,
+      statuses,
+      users,
     }),
   }
 }

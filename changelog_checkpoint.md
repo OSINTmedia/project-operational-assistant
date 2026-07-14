@@ -6,11 +6,11 @@ Phase 4 — Dashboard and Operational Metrics: `In progress`
 
 Completed micro-phase:
 
-- `Phase 4.2 — Dashboard Metric Cards`
+- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
 
 Next concrete micro-phase:
 
-- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
+- `Phase 4.4 — Dashboard Charts`
 
 ## Documentation Trust Order
 
@@ -169,6 +169,11 @@ Use the project docs in this order when deciding what is current and what should
 - Rendered the first dashboard cards for:
   `total`, `open`, `done`, `waiting`, `blocked`, `delayed`, and `needs update`.
 - Kept the first dashboard UI slice free of charts, distributions, saved filters, click-through behavior, and employee-scoring semantics.
+- Added domain-level dashboard distribution calculations for:
+  `issues by status`, `issues by priority`, `issues by project`, and `issues by owner`.
+- Extended the dashboard feature hook so it loads project, status, and user reference data through repository boundaries and exposes distribution-ready dashboard data for the upcoming chart slice.
+- Kept the distribution slice data-only:
+  no charts, no chart styling, no cross-screen search polish, and no click-through behavior were added early.
 
 ## Changed Files
 
@@ -261,6 +266,7 @@ Use the project docs in this order when deciding what is current and what should
 - `src/domain/issueRules/updateIssueResponsibility.ts`
 - `src/domain/issueRules/updateIssueState.ts`
 - `src/domain/dashboardMetrics/calculateDashboardMetrics.ts`
+- `src/domain/dashboardMetrics/calculateDashboardDistributions.ts`
 - `src/domain/dashboardMetrics/index.ts`
 - `src/domain/dashboardMetrics/types.ts`
 - `src/features/dashboard/DashboardPage.tsx`
@@ -331,7 +337,8 @@ Use the project docs in this order when deciding what is current and what should
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
 - Team Workspace currently uses the existing `/teams` route as a lightweight multi-team overview rather than a dedicated `/teams/:teamId` drill-in surface.
 - `Issue Create` currently falls back to the first available project if the route carries an invalid `projectId`, rather than surfacing a controlled invalid-project route state.
-- The first Dashboard UI slice now shows top-level metric cards only; charts, distributions, and click-through interactions are still deferred to later `Phase 4` slices.
+- The first Dashboard UI slice now shows top-level metric cards only; charts and click-through interactions are still deferred to later `Phase 4` slices.
+- Dashboard distribution data now exists in the domain layer and dashboard hook, but it is not rendered yet; the first visual chart work remains deferred to `Phase 4.4`.
 
 ## Verification Results
 
@@ -375,8 +382,9 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 3.8 — Phase 3 Screen Audit` is now complete.
 - `Phase 4.1 — Dashboard Metrics Domain Functions` is now complete.
 - `Phase 4.2 — Dashboard Metric Cards` is now complete.
+- `Phase 4.3 — Status / Priority / Project / Owner Distributions` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
-- The next allowed implementation slice is `Phase 4.3 — Status / Priority / Project / Owner Distributions`.
+- The next allowed implementation slice is `Phase 4.4 — Dashboard Charts`.
 
 ## Next Recommended Task
 
@@ -384,12 +392,13 @@ Use the project docs in this order when deciding what is current and what should
 
 Next concrete Codex task:
 
-- `Phase 4.3 — Status / Priority / Project / Owner Distributions`
+- `Phase 4.4 — Dashboard Charts`
 
 Scope for the next task only:
 
-- prepare dashboard distribution data for:
-  `issues by status`, `issues by priority`, `issues by project`, and `issues by owner`
-- keep the slice free of chart styling, cross-screen search polish, and employee scoring
+- turn metric and distribution data into readable dashboard visuals
+- add simple Recharts charts for:
+  `status`, `priority`, and `project`
+- keep the slice free of advanced analytics, saved dashboards, and decorative chart overload
 
 Do not implement the whole of `Phase 4` in one task.
