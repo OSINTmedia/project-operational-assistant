@@ -1790,7 +1790,7 @@ Suggested commit message:
 
 ### Phase 5.6 — README Presentation Update
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1827,7 +1827,7 @@ Suggested commit message:
 
 ### Phase 5.7 — Phase 5 Polish Audit
 
-Status: `Later`
+Status: `Next active phase`
 
 Goal:
 

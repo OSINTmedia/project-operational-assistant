@@ -1,222 +1,202 @@
-# Project Operational Assistant 🚀
-> Portfolio MVP for project-based operational clarity.
-
-![Status: In Active Development]
-![Architecture: Core Ready]
-![Stack: React + TS + Zustand]
-
-### 📊 Portfolio MVP Build Progress:
-[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░] Phase 4 complete, Phase 5.4 next
-
-- ✅ **Phase 0 & 1:** Product Scope & Technical Planning (100%)
-- ✅ **Phase 2A & 2B:** Architecture, Local Persistence & Issue-Domain Logic (100%)
-- ✅ **Phase 3:** Main Screens and screen audit complete (100%)
-- ✅ **Phase 4:** Dashboard Metrics and Operational Dashboard Audit (100%)
-- ⏳ **Phase 5:** Portfolio Polish in progress
-- ⏳ **Phase 6:** Testing, Deployment & Final Audit (Upcoming)
-
----
+# Project Operational Assistant
 
 Portfolio MVP for project-based operational clarity.
 
-Project Operational Assistant is a frontend-first web application designed for small and medium project-based teams. It helps managers, project managers, and users track issues, ownership, statuses, dependencies, curators, and operational progress across multiple projects.
+`React` · `TypeScript` · `Vite` · `Tailwind CSS` · `Zustand` · `Dexie / IndexedDB` · `Recharts`
 
-This repository is built as a portfolio project to demonstrate product thinking, systems thinking, frontend engineering, structured data modeling, dashboard design, UI/UX discipline, and documentation workflow.
+## Build Progress
 
----
+`[#################---] 85%`
 
-## Purpose
+Current public-demo status: Phase 5 polish is nearly complete. Phase 5.6 README presentation is complete; Phase 5.7 polish audit and Phase 6 final quality/deployment work remain.
 
-Many small and medium teams manage operational work through email, chats, calls, notes, and scattered spreadsheets. As a result, it becomes difficult to answer simple but important questions:
+- Complete: Phase 0 and 1 - Product scope, planning, and frontend foundation
+- Complete: Phase 2A and 2B - Local-first data model, persistence, seed data, and issue-domain logic
+- Complete: Phase 3 - Main app screens and screen audit
+- Complete: Phase 4 - Dashboard metrics, charts, filters, click-throughs, and audit
+- In progress: Phase 5 - Portfolio polish and public documentation
+- Upcoming: Phase 6 - Validation, deployment setup, live demo verification, and final release audit
 
-* What issue is currently open?
-* Who owns the next action?
-* What is blocked or delayed?
-* Which issue needs an update?
-* What changed recently?
-* Is an issue actually done, or only done from one person’s side?
+For exact implementation handoff state, use `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. This README is public-facing portfolio context, not the internal work log.
 
-This project explores a lightweight operational assistant that reduces ambiguity without becoming a heavy enterprise project management tool.
+## Overview
 
----
+Project Operational Assistant is a frontend-only portfolio application for small and medium project-based teams. It helps users see operational Issues across Projects with structured statuses, priorities, labels, tags, owners, curators, dependencies, activity history, demo users, local-first persistence, and dashboard metrics.
 
-## Core Concept
+The product goal is operational clarity: what is open, what is blocked, what is delayed, who owns the next action, and what needs an update. It is intentionally not a heavyweight project management platform.
 
-The main entity in the system is an **Issue**.
+## Live Demo
 
-An Issue can represent a task, operational question, dependency, blocker, handoff, or follow-up item inside a project.
+GitHub Pages target:
 
-Each Issue is structured around:
+`https://osintmedia.github.io/project-operational-assistant/`
 
-* title
-* description
-* project
-* status
-* priority
-* tags
-* labels
-* owner
-* curator
-* dependency
-* activity history
+Final GitHub Pages deployment and live-demo verification are planned for Phase 6. The app is already designed as a static SPA with GitHub Pages-safe routing.
 
-The goal is to reduce open-text chaos by keeping most operational fields structured.
+## What It Demonstrates
 
----
+- Product thinking and MVP scope control
+- Systems thinking around Issue ownership, curator responsibility, and attention signals
+- Frontend architecture with React, TypeScript, and route-based feature surfaces
+- Local-first persistence through IndexedDB / Dexie
+- Repository, state, and domain boundaries
+- Structured data modeling for operational work
+- Dashboard metrics and distribution charts
+- UI/UX discipline for dense operational screens
+- Documentation and Git checkpoint workflow
 
-## Main Roles
+## Core Product Model
 
-### Manager
+The central entity is an Issue. An Issue can represent a task, dependency, blocker, handoff, follow-up, operational question, or confirmation item inside a Project.
 
-Views operational progress, blocked work, delayed issues, and dashboard metrics.
+Structured Issue fields include:
 
-### Project Manager
+- Project
+- Type
+- Status
+- Priority
+- Tags
+- Labels
+- Owner
+- Curator
+- Dependency
+- Created / updated metadata
+- Activity history
 
-Creates and manages projects and issues, assigns ownership, updates statuses, manages curators, and monitors project-level clarity.
+Open text is intentionally limited to title and description. Operational meaning is carried by structured fields so the demo does not become a loose notes tool.
 
-### User
+## Key Features
 
-Works on assigned issues, updates statuses, transfers ownership when needed, and confirms completion when relevant.
+- Dashboard with operational metric cards
+- Status, priority, and project distribution charts
+- Local dashboard filters and issue search
+- Project list and project detail surfaces
+- Readable project issue lists with structured filters
+- Issue create and edit flows
+- Issue detail with metadata, dependency context, labels, tags, participants, and activity history
+- Quick status and confirmation actions from Issue Detail
+- Personal work surface grouped by assigned, created, curated, and attention-related Issues
+- Team workspace visibility for members, team Issues, group Issues, and status summary
+- Demo users and role switching
+- Local browser persistence with reset demo data behavior
+- Needs Update and Ready for Confirmation as system labels / attention signals
 
----
+## Demo Accounts
 
-## Key MVP Features
+The demo uses predefined local users instead of real authentication.
 
-Planned Portfolio MVP features include:
+- Manager: Mariam Kapanadze
+- Project Managers: Nino Beridze, Luka Tsereteli
+- Users: Ana Japaridze, Gio Lomidze, Maya Chikovani, Dato Khatiashvili
 
-* project-based issue tracking
-* individual and group issues
-* owner and ownership transfer
-* curator model for group issues
-* structured statuses
-* priorities
-* tags and labels
-* dependency tracking
-* activity history
-* Needs Update attention signal
-* lightweight confirmation flow
-* dashboard metrics and charts
-* personal, project, team, and dashboard views
-* demo users and role switching
-* local demo persistence
-* reset demo data option
-
----
+Role switching is local app state only. It is designed to let visitors compare perspectives without sign-in, sessions, or a backend.
 
 ## What This Project Is Not
 
-This project is intentionally not:
+This MVP is intentionally not:
 
-* a Jira clone
-* an Asana clone
-* a Trello clone
-* a CRM
-* an IT helpdesk
-* an employee surveillance dashboard
-* a full enterprise workflow platform
-* an AI-first product
-* a notification hub
-* a document management system
+- Jira, Asana, Trello, CRM, or helpdesk software
+- an employee scoring or surveillance tool
+- a notification hub
+- an attachment or document management system
+- an organization workspace platform
+- a real authentication system
+- a backend/API integration project
 
-The goal is operational clarity, not feature overload.
+The goal is a clear operational assistant, not a broad enterprise suite.
 
----
+## Architecture
 
-## Technical Direction
+The app is a static frontend SPA with local-first browser persistence.
 
-Planned stack:
+High-level layers:
 
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
-* shadcn/ui
-* Lucide icons
-* React Router with GitHub Pages-safe routing
-* Zustand
-* Dexie / IndexedDB
-* React Hook Form
-* Zod
-* TanStack Table
-* Recharts
-* GitHub Pages deployment
+- UI layer: React feature screens and shared presentation components
+- Application state: Zustand for demo identity and app lifecycle
+- Domain logic: issue rules, dashboard metrics, confirmation and attention behavior
+- Repository layer: typed access boundaries for persisted records
+- Persistence adapter: Dexie / IndexedDB
+- Seed data: local demo dataset and reset behavior
 
-The Portfolio MVP is designed as a static frontend application with local-first browser persistence.
+The UI does not talk directly to IndexedDB. Feature screens consume state, read-model hooks, domain helpers, and repositories rather than persistence internals.
 
-No backend server is required for the demo version.
+## Tech Stack
 
----
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router with `HashRouter`
+- Zustand
+- Dexie / IndexedDB
+- React Hook Form
+- Zod
+- Recharts
+- Lucide React
+- oxlint
 
-## Demo Strategy
+## Local Setup
 
-The final demo is intended to run on GitHub Pages.
+```bash
+npm install
+npm run dev
+```
 
-The demo version should include:
+Open the local Vite URL printed in the terminal.
 
-* seed data
-* demo users
-* role switching
-* sample projects
-* sample issues
-* local browser persistence
-* reset demo data
+Useful commands:
 
-This allows visitors to test the product without needing a backend, database server, or real authentication.
+```bash
+npm run build
+npm run typecheck
+npm run lint
+```
 
----
+## Project Structure
 
-## Current Status
-
-The screen layer, dashboard metrics, dashboard charts, dashboard filters, and Phase 4 dashboard audit are complete. The next planned implementation slice is `Phase 5.4 — Responsive Layout Polish`.
-
-Completed so far:
-
-* product discovery
-* MVP scope definition
-* user journey planning
-* technical planning
-* documentation structure
-* GitHub repository initialization
-* frontend foundation and static SPA routing
-* local-first persistence and demo seed lifecycle
-* issue-domain operations and pre-screen hardening
-* main screen implementation through the Phase 3 screen audit
-* dashboard metrics, charts, filters, click-throughs, and Phase 4 dashboard audit
-* portfolio polish through Phase 5.3 quick actions
-
-For live implementation status and the next concrete micro-phase, trust `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. README remains public-facing portfolio context, not the live handoff record.
-
----
+```text
+src/
+  app/           app shell, router, providers, app state
+  domain/        issue rules and dashboard metric logic
+  entities/      typed entity contracts
+  features/      dashboard, projects, issues, teams, personal, demo
+  persistence/   Dexie schema, seed data, reset lifecycle
+  repositories/  data access boundaries
+  shared/        shared components, constants, types, utilities
+  styles/        global styles
+```
 
 ## Documentation
 
-Project planning documents are maintained in the repository:
+Planning and handoff documents:
 
-* `BUILD_PLAN.md`
-* `changelog_checkpoint.md`
-* `DEVELOPMENT_NOTES.md`
-* `docs/Portfolio_MVP_V1.md`
-* `docs/Technical_Planning_v1.md`
-* `docs/User_Journey_Freeze_v1.md`
+- `BUILD_PLAN.md` - implementation roadmap and micro-phase definitions
+- `changelog_checkpoint.md` - live handoff state and next concrete task
+- `DEVELOPMENT_NOTES.md` - decisions, trade-offs, and lessons learned
+- `docs/Portfolio_MVP_V1.md` - frozen product scope
+- `docs/Technical_Planning_v1.md` - frozen technical direction
+- `docs/User_Journey_Freeze_v1.md` - frozen user journey context
 
-These documents describe the product scope, technical direction, user journeys, build phases, decisions, trade-offs, and implementation progress.
+## Roadmap
 
----
+Completed:
 
-## Portfolio Goal
+- Product scope and technical planning
+- Frontend foundation and GitHub Pages-safe SPA routing
+- Local-first persistence, seed data, reset flow, and demo users
+- Issue-domain operations and activity history behavior
+- Main screens for Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, and Demo
+- Dashboard metrics, charts, filters, and click-throughs
+- Portfolio polish through helper text, search/filter polish, quick actions, responsive layout, and visual consistency
 
-This project is intended to show more than code.
+Remaining:
 
-It is designed to demonstrate:
+- Phase 5.7 - Phase 5 polish audit
+- Phase 6 - validation, focused tests, GitHub Pages deployment setup, live-demo verification, final scope audit, documentation cleanup, and release tag
 
-* problem definition
-* MVP discipline
-* structured product planning
-* frontend architecture
-* local-first application design
-* dashboard and workflow modeling
-* documentation habits
-* Git/GitHub workflow
-* future-ready technical decisions
+## Lessons Captured
 
-The objective is to build a clear, usable, and well-documented portfolio application rather than a large unfinished product.
+- A local-first portfolio app can still demonstrate serious product architecture when persistence is kept behind clear boundaries.
+- Structured fields make the operational model easier to reason about than open text alone.
+- System labels such as Needs Update and Ready for Confirmation should remain semantically separate from statuses and tags.
+- Small micro-phases make implementation easier to audit and keep the project from drifting into a clone of heavier tools.

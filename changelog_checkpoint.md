@@ -6,11 +6,11 @@ Phase 5 — Portfolio Polish: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.5 — Visual Portfolio Polish`
+- `Phase 5.6 — README Presentation Update`
 
 Next concrete micro-phase:
 
-- `Phase 5.6 — README Presentation Update`
+- `Phase 5.7 — Phase 5 Polish Audit`
 
 ## Documentation Trust Order
 
@@ -212,22 +212,19 @@ Use the project docs in this order when deciding what is current and what should
 - Polished Dashboard and Projects metric cards for more consistent portfolio screenshot readiness.
 - Preserved `Needs Update` and `Ready for Confirmation` as system labels while only changing their visual badge rendering.
 - Kept the visual polish pass free of route changes, domain changes, repository changes, persistence changes, animation work, marketing hero work, and brand redesign.
+- Rewrote `README.md` as a public-facing portfolio presentation artifact instead of an internal work log.
+- Updated the README progress block to reflect Phase 5 polish as nearly complete, with Phase 5.6 complete and Phase 5.7 / Phase 6 remaining.
+- Added README sections for:
+  live demo target, demo accounts, architecture, local setup, project structure, roadmap, scope exclusions, and lessons captured.
+- Kept the README update free of source-code changes, frozen-doc rewrites, backend/auth claims, deployment implementation, or internal handoff language.
 
 ## Changed Files
 
 Latest implementation slice:
 
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/demo/DemoPage.tsx`
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/personal/PersonalPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/projects/ProjectsPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
-- `src/shared/components/Badge.tsx`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
-- `DEVELOPMENT_NOTES.md`
+- `README.md`
 
 Full implementation history:
 
@@ -402,6 +399,7 @@ Full implementation history:
 - Phase 5.3 quick actions are intentionally limited to Issue Detail status and confirmation actions. Owner and curator changes still route through the structured edit form.
 - Phase 5.4 responsive polish intentionally used existing routes, screen hierarchy, and feature surfaces. It did not add a mobile drawer, redesign information architecture, or introduce mobile-only workflows.
 - Phase 5.5 visual polish intentionally centralizes badge presentation and light card consistency only. It did not introduce a broader component library, brand redesign, animation system, or workflow behavior.
+- Phase 5.6 README work intentionally updates only public portfolio documentation. It does not claim final deployment is complete, and it keeps live implementation handoff guidance in `changelog_checkpoint.md`.
 
 ## Verification Results
 
@@ -454,9 +452,10 @@ Full implementation history:
 - `Phase 5.3 — Quick Action Polish` is now complete.
 - `Phase 5.4 — Responsive Layout Polish` is now complete.
 - `Phase 5.5 — Visual Portfolio Polish` is now complete.
+- `Phase 5.6 — README Presentation Update` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- The next allowed implementation slice is `Phase 5.6 — README Presentation Update`.
+- The next allowed implementation slice is `Phase 5.7 — Phase 5 Polish Audit`.
 
 ## Next Recommended Task
 
@@ -464,12 +463,12 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.6 — README Presentation Update`
+- `Phase 5.7 — Phase 5 Polish Audit`
 
 Scope for the next task only:
 
-- update the public README as a portfolio presentation artifact
-- include demo/setup/project structure/architecture/out-of-scope/roadmap context where appropriate
-- keep README public-facing and avoid internal work-log or handoff notes
+- verify no Phase 5 scope creep
+- verify README is public-facing and not a work log
+- verify a demo visitor can understand the product in 5-10 minutes
 
 Do not implement the whole of `Phase 5` in one task.
