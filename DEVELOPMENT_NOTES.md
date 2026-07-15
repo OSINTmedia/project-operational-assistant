@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Keep AppShell selected-user orientation presentational
+
+**Context:**
+`Phase 5.8B2` needed the global shell to make the active demo user and role obvious from every main route, while preserving the Portfolio MVP constraint that demo identity is not real authentication or permissions.
+
+**Decision:**
+Use existing app state to show the current demo user, role, and compact Dashboard / Personal orientation links in the AppShell header. Keep the local/no-sign-in note visible but less dominant, and do not add a new user picker, permission layer, route behavior, drawer, modal, or navigation framework.
+
+**Reasoning:**
+This addresses the design review finding that topbar space was used for lifecycle/auth-scope messaging instead of operational context. It improves selected-user orientation without changing domain models, repositories, persistence, routing, or role semantics.
+
+**Alternatives considered:**
+Keeping the lifecycle/auth exclusion as the primary header content, adding a broader AppShell redesign, or introducing auth-like account controls.
+
+**Impact:**
+The selected demo perspective is now visible across routes, but role switching remains local demo state only. Deeper context headers, source-aware return flows, and route-hopping reductions remain separate Phase 5.8 slices.
+
 ### 2026-07-15 — Keep Dashboard assistant action counts read-model only
 
 **Context:**

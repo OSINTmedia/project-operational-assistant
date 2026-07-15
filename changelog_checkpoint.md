@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary`
+- `Phase 5.8B2 — AppShell Selected-user Orientation`
 
 Next concrete micro-phase:
 
-- `Phase 5.8B2 — AppShell Selected-user Orientation`
+- `Phase 5.8C1 — Breadcrumbs and Context Headers`
 
 ## Documentation Trust Order
 
@@ -237,17 +237,20 @@ Use the project docs in this order when deciding what is current and what should
 - Extended the Dashboard read model with selected-user action counts and workspace-risk counts behind the existing feature hook and repository boundaries.
 - Added a read-only Dashboard `Assistant home` section that separates `My next actions` from `Workspace risks`.
 - Surfaced selected-user assigned, curated, needs-update, and confirmation-needed counts without adding real permissions, auth, notifications, employee scoring, drawer/modal work, or route changes.
+- Completed `Phase 5.8B2 — AppShell Selected-user Orientation`.
+- Reworked the global AppShell header into a selected-user operational context strip using existing app state only.
+- Added compact Dashboard and Personal orientation links in the shell while preserving existing routes, role switching, and HashRouter behavior.
+- Demoted generic demo lifecycle / no-auth copy so it remains clear without overpowering task orientation.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/dashboard/useDashboardMetrics.ts`
-- `src/features/dashboard/DashboardPage.tsx`
+- `src/app/layout/AppShell.tsx`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
-Current uncommitted planning context:
+Current Phase 5.8 planning context:
 
 - `design_review.md`
 - `APP_EXPERIENCE_PLAN.md`
@@ -434,6 +437,8 @@ Full implementation history:
 - Phase 5.8 was inserted before Phase 6 to address app-experience friction revealed after the full functional and polish surface was visible. It is bounded to navigation, information architecture, role-aware workflow clarity, context recovery, and responsive usability without changing MVP product scope.
 - Phase 5.8A accepted the code-first design review as the diagnostic output and split Phase 5.8B before implementation. The first implementation slice is selected-user Dashboard action clarity, not drawers or modals.
 - Phase 5.8B1 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8B2 kept AppShell orientation presentational and app-state-driven. It did not introduce real auth, permissions, a new user picker, route changes, drawer/modal behavior, or source-aware return behavior.
+- Phase 5.8B2 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
@@ -442,6 +447,8 @@ Full implementation history:
 - `npm run lint` passed
 - Docs-only Phase 5.8A planning updates did not require rerunning build/typecheck/lint because no source files were changed.
 - Phase 5.8B1 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8B2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -497,10 +504,11 @@ Full implementation history:
 - `APP_EXPERIENCE_PLAN.md` is the focused execution roadmap for the remaining Phase 5.8 implementation slices.
 - `Phase 5.8B — Assistant Home and Role-aware Action Clarity` has been refined into `Phase 5.8B1` and `Phase 5.8B2` before implementation.
 - `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` is now complete.
+- `Phase 5.8B2 — AppShell Selected-user Orientation` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8B2 — AppShell Selected-user Orientation`.
+- The next allowed implementation slice is `Phase 5.8C1 — Breadcrumbs and Context Headers`.
 
 ## Next Recommended Task
 
@@ -508,15 +516,16 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8B2 — AppShell Selected-user Orientation`
+- `Phase 5.8C1 — Breadcrumbs and Context Headers`
 
 Scope for the next task only:
 
-- improve shell/topbar selected-user context so the active demo user and role are obvious from every main route
-- reduce generic demo/auth-exclusion copy only if it competes with task orientation
-- add compact links or cues to Dashboard/Personal only if clearly useful
-- preserve existing role-switch behavior
+- add or refine contextual headers, breadcrumbs, or back labels on major route-level screens
+- clarify project, issue, edit, create, and team context without changing the route model
+- keep `Project Detail`, `Issue Detail`, `Issue Create`, `Issue Edit`, and `Team Workspace` understandable before deeper return-flow work
+- preserve existing routes, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not add real permissions, real auth, notification behavior, employee scoring, new user picker, broad AppShell redesign, drawer/modal work, or route replacement
+- do not add source-aware return logic unless a tiny route-label adjustment is unavoidable
+- do not add real permissions, real auth, notification behavior, employee scoring, drawer/modal work, a global issue-list route, or router replacement
 
-Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8B` in one task.
+Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8C` in one task.

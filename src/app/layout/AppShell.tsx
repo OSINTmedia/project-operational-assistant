@@ -1,15 +1,17 @@
 import {
+  ArrowRight,
   BriefcaseBusiness,
   ChartColumn,
   FolderKanban,
   PlaySquare,
   Users,
 } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { DemoRoleSwitcher } from '../../features/demo/DemoRoleSwitcher'
 import { appNavigation } from '../../shared/constants/navigation'
+import { USER_ROLE_LABELS } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
-import { useDemoAppState } from '../state/useDemoAppState'
+import { getCurrentDemoUser, useDemoAppState } from '../state/useDemoAppState'
 
 const iconMap = {
   dashboard: ChartColumn,
@@ -25,6 +27,12 @@ export function AppShell() {
   const selectedRole = useDemoAppState((state) => state.selectedRole)
   const isSeedDataInitialized = useDemoAppState((state) => state.isSeedDataInitialized)
   const setSelectedRole = useDemoAppState((state) => state.setSelectedRole)
+  const currentUser = getCurrentDemoUser(demoUsers, currentUserId)
+  const currentRoleLabel = currentUser
+    ? USER_ROLE_LABELS[currentUser.role]
+    : selectedRole
+      ? USER_ROLE_LABELS[selectedRole]
+      : null
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -39,7 +47,7 @@ export function AppShell() {
                 Project Operational Assistant
               </h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400 lg:max-w-none">
-                Foundation shell for a local-first operational dashboard demo.
+                Local-first workspace for project issue clarity.
               </p>
             </div>
             <div className="max-w-full lg:mt-6">
@@ -49,7 +57,7 @@ export function AppShell() {
                 selectedRole={selectedRole}
                 onSelectRole={setSelectedRole}
                 variant="sidebar"
-                description="Switching roles changes only local demo identity. No real authentication is used."
+                description="Switch the local demo perspective for this workspace."
               />
             </div>
           </div>
@@ -79,19 +87,54 @@ export function AppShell() {
 
         <main className="flex min-w-0 flex-col">
           <header className="border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Demo Lifecycle
+                  Current demo perspective
                 </p>
-                <p className="mt-1 text-sm text-slate-600">
-                  {isSeedDataInitialized
-                    ? 'Local demo data is initialized and ready in browser storage.'
-                    : 'Local demo bootstrap has not completed yet.'}
-                </p>
+                <div className="mt-2 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accentSoft text-sm font-semibold text-accent">
+                    {currentUser?.avatarInitials ?? 'PO'}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-base font-semibold leading-6 text-slate-950">
+                      {currentUser?.name ?? 'No demo user selected'}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      {currentRoleLabel
+                        ? `${currentRoleLabel} view for local operational work`
+                        : 'Select a demo role to load an operational perspective'}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="w-full rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-500 md:w-auto">
-                Real authentication intentionally excluded
+
+              <div className="flex flex-col gap-3 sm:flex-row xl:items-center">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <Link
+                    to="/dashboard"
+                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+                  >
+                    <ChartColumn className="h-4 w-4" />
+                    Dashboard
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to="/personal"
+                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+                  >
+                    <BriefcaseBusiness className="h-4 w-4 text-accent" />
+                    Personal
+                  </Link>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-500 sm:max-w-[18rem]">
+                  <span className="font-medium text-slate-700">
+                    {isSeedDataInitialized ? 'Demo data ready' : 'Demo data loading'}
+                  </span>
+                  <span className="mx-1 text-slate-300">/</span>
+                  Local identity only, no real sign-in.
+                </div>
               </div>
             </div>
           </header>
