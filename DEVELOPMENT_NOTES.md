@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Keep context breadcrumbs static before return-flow logic
+
+**Context:**
+`Phase 5.8C1` needed to reduce "where am I?" confusion on Project Detail, Issue Detail, Issue Create, Issue Edit, and Team Workspace before the broader source-aware return-flow slice.
+
+**Decision:**
+Add a small presentational `ContextBreadcrumbs` component and use already-loaded route/read-model context for static breadcrumbs and clearer back labels. Do not introduce source-aware origin state, a global navigation history model, router changes, drawer/modal behavior, or edit-save return changes in this slice.
+
+**Reasoning:**
+Static route context solves the first orientation problem with low architecture risk. Source-aware return behavior is more complex and belongs in `Phase 5.8C2`, where Dashboard, Personal, Teams, Project Detail, Issue Detail, and Issue Edit flows can be handled deliberately.
+
+**Alternatives considered:**
+Bundling breadcrumbs and source-aware return behavior together, adding a global route-origin store, or waiting for drawer/preview work before improving route-level orientation.
+
+**Impact:**
+Deep screens now explain their project, issue, edit, create, or team context without changing persistence, domain models, repositories, routes, or save behavior.
+
 ### 2026-07-15 — Keep AppShell selected-user orientation presentational
 
 **Context:**

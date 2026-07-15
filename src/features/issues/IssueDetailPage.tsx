@@ -24,6 +24,7 @@ import {
   updateIssueStatus,
 } from '../../domain/issueRules'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
+import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import { STATUS_LABELS, type StatusId } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
 import { useIssueDetailView } from './useIssueDetailView'
@@ -327,14 +328,22 @@ export function IssueDetailPage() {
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <ContextBreadcrumbs
+          items={[
+            { label: 'Projects', to: '/projects' },
+            { label: data.projectName, to: `/projects/${data.projectId}` },
+            { label: data.title },
+          ]}
+        />
+
+        <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <Link
               to={`/projects/${data.projectId}`}
               className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Project
+              Back to {data.projectName}
             </Link>
 
             <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">

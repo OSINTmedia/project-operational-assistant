@@ -13,6 +13,7 @@ import {
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
+import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import { useProjectDetailView, type ProjectIssueSummary } from './useProjectDetailView'
 
 const ATTENTION_FILTER_OPTIONS = [
@@ -274,9 +275,16 @@ export function ProjectDetailPage() {
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+        <ContextBreadcrumbs
+          items={[
+            { label: 'Projects', to: '/projects' },
+            { label: data.name },
+          ]}
+        />
+
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Projects

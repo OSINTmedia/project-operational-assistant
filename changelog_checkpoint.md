@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8B2 — AppShell Selected-user Orientation`
+- `Phase 5.8C1 — Breadcrumbs and Context Headers`
 
 Next concrete micro-phase:
 
-- `Phase 5.8C1 — Breadcrumbs and Context Headers`
+- `Phase 5.8C2 — Source-aware Return Flow`
 
 ## Documentation Trust Order
 
@@ -241,12 +241,21 @@ Use the project docs in this order when deciding what is current and what should
 - Reworked the global AppShell header into a selected-user operational context strip using existing app state only.
 - Added compact Dashboard and Personal orientation links in the shell while preserving existing routes, role switching, and HashRouter behavior.
 - Demoted generic demo lifecycle / no-auth copy so it remains clear without overpowering task orientation.
+- Completed `Phase 5.8C1 — Breadcrumbs and Context Headers`.
+- Added a shared, presentational `ContextBreadcrumbs` component for route-level page context.
+- Added static context paths and clearer back labels to Project Detail, Issue Detail, Issue Create, Issue Edit, and Team Workspace.
+- Kept context recovery limited to route labels and existing links; no source-aware return state, router rewrite, drawer/modal behavior, global issue-list route, or save-return behavior change was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/app/layout/AppShell.tsx`
+- `src/shared/components/ContextBreadcrumbs.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/issues/IssueDetailPage.tsx`
+- `src/features/issues/IssueCreatePage.tsx`
+- `src/features/issues/IssueEditPage.tsx`
+- `src/features/teams/TeamsPage.tsx`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
@@ -439,6 +448,8 @@ Full implementation history:
 - Phase 5.8B1 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8B2 kept AppShell orientation presentational and app-state-driven. It did not introduce real auth, permissions, a new user picker, route changes, drawer/modal behavior, or source-aware return behavior.
 - Phase 5.8B2 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8C1 kept context recovery static and presentational. It added route breadcrumbs/back-label clarity but intentionally deferred source-aware return behavior, origin preservation, and edit-save return changes to `Phase 5.8C2`.
+- Phase 5.8C1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail, Issue Detail, Issue Create, Issue Edit, Team Workspace, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
@@ -449,6 +460,8 @@ Full implementation history:
 - Phase 5.8B1 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8B2 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8C1 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -505,10 +518,11 @@ Full implementation history:
 - `Phase 5.8B — Assistant Home and Role-aware Action Clarity` has been refined into `Phase 5.8B1` and `Phase 5.8B2` before implementation.
 - `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` is now complete.
 - `Phase 5.8B2 — AppShell Selected-user Orientation` is now complete.
+- `Phase 5.8C1 — Breadcrumbs and Context Headers` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8C1 — Breadcrumbs and Context Headers`.
+- The next allowed implementation slice is `Phase 5.8C2 — Source-aware Return Flow`.
 
 ## Next Recommended Task
 
@@ -516,16 +530,16 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8C1 — Breadcrumbs and Context Headers`
+- `Phase 5.8C2 — Source-aware Return Flow`
 
 Scope for the next task only:
 
-- add or refine contextual headers, breadcrumbs, or back labels on major route-level screens
-- clarify project, issue, edit, create, and team context without changing the route model
-- keep `Project Detail`, `Issue Detail`, `Issue Create`, `Issue Edit`, and `Team Workspace` understandable before deeper return-flow work
+- evaluate and implement narrow source-aware return behavior for Dashboard, Personal, Teams, Project Detail, Issue Detail, and Issue Edit flows
+- avoid losing Personal, Dashboard, or Team Workspace context after issue drill-in and edit flows
+- preserve Project Detail return when project context is the true origin
+- keep route context behavior narrow and understandable
 - preserve existing routes, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not add source-aware return logic unless a tiny route-label adjustment is unavoidable
-- do not add real permissions, real auth, notification behavior, employee scoring, drawer/modal work, a global issue-list route, or router replacement
+- do not add a full router rewrite, global navigation history system, global issue-list route, workflow engine, real permissions, real auth, notification behavior, employee scoring, drawer/modal work, or preview framework
 
 Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8C` in one task.

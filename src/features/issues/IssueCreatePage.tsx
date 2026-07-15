@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { createIssue } from '../../domain/issueRules'
+import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
 import { getIssueFormBlockingMessage } from './issueFormValidation'
@@ -93,6 +94,9 @@ function IssueCreatePageReady({
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
   )
+  const backLinkTarget = currentProject
+    ? `/projects/${currentProject.id}`
+    : getBackLink(projectId ?? null)
   const dependencyTargetOptions = selectedProjectId
     ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
     : []
@@ -199,12 +203,22 @@ function IssueCreatePageReady({
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+        <ContextBreadcrumbs
+          items={[
+            { label: 'Projects', to: '/projects' },
+            currentProject
+              ? { label: currentProject.name, to: `/projects/${currentProject.id}` }
+              : { label: 'Project context' },
+            { label: 'Create issue' },
+          ]}
+        />
+
         <Link
-          to={getBackLink(projectId ?? null)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          to={backLinkTarget}
+          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          {currentProject ? `Back to ${currentProject.name}` : 'Back to Projects'}
         </Link>
 
         <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">

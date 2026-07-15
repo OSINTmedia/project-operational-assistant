@@ -1,0 +1,47 @@
+import { ChevronRight } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import { cn } from '../utils/cn'
+
+export type ContextBreadcrumbItem = {
+  label: ReactNode
+  to?: string
+}
+
+type ContextBreadcrumbsProps = {
+  items: ContextBreadcrumbItem[]
+  className?: string
+}
+
+export function ContextBreadcrumbs({ items, className }: ContextBreadcrumbsProps) {
+  return (
+    <nav aria-label="Page context" className={cn('min-w-0', className)}>
+      <ol className="flex min-w-0 flex-wrap items-center gap-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+        {items.map((item, index) => {
+          const isLastItem = index === items.length - 1
+
+          return (
+            <li key={index} className="flex min-w-0 items-center gap-1">
+              {index > 0 ? <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300" /> : null}
+              {item.to && !isLastItem ? (
+                <Link
+                  to={item.to}
+                  className="max-w-[16rem] truncate transition-colors hover:text-slate-800"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <span
+                  aria-current={isLastItem ? 'page' : undefined}
+                  className="max-w-[18rem] truncate text-slate-600"
+                >
+                  {item.label}
+                </span>
+              )}
+            </li>
+          )
+        })}
+      </ol>
+    </nav>
+  )
+}

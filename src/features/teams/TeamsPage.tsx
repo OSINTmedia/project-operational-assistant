@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
+import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import { useTeamWorkspaceView } from './useTeamWorkspaceView'
 
 function formatUpdatedAt(value: string): string {
@@ -81,7 +82,14 @@ export function TeamsPage() {
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <ContextBreadcrumbs
+          items={[
+            { label: 'Dashboard', to: '/dashboard' },
+            { label: 'Team Workspace' },
+          ]}
+        />
+
+        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Team workspace
         </p>
         <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">

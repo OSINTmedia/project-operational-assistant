@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { saveIssueEdits } from '../../domain/issueRules'
+import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
 import { getIssueFormBlockingMessage } from './issueFormValidation'
@@ -227,12 +228,23 @@ function IssueEditPageReady({
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+        <ContextBreadcrumbs
+          items={[
+            { label: 'Projects', to: '/projects' },
+            currentProject
+              ? { label: currentProject.name, to: `/projects/${currentProject.id}` }
+              : { label: 'Project context' },
+            { label: data.title, to: getIssueDetailLink(issueId) },
+            { label: 'Edit' },
+          ]}
+        />
+
         <Link
           to={getIssueDetailLink(issueId)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          Back to issue detail
         </Link>
 
         <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
