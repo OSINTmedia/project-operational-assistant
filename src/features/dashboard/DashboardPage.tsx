@@ -136,11 +136,13 @@ function DashboardQueueIssueCard({
             <span className="text-slate-300">•</span>
             <span>{issue.ownerName}</span>
           </div>
-          <h3 className="mt-2 text-base font-semibold text-slate-950">{issue.title}</h3>
+          <h3 className="mt-2 break-words text-base font-semibold text-slate-950">
+            {issue.title}
+          </h3>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-600">
             <Link
               to={`/projects/${issue.projectId}`}
-              className="font-medium text-accent transition-colors hover:text-slate-950"
+              className="min-w-0 break-words font-medium text-accent transition-colors hover:text-slate-950"
             >
               {issue.projectName}
             </Link>
@@ -161,13 +163,13 @@ function DashboardQueueIssueCard({
           </div>
         </div>
 
-        <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-3 lg:flex lg:flex-wrap">
+        <div className="grid w-full gap-3 sm:grid-cols-3 lg:w-auto lg:flex lg:flex-wrap">
           <button
             type="button"
             onClick={onTogglePreview}
             aria-expanded={isPreviewOpen}
             aria-controls={previewId}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
           >
             <Eye className="h-4 w-4" />
             {isPreviewOpen ? 'Hide preview' : 'Preview'}
@@ -177,7 +179,7 @@ function DashboardQueueIssueCard({
           </button>
           <Link
             to={`/projects/${issue.projectId}`}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
           >
             Open project
             <ArrowRight className="h-4 w-4" />
@@ -190,7 +192,7 @@ function DashboardQueueIssueCard({
               path: '/dashboard',
               backLabel: 'Back to Dashboard queue',
             })}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
           >
             Open issue
             <ArrowRight className="h-4 w-4" />

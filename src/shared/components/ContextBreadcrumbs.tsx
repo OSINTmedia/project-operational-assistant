@@ -17,7 +17,7 @@ type ContextBreadcrumbsProps = {
 export function ContextBreadcrumbs({ items, className }: ContextBreadcrumbsProps) {
   return (
     <nav aria-label="Page context" className={cn('min-w-0', className)}>
-      <ol className="flex min-w-0 flex-wrap items-center gap-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+      <ol className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
         {items.map((item, index) => {
           const isLastItem = index === items.length - 1
 
@@ -28,14 +28,14 @@ export function ContextBreadcrumbs({ items, className }: ContextBreadcrumbsProps
                 <Link
                   to={item.to}
                   state={item.state}
-                  className="max-w-[16rem] truncate transition-colors hover:text-slate-800"
+                  className="max-w-[10rem] truncate transition-colors hover:text-slate-800 sm:max-w-[16rem]"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
                   aria-current={isLastItem ? 'page' : undefined}
-                  className="max-w-[18rem] truncate text-slate-600"
+                  className="max-w-[12rem] truncate text-slate-600 sm:max-w-[18rem]"
                 >
                   {item.label}
                 </span>

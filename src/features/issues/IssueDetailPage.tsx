@@ -137,7 +137,7 @@ function QuickActionButton({
       onClick={onClick}
       disabled={isDisabled}
       className={cn(
-        'grid min-h-[92px] gap-2 rounded-xl border p-4 text-left transition-colors',
+        'grid min-h-[92px] min-w-0 gap-2 rounded-xl border p-4 text-left transition-colors',
         isDisabled
           ? 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950',
@@ -145,7 +145,7 @@ function QuickActionButton({
     >
       <span className="flex min-w-0 items-center gap-2 text-sm font-medium">
         <Icon className={cn('h-4 w-4 shrink-0', isDisabled ? 'text-slate-400' : 'text-accent')} />
-        {label}
+        <span className="min-w-0 break-words">{label}</span>
       </span>
       <span className="text-xs leading-5 text-slate-500">
         {isPending ? 'Updating issue...' : disabledReason ?? description}

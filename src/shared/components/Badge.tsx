@@ -30,7 +30,7 @@ export function Badge({ children, className, variant = 'neutral' }: BadgeProps) 
   return (
     <span
       className={cn(
-        'inline-flex min-h-6 items-center rounded-full border px-3 py-1 text-xs font-medium leading-none',
+        'inline-flex min-h-6 max-w-full items-center rounded-full border px-3 py-1 text-left text-xs font-medium leading-tight break-words whitespace-normal',
         badgeVariants[variant],
         className,
       )}

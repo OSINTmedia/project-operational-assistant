@@ -390,12 +390,12 @@ function IssueEditPageReady({
             ) : null}
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
-            <p className="text-sm leading-6 text-slate-500 lg:max-w-2xl">
+          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
+            <p className="text-sm leading-6 text-slate-500 md:max-w-2xl">
               Edit save stays inside domain and repository boundaries. System labels remain
               read-only context rather than editable form inputs.
             </p>
-            <div className="grid w-full gap-3 sm:grid-cols-2 lg:w-auto">
+            <div className="grid w-full gap-3 sm:grid-cols-2 md:w-auto">
               <Link
                 to={issueDetailLink}
                 state={returnNavigationState}

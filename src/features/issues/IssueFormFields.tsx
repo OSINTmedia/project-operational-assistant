@@ -65,8 +65,8 @@ export function IssueFormFields({
 
   return (
     <>
-      <div className="grid gap-4 lg:grid-cols-2">
-        <label className="grid gap-2 text-sm text-slate-600 lg:col-span-2">
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Title
           </span>
@@ -78,7 +78,7 @@ export function IssueFormFields({
           />
         </label>
 
-        <label className="grid gap-2 text-sm text-slate-600 lg:col-span-2">
+        <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Description
           </span>
@@ -260,7 +260,7 @@ export function IssueFormFields({
         </label>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         <fieldset className="rounded-xl border border-slate-200 bg-slate-50 p-4">
           <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Tags
@@ -270,12 +270,15 @@ export function IssueFormFields({
               <p className="text-sm text-slate-500">No reusable tags are available yet.</p>
             ) : (
               data.tagOptions.map((tag) => (
-                <label key={tag.id} className="flex min-w-0 items-center gap-3 text-sm text-slate-700">
+                <label
+                  key={tag.id}
+                  className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
+                >
                   <input
                     type="checkbox"
                     checked={selectedTagIds.includes(tag.id)}
                     onChange={() => onToggleTagId(tag.id)}
-                    className="h-4 w-4 rounded border-slate-300"
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
                   />
                   <span className="min-w-0 break-words">{tag.name}</span>
                 </label>
@@ -293,12 +296,15 @@ export function IssueFormFields({
               <p className="text-sm text-slate-500">No editable labels are available yet.</p>
             ) : (
               data.labelOptions.map((label) => (
-                <label key={label.id} className="flex min-w-0 items-center gap-3 text-sm text-slate-700">
+                <label
+                  key={label.id}
+                  className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
+                >
                   <input
                     type="checkbox"
                     checked={selectedLabelIds.includes(label.id)}
                     onChange={() => onToggleLabelId(label.id)}
-                    className="h-4 w-4 rounded border-slate-300"
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
                   />
                   <span className="min-w-0 break-words">{label.name}</span>
                 </label>

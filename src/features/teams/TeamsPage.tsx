@@ -239,8 +239,10 @@ export function TeamsPage() {
                               ) : null}
                             </div>
 
-                            <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
-                              <p className="text-xs text-slate-500">{formatUpdatedAt(issue.updatedAt)}</p>
+                            <div className="grid w-full gap-3 sm:grid-cols-2 lg:w-auto lg:flex lg:flex-col lg:items-end">
+                              <p className="break-words text-xs text-slate-500 sm:text-right">
+                                {formatUpdatedAt(issue.updatedAt)}
+                              </p>
                               <Link
                                 to={`/issues/${issue.id}`}
                                 state={createIssueNavigationState({
@@ -249,7 +251,7 @@ export function TeamsPage() {
                                   path: '/teams',
                                   backLabel: 'Back to Team Workspace',
                                 })}
-                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
                               >
                                 View issue
                                 <ArrowRight className="h-4 w-4" />
@@ -299,7 +301,7 @@ export function TeamsPage() {
                                 path: '/teams',
                                 backLabel: 'Back to Team Workspace',
                               })}
-                              className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-950"
+                              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 md:w-auto"
                             >
                               Open
                               <ArrowRight className="h-4 w-4" />
@@ -335,9 +337,11 @@ export function TeamsPage() {
                       team.statusSummary.map((status) => (
                         <div
                           key={`${team.id}-${status.statusId}`}
-                          className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
+                          className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm"
                         >
-                          <span className="text-slate-700">{status.statusLabel}</span>
+                          <span className="min-w-0 break-words text-slate-700">
+                            {status.statusLabel}
+                          </span>
                           <span className="font-medium text-slate-950">{status.count}</span>
                         </div>
                       ))

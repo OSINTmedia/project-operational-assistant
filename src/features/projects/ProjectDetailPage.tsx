@@ -117,7 +117,9 @@ function ProjectIssueCard({
               </>
             ) : null}
           </div>
-          <h3 className="mt-2 text-base font-semibold text-slate-950">{issue.title}</h3>
+          <h3 className="mt-2 break-words text-base font-semibold text-slate-950">
+            {issue.title}
+          </h3>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -158,7 +160,7 @@ function ProjectIssueCard({
           onClick={onTogglePreview}
           aria-expanded={isPreviewOpen}
           aria-controls={previewId}
-          className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
         >
           <Eye className="h-4 w-4" />
           {isPreviewOpen ? 'Hide preview' : 'Preview'}
@@ -169,7 +171,7 @@ function ProjectIssueCard({
         <Link
           to={`/issues/${issue.id}`}
           state={issueDetailState}
-          className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-950"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-950 sm:w-auto"
         >
           Open full issue
           <ArrowRight className="h-4 w-4" />
@@ -209,7 +211,7 @@ function ProjectIssueCard({
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Participants
               </p>
-              <p className="mt-1 text-sm font-medium text-slate-950">
+              <p className="mt-1 break-words text-sm font-medium text-slate-950">
                 {issue.participantNames.join(', ')}
               </p>
             </div>
@@ -546,7 +548,7 @@ export function ProjectDetailPage() {
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder="Search issue title, owner, curator, label, tag, status, or priority"
-                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
+                    className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
                   />
                 </div>
                 <span className="text-xs leading-5 text-slate-500">

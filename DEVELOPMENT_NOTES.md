@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Keep Phase 5.8E responsive pass as targeted layout repair
+
+**Context:**
+`Phase 5.8E` needed to validate mobile and tablet usability after assistant-home, context-header, source-aware return, and inline-preview changes increased screen density.
+
+**Decision:**
+Use small presentation-layer layout refinements: safer badge and breadcrumb wrapping, full-width mobile preview/action links, tablet two-column form fields, checkbox alignment, quick-action label wrapping, and Team Workspace tap-target improvements. Do not add collapsible form sections, a mobile drawer, a new preview framework, or a broader dashboard/app redesign in this slice.
+
+**Reasoning:**
+The approved problem was responsive working-layout comfort, not new interaction behavior. The current screens could be made more robust with low-risk class changes while preserving existing routes, data flow, domain behavior, and accessibility expectations around visible actions.
+
+**Alternatives considered:**
+Adding collapsible mobile filters, adding advanced-field collapse to forms, introducing a mobile drawer, or redesigning dense screens more broadly.
+
+**Impact:**
+Phase 5.8E improves smaller-screen readability and action comfort without changing the domain model, persistence schema, repository boundaries, routing, authentication model, notification behavior, employee-scoring semantics, or system-label treatment.
+
 ### 2026-07-15 — Keep Dashboard queue preview local
 
 **Context:**

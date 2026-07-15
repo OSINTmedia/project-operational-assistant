@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
+- `Phase 5.8E — Responsive Interaction and Working-layout Pass`
 
 Next concrete micro-phase:
 
-- `Phase 5.8E — Responsive Interaction and Working-layout Pass`
+- `Phase 5.8F — Final App Experience Audit`
 
 ## Documentation Trust Order
 
@@ -260,13 +260,26 @@ Use the project docs in this order when deciding what is current and what should
 - Preserved the existing `Open issue` and `Open project` links for deep inspection, activity history, structured actions, and project context.
 - Extended the Dashboard read model with preview-only issue context for description, curator, updated-by, dependency, confirmation state, `Ready for Confirmation`, and tags through existing repository-backed reads.
 - Kept the Dashboard preview read-oriented and scoped to the queue; no universal drawer/modal framework, global issue-list route, saved filters, command palette, route replacement, workflow engine, real permissions, auth, notifications, employee scoring, repository-layer rewrite, or persistence/schema change was introduced.
+- Completed `Phase 5.8E — Responsive Interaction and Working-layout Pass`.
+- Hardened shared badges and breadcrumbs so long labels and route context wrap/truncate more safely on mobile and tablet widths.
+- Tightened Dashboard queue and Project Detail preview/action rows with safer text wrapping and mobile-friendly tap targets.
+- Improved Issue Detail quick-action wrapping and Create/Edit form tablet layout without introducing collapsible sections, drawers, modals, or new form behavior.
+- Improved Team Workspace issue links and status rows for smaller screens while preserving existing route/state behavior.
+- Kept the responsive pass presentation-only: no new routes, workflow behavior, domain model changes, repository changes, persistence changes, backend, auth, notifications, organization workspace, employee scoring, or drawer/modal framework were introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
 - `src/features/dashboard/DashboardPage.tsx`
-- `src/features/dashboard/useDashboardMetrics.ts`
+- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/issues/IssueDetailPage.tsx`
+- `src/features/issues/IssueFormFields.tsx`
+- `src/features/issues/IssueCreatePage.tsx`
+- `src/features/issues/IssueEditPage.tsx`
+- `src/features/teams/TeamsPage.tsx`
+- `src/shared/components/Badge.tsx`
+- `src/shared/components/ContextBreadcrumbs.tsx`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
@@ -411,6 +424,7 @@ Full implementation history:
 - Phase 5.8B1 keeps workspace risks separate from personal next actions so blocked, delayed, and workspace-wide `Needs Update` counts do not read as employee scoring.
 - Phase 5.8D1 uses scoped inline expansion on Project Detail issue cards instead of introducing a drawer or modal framework for the first preview slice.
 - Phase 5.8D2 keeps the Dashboard queue preview local to the Dashboard instead of extracting a shared preview framework or introducing a drawer/modal pattern before the responsive working-layout pass.
+- Phase 5.8E keeps responsive refinements as targeted layout repair: wrapping, tablet form columns, mobile tap targets, and action-row improvements rather than collapsible sections, a mobile drawer, or a broader redesign.
 
 ## Known Issues
 
@@ -467,6 +481,8 @@ Full implementation history:
 - Phase 5.8D1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail issue filters, inline previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8D2 uses one scoped inline preview pattern on Dashboard queue issue cards. It intentionally avoids saved filters, a global issue-list route, a command palette, and a universal drawer/modal framework; users should use inline preview for lightweight Dashboard inspection and the full Issue Detail route for deep work.
 - Phase 5.8D2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard search/filter, queue previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8E was code-first and source-inspected. Browser screenshot/runtime viewport walkthroughs across 390px, 768px, and desktop are still recommended before closing `Phase 5.8F`.
+- The existing Vite build chunk-size warning remains non-blocking for the portfolio MVP.
 
 ## Verification Results
 
@@ -485,6 +501,8 @@ Full implementation history:
 - Phase 5.8D1 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8D2 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8E implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -545,10 +563,11 @@ Full implementation history:
 - `Phase 5.8C2 — Source-aware Return Flow` is now complete.
 - `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection` is now complete.
 - `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping` is now complete.
+- `Phase 5.8E — Responsive Interaction and Working-layout Pass` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8E — Responsive Interaction and Working-layout Pass`.
+- The next allowed implementation slice is `Phase 5.8F — Final App Experience Audit`.
 
 ## Next Recommended Task
 
@@ -556,16 +575,18 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8E — Responsive Interaction and Working-layout Pass`
+- `Phase 5.8F — Final App Experience Audit`
 
 Scope for the next task only:
 
-- test and refine the Phase 5.8 app-experience changes across desktop, tablet, and mobile widths
-- focus on Dashboard, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, and AppShell working layout
-- fix only responsive issues exposed by the assistant-home, context-header, source-aware return, and preview/inline-inspection slices
-- preserve action visibility, readability, text wrapping, and tappable controls on smaller screens
+- run the final app-experience audit for Phase 5.8
+- verify the app feels coherent and assistant-like after the selected-user, context, return-flow, preview, and responsive slices
+- verify role-aware action visibility, `Needs Update`, and `Ready for Confirmation` discoverability remain clear and semantically correct
+- verify reduced navigation friction and responsive usability without adding new feature behavior
+- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, or drawer/modal framework was introduced
 - preserve existing route tree, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not add a separate mobile product, unrelated visual redesign, new feature behavior, real permissions, real auth, notification behavior, employee scoring, workflow engine, global issue-list route, command palette, universal drawer framework, or router replacement
+- run `npm run build`, `npm run typecheck`, and `npm run lint`
+- update handoff docs only as needed for audit status and Phase 6 readiness
 
-Do not implement the whole of `Phase 5.8` or drift into `Phase 5.8F` final audit work in one task.
+Do not implement new UI features, deployment work, Phase 6 validation, or final release documentation in the `Phase 5.8F` audit slice.

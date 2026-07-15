@@ -323,12 +323,12 @@ function IssueCreatePageReady({
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
-            <p className="text-sm leading-6 text-slate-500 lg:max-w-2xl">
+          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
+            <p className="text-sm leading-6 text-slate-500 md:max-w-2xl">
               The create flow stays inside repository and domain-service boundaries. Only title and
               description remain open text.
             </p>
-            <div className="grid w-full gap-3 sm:grid-cols-2 lg:w-auto">
+            <div className="grid w-full gap-3 sm:grid-cols-2 md:w-auto">
               <Link
                 to={getBackLink(projectId ?? null)}
                 className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
