@@ -1,9 +1,11 @@
 import {
   AlertCircle,
   ArrowRight,
+  ChevronDown,
   CheckCircle2,
   CircleDotDashed,
   Clock3,
+  Eye,
   FolderKanban,
   OctagonAlert,
   Search,
@@ -17,7 +19,7 @@ import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppS
 import { Badge } from '../../shared/components/Badge'
 import { createIssueNavigationState } from '../issues/issueNavigationState'
 import { DashboardCharts } from './DashboardCharts'
-import { useDashboardMetrics } from './useDashboardMetrics'
+import { useDashboardMetrics, type DashboardIssueSummary } from './useDashboardMetrics'
 
 interface MetricCardProps {
   title: string
@@ -97,6 +99,150 @@ function formatUpdatedAt(value: string): string {
   }).format(new Date(value))
 }
 
+function QueuePreviewFact({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-4 py-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <p className="mt-1 break-words text-sm font-medium text-slate-950">{value}</p>
+    </div>
+  )
+}
+
+function DashboardQueueIssueCard({
+  issue,
+  isPreviewOpen,
+  onTogglePreview,
+}: {
+  issue: DashboardIssueSummary
+  isPreviewOpen: boolean
+  onTogglePreview: () => void
+}) {
+  const previewId = `dashboard-issue-preview-${issue.id}`
+
+  return (
+    <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <span>{issue.statusLabel}</span>
+            <span className="text-slate-300">•</span>
+            <span>{issue.priorityLabel}</span>
+            <span className="text-slate-300">•</span>
+            <span>{issue.ownerName}</span>
+          </div>
+          <h3 className="mt-2 text-base font-semibold text-slate-950">{issue.title}</h3>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+            <Link
+              to={`/projects/${issue.projectId}`}
+              className="font-medium text-accent transition-colors hover:text-slate-950"
+            >
+              {issue.projectName}
+            </Link>
+            <span className="text-slate-300">•</span>
+            <span>Updated {formatUpdatedAt(issue.updatedAt)}</span>
+            {issue.hasNeedsUpdateLabel ? (
+              <>
+                <span className="text-slate-300">•</span>
+                <Badge variant="warning">Needs Update</Badge>
+              </>
+            ) : null}
+            {issue.hasReadyForConfirmationLabel ? (
+              <>
+                <span className="text-slate-300">•</span>
+                <Badge variant="violet">Ready for Confirmation</Badge>
+              </>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-3 lg:flex lg:flex-wrap">
+          <button
+            type="button"
+            onClick={onTogglePreview}
+            aria-expanded={isPreviewOpen}
+            aria-controls={previewId}
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+          >
+            <Eye className="h-4 w-4" />
+            {isPreviewOpen ? 'Hide preview' : 'Preview'}
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${isPreviewOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+          <Link
+            to={`/projects/${issue.projectId}`}
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+          >
+            Open project
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            to={`/issues/${issue.id}`}
+            state={createIssueNavigationState({
+              source: 'dashboard',
+              label: 'Dashboard queue',
+              path: '/dashboard',
+              backLabel: 'Back to Dashboard queue',
+            })}
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+          >
+            Open issue
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+
+      {isPreviewOpen ? (
+        <div id={previewId} className="mt-4 grid gap-4 border-t border-slate-200 pt-4">
+          <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Quick context
+            </p>
+            <p className="mt-2 text-sm leading-6 text-slate-700">
+              {issue.description || 'No description has been added for this issue.'}
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <QueuePreviewFact label="Owner" value={issue.ownerName} />
+            <QueuePreviewFact label="Curator" value={issue.curatorName ?? 'No curator assigned'} />
+            <QueuePreviewFact
+              label="Dependency"
+              value={
+                issue.dependencyTargetLabel
+                  ? `${issue.dependencyLabel}: ${issue.dependencyTargetLabel}`
+                  : issue.dependencyLabel
+              }
+            />
+            <QueuePreviewFact
+              label="Confirmation"
+              value={issue.confirmationRequired ? 'Confirmation requested' : 'Not requested'}
+            />
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <QueuePreviewFact label="Updated by" value={issue.updatedByName} />
+            <QueuePreviewFact
+              label="Tags"
+              value={
+                issue.tagNames.length > 0
+                  ? issue.tagNames.map((tag) => `#${tag}`).join(', ')
+                  : 'No tags'
+              }
+            />
+          </div>
+        </div>
+      ) : null}
+    </article>
+  )
+}
+
 export function DashboardPage() {
   const demoUsers = useDemoAppState((state) => state.demoUsers)
   const currentUserId = useDemoAppState((state) => state.currentUserId)
@@ -106,6 +252,7 @@ export function DashboardPage() {
   const [projectFilter, setProjectFilter] = useState('all')
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [previewIssueId, setPreviewIssueId] = useState<string | null>(null)
   const dashboardMetrics = useDashboardMetrics({
     currentUserId,
     currentUserName: currentUser?.name ?? null,
@@ -142,7 +289,12 @@ export function DashboardPage() {
           issue.statusLabel,
           issue.priorityLabel,
           issue.ownerName,
+          issue.curatorName ?? '',
+          issue.dependencyLabel,
+          issue.dependencyTargetLabel ?? '',
           issue.hasNeedsUpdateLabel ? 'Needs Update' : '',
+          issue.hasReadyForConfirmationLabel ? 'Ready for Confirmation confirmation needed' : '',
+          ...issue.tagNames,
         ]
           .join(' ')
           .toLocaleLowerCase()
@@ -432,7 +584,8 @@ export function DashboardPage() {
             </div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
               Narrow dashboard filters and direct links into issue and project work, without
-              widening into saved reports or notification behavior.
+              widening into saved reports or notification behavior. Use Preview for lightweight
+              issue context and Open issue for activity history or deeper work.
             </p>
           </div>
           <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
@@ -458,7 +611,7 @@ export function DashboardPage() {
                 type="search"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search issue title, project, owner, status, or priority"
+                placeholder="Search issue title, project, owner, curator, tag, status, or priority"
                 className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
               />
             </div>
@@ -546,62 +699,16 @@ export function DashboardPage() {
         <div className="mt-5 grid gap-4">
           {filteredIssues.length > 0 ? (
             filteredIssues.map((issue) => (
-              <article
+              <DashboardQueueIssueCard
                 key={issue.id}
-                className="rounded-xl border border-slate-200 bg-slate-50 p-4"
-              >
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                      <span>{issue.statusLabel}</span>
-                      <span className="text-slate-300">•</span>
-                      <span>{issue.priorityLabel}</span>
-                      <span className="text-slate-300">•</span>
-                      <span>{issue.ownerName}</span>
-                    </div>
-                    <h3 className="mt-2 text-base font-semibold text-slate-950">{issue.title}</h3>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-600">
-                      <Link
-                        to={`/projects/${issue.projectId}`}
-                        className="font-medium text-accent transition-colors hover:text-slate-950"
-                      >
-                        {issue.projectName}
-                      </Link>
-                      <span className="text-slate-300">•</span>
-                      <span>Updated {formatUpdatedAt(issue.updatedAt)}</span>
-                      {issue.hasNeedsUpdateLabel ? (
-                        <>
-                          <span className="text-slate-300">•</span>
-                          <Badge variant="warning">Needs Update</Badge>
-                        </>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
-                    <Link
-                      to={`/projects/${issue.projectId}`}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
-                    >
-                      Open project
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                    <Link
-                      to={`/issues/${issue.id}`}
-                      state={createIssueNavigationState({
-                        source: 'dashboard',
-                        label: 'Dashboard queue',
-                        path: '/dashboard',
-                        backLabel: 'Back to Dashboard queue',
-                      })}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
-                    >
-                      Open issue
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
-              </article>
+                issue={issue}
+                isPreviewOpen={previewIssueId === issue.id}
+                onTogglePreview={() =>
+                  setPreviewIssueId((currentIssueId) =>
+                    currentIssueId === issue.id ? null : issue.id,
+                  )
+                }
+              />
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">

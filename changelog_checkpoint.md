@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
+- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
 
 Next concrete micro-phase:
 
-- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
+- `Phase 5.8E — Responsive Interaction and Working-layout Pass`
 
 ## Documentation Trust Order
 
@@ -255,13 +255,18 @@ Use the project docs in this order when deciding what is current and what should
 - Kept the full Issue Detail route available through a separate `Open full issue` link with the existing project source-aware route state.
 - Extended the Project Detail read model with preview-only issue context for description, updated-by, dependency, confirmation, participants, and system attention labels through existing repository-backed reads.
 - Kept the preview read-oriented and scoped to Project Detail; no universal modal/drawer framework, Dashboard preview, Team preview, route replacement, workflow engine, real permissions, auth, notifications, employee scoring, repository-layer rewrite, or persistence/schema change was introduced.
+- Completed `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`.
+- Added a scoped Dashboard queue issue preview so users can inspect lightweight issue context without leaving the Dashboard.
+- Preserved the existing `Open issue` and `Open project` links for deep inspection, activity history, structured actions, and project context.
+- Extended the Dashboard read model with preview-only issue context for description, curator, updated-by, dependency, confirmation state, `Ready for Confirmation`, and tags through existing repository-backed reads.
+- Kept the Dashboard preview read-oriented and scoped to the queue; no universal drawer/modal framework, global issue-list route, saved filters, command palette, route replacement, workflow engine, real permissions, auth, notifications, employee scoring, repository-layer rewrite, or persistence/schema change was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/projects/useProjectDetailView.ts`
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/dashboard/useDashboardMetrics.ts`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
@@ -405,6 +410,7 @@ Full implementation history:
   open assigned issues, open curated issues, related `Needs Update` issues, and pending `Ready for Confirmation` items targeted at the selected user.
 - Phase 5.8B1 keeps workspace risks separate from personal next actions so blocked, delayed, and workspace-wide `Needs Update` counts do not read as employee scoring.
 - Phase 5.8D1 uses scoped inline expansion on Project Detail issue cards instead of introducing a drawer or modal framework for the first preview slice.
+- Phase 5.8D2 keeps the Dashboard queue preview local to the Dashboard instead of extracting a shared preview framework or introducing a drawer/modal pattern before the responsive working-layout pass.
 
 ## Known Issues
 
@@ -459,6 +465,8 @@ Full implementation history:
 - Phase 5.8C2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard -> Issue -> Edit, Personal -> Issue -> Edit, Teams -> Issue/Edit, and Project Detail -> Issue -> Edit is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8D1 uses one scoped inline preview pattern on Project Detail issue cards. It intentionally avoids a drawer/modal framework and does not preserve full filter state through Issue Detail; users should use inline preview for lightweight inspection and the full Issue Detail route for deep work.
 - Phase 5.8D1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail issue filters, inline previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8D2 uses one scoped inline preview pattern on Dashboard queue issue cards. It intentionally avoids saved filters, a global issue-list route, a command palette, and a universal drawer/modal framework; users should use inline preview for lightweight Dashboard inspection and the full Issue Detail route for deep work.
+- Phase 5.8D2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard search/filter, queue previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
@@ -475,6 +483,8 @@ Full implementation history:
 - Phase 5.8C2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8D1 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8D2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -534,28 +544,28 @@ Full implementation history:
 - `Phase 5.8C1 — Breadcrumbs and Context Headers` is now complete.
 - `Phase 5.8C2 — Source-aware Return Flow` is now complete.
 - `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection` is now complete.
+- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`.
+- The next allowed implementation slice is `Phase 5.8E — Responsive Interaction and Working-layout Pass`.
 
 ## Next Recommended Task
 
-`Phase 5.8` is the next active umbrella phase.
+`Phase 5.8` is the current active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
+- `Phase 5.8E — Responsive Interaction and Working-layout Pass`
 
 Scope for the next task only:
 
-- evaluate and implement one scoped preview or expandable-details pattern for Dashboard queue issue cards
-- allow users to inspect lightweight issue context from the Dashboard queue without forcing every item into Issue Detail
-- preserve existing links to the full Issue Detail route for deep inspection, activity history, and structured actions
-- support the selected-user action summary added in `Phase 5.8B1`
-- keep the preview accessible and scoped to Dashboard only
+- test and refine the Phase 5.8 app-experience changes across desktop, tablet, and mobile widths
+- focus on Dashboard, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, and AppShell working layout
+- fix only responsive issues exposed by the assistant-home, context-header, source-aware return, and preview/inline-inspection slices
+- preserve action visibility, readability, text wrapping, and tappable controls on smaller screens
 - preserve existing route tree, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not replace the Dashboard queue with a global issue-list route, add saved filters, add a command palette, add a universal drawer system unless explicitly justified from the prior slice, replace Issue Detail, add a complex state machine, introduce new workflow types, real permissions, real auth, notification behavior, employee scoring, or router replacement
+- do not add a separate mobile product, unrelated visual redesign, new feature behavior, real permissions, real auth, notification behavior, employee scoring, workflow engine, global issue-list route, command palette, universal drawer framework, or router replacement
 
-Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8D` in one task.
+Do not implement the whole of `Phase 5.8` or drift into `Phase 5.8F` final audit work in one task.

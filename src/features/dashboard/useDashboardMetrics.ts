@@ -10,8 +10,11 @@ import { issueRepository } from '../../repositories/issueRepository'
 import { labelRepository } from '../../repositories/labelRepository'
 import { projectRepository } from '../../repositories/projectRepository'
 import { statusRepository } from '../../repositories/statusRepository'
+import { tagRepository } from '../../repositories/tagRepository'
+import { teamRepository } from '../../repositories/teamRepository'
 import { userRepository } from '../../repositories/userRepository'
 import {
+  DEPENDENCY_TYPE_LABELS,
   PRIORITY_LABELS,
   USER_ROLE_LABELS,
   type PriorityId,
@@ -24,6 +27,7 @@ const READY_FOR_CONFIRMATION_LABEL_NAME = 'Ready for Confirmation'
 export interface DashboardIssueSummary {
   id: string
   title: string
+  description: string
   projectId: string
   projectName: string
   statusId: string
@@ -31,8 +35,15 @@ export interface DashboardIssueSummary {
   priorityId: PriorityId
   priorityLabel: string
   ownerName: string
+  curatorName: string | null
+  updatedByName: string
   updatedAt: string
+  dependencyLabel: string
+  dependencyTargetLabel: string | null
+  confirmationRequired: boolean
   hasNeedsUpdateLabel: boolean
+  hasReadyForConfirmationLabel: boolean
+  tagNames: string[]
 }
 
 export interface DashboardFilterOption {
@@ -80,11 +91,13 @@ async function loadDashboardMetricsViewData(params: {
   currentUserRole: UserRoleId
 }): Promise<DashboardMetricsViewData> {
   const { currentUserId, currentUserName, currentUserRole } = params
-  const [issues, labels, projects, statuses, users] = await Promise.all([
+  const [issues, labels, projects, statuses, tags, teams, users] = await Promise.all([
     issueRepository.list(),
     labelRepository.list(),
     projectRepository.list(),
     statusRepository.list(),
+    tagRepository.list(),
+    teamRepository.list(),
     userRepository.list(),
   ])
   const needsUpdateLabelIds = labels
@@ -95,7 +108,10 @@ async function loadDashboardMetricsViewData(params: {
     .map((label) => label.id)
   const projectNames = new Map(projects.map((project) => [project.id, project.name]))
   const statusNames = new Map(statuses.map((status) => [status.id, status.name]))
+  const tagNames = new Map(tags.map((tag) => [tag.id, tag.name]))
+  const teamNames = new Map(teams.map((team) => [team.id, team.name]))
   const userNames = new Map(users.map((user) => [user.id, user.name]))
+  const issueTitles = new Map(issues.map((issue) => [issue.id, issue.title]))
   const selectedUserActions = calculateSelectedUserActions({
     currentUserId,
     issues,
@@ -114,6 +130,7 @@ async function loadDashboardMetricsViewData(params: {
     .map((issue) => ({
       id: issue.id,
       title: issue.title,
+      description: issue.description,
       projectId: issue.projectId,
       projectName: projectNames.get(issue.projectId) ?? 'Unknown project',
       statusId: issue.statusId,
@@ -121,8 +138,24 @@ async function loadDashboardMetricsViewData(params: {
       priorityId: issue.priority,
       priorityLabel: PRIORITY_LABELS[issue.priority],
       ownerName: userNames.get(issue.ownerId) ?? 'Unknown owner',
+      curatorName: issue.curatorId ? (userNames.get(issue.curatorId) ?? 'Unknown curator') : null,
+      updatedByName: userNames.get(issue.updatedBy) ?? 'Unknown updater',
       updatedAt: issue.updatedAt,
+      dependencyLabel: DEPENDENCY_TYPE_LABELS[issue.dependencyType],
+      dependencyTargetLabel: resolveDependencyTargetLabel({
+        dependencyTargetId: issue.dependencyTargetId,
+        issueTitles,
+        teamNames,
+        userNames,
+      }),
+      confirmationRequired: issue.confirmationRequired,
       hasNeedsUpdateLabel: issue.labelIds.some((labelId) => needsUpdateLabelIds.includes(labelId)),
+      hasReadyForConfirmationLabel: issue.labelIds.some((labelId) =>
+        readyForConfirmationLabelIds.includes(labelId),
+      ),
+      tagNames: issue.tagIds
+        .map((tagId) => tagNames.get(tagId))
+        .filter((tagName): tagName is string => Boolean(tagName)),
     }))
   const statusOptions = calculateFilterOptions(issueSummaries, (issue) => issue.statusId, (issue) => issue.statusLabel)
   const priorityOptions = calculateFilterOptions(
@@ -162,6 +195,26 @@ async function loadDashboardMetricsViewData(params: {
 
 function isOpenIssue(issue: Issue): boolean {
   return issue.statusId !== 'done' && issue.statusId !== 'canceled'
+}
+
+function resolveDependencyTargetLabel(params: {
+  dependencyTargetId: string | null
+  issueTitles: Map<string, string>
+  userNames: Map<string, string>
+  teamNames: Map<string, string>
+}): string | null {
+  const { dependencyTargetId, issueTitles, userNames, teamNames } = params
+
+  if (!dependencyTargetId) {
+    return null
+  }
+
+  return (
+    issueTitles.get(dependencyTargetId) ??
+    userNames.get(dependencyTargetId) ??
+    teamNames.get(dependencyTargetId) ??
+    dependencyTargetId
+  )
 }
 
 function hasAnyLabel(issue: Issue, labelIds: string[]): boolean {

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Keep Dashboard queue preview local
+
+**Context:**
+`Phase 5.8D2` needed to reduce Dashboard queue route-hopping after the Project Detail preview pattern had already proved useful.
+
+**Decision:**
+Add a Dashboard-local inline preview on queue issue cards and extend only the Dashboard read model with preview fields. Do not introduce a shared preview component, drawer/modal framework, saved filters, command palette, or global issue-list route in this slice.
+
+**Reasoning:**
+The approved problem was lightweight Dashboard inspection, not a broader interaction-system rewrite. A local inline preview preserves Dashboard filters and selected-user context with lower accessibility and architecture risk than a drawer framework or shared abstraction.
+
+**Alternatives considered:**
+Reusing the Project Detail preview as a shared component, adding a dashboard drawer, replacing Dashboard queue navigation with a global issue list, or waiting for the responsive pass.
+
+**Impact:**
+Dashboard issue inspection is faster while full Issue Detail remains available for activity history and deep work. The route tree, local-first repository boundaries, system-label semantics, and MVP scope remain unchanged.
+
 ### 2026-07-15 — Use scoped inline preview before drawer framework
 
 **Context:**
