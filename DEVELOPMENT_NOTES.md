@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Use route-local state for source-aware issue return context
+
+**Context:**
+`Phase 5.8C2` needed to fix Dashboard, Personal, Team Workspace, and Project Detail issue flows losing their origin after users drilled into Issue Detail and Edit.
+
+**Decision:**
+Use a small feature-local issue navigation-state helper around React Router `location.state`. Source issue links pass a validated `issueReturnContext` into Issue Detail, Issue Detail forwards that context into Issue Edit, and non-project-origin edit saves return to Issue Detail with the original source preserved as the back path. Project-origin flows still return to Project Detail.
+
+**Reasoning:**
+Route-local state solves the approved context-recovery problem without adding global navigation history, saved filters, URL query contracts, router replacement, persistence changes, or a workflow engine. Direct refresh or missing state safely falls back to Project Detail context.
+
+**Alternatives considered:**
+Adding a global navigation store, encoding source context in query parameters, preserving full Dashboard/Project filter state, or waiting for the later preview/drawer slice.
+
+**Impact:**
+List-to-detail-to-edit flows are more predictable for Dashboard, Personal, Teams, and Project Detail while the route tree, domain model, repository boundaries, local-first persistence, and MVP exclusions remain unchanged.
+
 ### 2026-07-15 — Keep context breadcrumbs static before return-flow logic
 
 **Context:**

@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
+import { createIssueNavigationState } from '../issues/issueNavigationState'
 import { useProjectDetailView, type ProjectIssueSummary } from './useProjectDetailView'
 
 const ATTENTION_FILTER_OPTIONS = [
@@ -61,10 +62,24 @@ function getLabelBadgeVariant(label: string): BadgeVariant {
   return 'info'
 }
 
-function ProjectIssueCard({ issue }: { issue: ProjectIssueSummary }) {
+function ProjectIssueCard({
+  issue,
+  projectId,
+  projectName,
+}: {
+  issue: ProjectIssueSummary
+  projectId: string
+  projectName: string
+}) {
   return (
     <Link
       to={`/issues/${issue.id}`}
+      state={createIssueNavigationState({
+        source: 'project',
+        label: projectName,
+        path: `/projects/${projectId}`,
+        backLabel: `Back to ${projectName}`,
+      })}
       className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel transition-colors hover:border-slate-300"
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -527,7 +542,14 @@ export function ProjectDetailPage() {
               This demo project does not currently have any issue records to show.
             </div>
           ) : filteredIssues.length > 0 ? (
-            filteredIssues.map((issue) => <ProjectIssueCard key={issue.id} issue={issue} />)
+            filteredIssues.map((issue) => (
+              <ProjectIssueCard
+                key={issue.id}
+                issue={issue}
+                projectId={data.id}
+                projectName={data.name}
+              />
+            ))
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
               No project issues match the current filters. Reset the filters to return to the full

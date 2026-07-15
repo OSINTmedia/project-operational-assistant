@@ -6,6 +6,7 @@ import { cn } from '../utils/cn'
 export type ContextBreadcrumbItem = {
   label: ReactNode
   to?: string
+  state?: unknown
 }
 
 type ContextBreadcrumbsProps = {
@@ -26,6 +27,7 @@ export function ContextBreadcrumbs({ items, className }: ContextBreadcrumbsProps
               {item.to && !isLastItem ? (
                 <Link
                   to={item.to}
+                  state={item.state}
                   className="max-w-[16rem] truncate transition-colors hover:text-slate-800"
                 >
                   {item.label}

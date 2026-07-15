@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8C1 — Breadcrumbs and Context Headers`
+- `Phase 5.8C2 — Source-aware Return Flow`
 
 Next concrete micro-phase:
 
-- `Phase 5.8C2 — Source-aware Return Flow`
+- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
 
 ## Documentation Trust Order
 
@@ -245,15 +245,22 @@ Use the project docs in this order when deciding what is current and what should
 - Added a shared, presentational `ContextBreadcrumbs` component for route-level page context.
 - Added static context paths and clearer back labels to Project Detail, Issue Detail, Issue Create, Issue Edit, and Team Workspace.
 - Kept context recovery limited to route labels and existing links; no source-aware return state, router rewrite, drawer/modal behavior, global issue-list route, or save-return behavior change was introduced.
+- Completed `Phase 5.8C2 — Source-aware Return Flow`.
+- Added a feature-local issue navigation-state helper for narrow, validated route-state return context.
+- Passed source context from Dashboard, Personal, Project Detail, and Team Workspace issue links into Issue Detail.
+- Carried source context from Issue Detail into Issue Edit so cancel/back and save behavior preserve Dashboard, Personal, Team Workspace, or Project Detail origin where appropriate.
+- Kept Project Detail as the fallback and true project-origin return path; no global navigation history, router rewrite, query contract, drawer/modal behavior, preview framework, workflow engine, real permissions, auth, notifications, employee scoring, repository changes, or persistence/schema changes were introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
+- `src/features/issues/issueNavigationState.ts`
 - `src/shared/components/ContextBreadcrumbs.tsx`
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/personal/PersonalPage.tsx`
 - `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueCreatePage.tsx`
 - `src/features/issues/IssueEditPage.tsx`
 - `src/features/teams/TeamsPage.tsx`
 - `changelog_checkpoint.md`
@@ -450,6 +457,8 @@ Full implementation history:
 - Phase 5.8B2 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8C1 kept context recovery static and presentational. It added route breadcrumbs/back-label clarity but intentionally deferred source-aware return behavior, origin preservation, and edit-save return changes to `Phase 5.8C2`.
 - Phase 5.8C1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail, Issue Detail, Issue Create, Issue Edit, Team Workspace, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8C2 uses React Router route state for source-aware issue return context. It intentionally falls back to Project Detail on direct refresh or missing state instead of adding URL query contracts, global navigation history, saved filters, or router rewrites.
+- Phase 5.8C2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard -> Issue -> Edit, Personal -> Issue -> Edit, Teams -> Issue/Edit, and Project Detail -> Issue -> Edit is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
@@ -462,6 +471,8 @@ Full implementation history:
 - Phase 5.8B2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8C1 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8C2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -519,10 +530,11 @@ Full implementation history:
 - `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` is now complete.
 - `Phase 5.8B2 — AppShell Selected-user Orientation` is now complete.
 - `Phase 5.8C1 — Breadcrumbs and Context Headers` is now complete.
+- `Phase 5.8C2 — Source-aware Return Flow` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8C2 — Source-aware Return Flow`.
+- The next allowed implementation slice is `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`.
 
 ## Next Recommended Task
 
@@ -530,16 +542,16 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8C2 — Source-aware Return Flow`
+- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
 
 Scope for the next task only:
 
-- evaluate and implement narrow source-aware return behavior for Dashboard, Personal, Teams, Project Detail, Issue Detail, and Issue Edit flows
-- avoid losing Personal, Dashboard, or Team Workspace context after issue drill-in and edit flows
-- preserve Project Detail return when project context is the true origin
-- keep route context behavior narrow and understandable
-- preserve existing routes, HashRouter behavior, and GitHub Pages compatibility
+- evaluate and implement one scoped preview or inline-inspection pattern for Project Detail issue cards
+- allow users to inspect key issue context without leaving Project Detail
+- keep the full Issue Detail route available for deep inspection, activity history, and structured actions
+- keep the preview read-oriented or very limited-action only
+- preserve existing route tree, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not add a full router rewrite, global navigation history system, global issue-list route, workflow engine, real permissions, real auth, notification behavior, employee scoring, drawer/modal work, or preview framework
+- do not add a universal modal/drawer framework, replace Issue Detail, add a complex state machine, introduce new workflow types, real permissions, real auth, notification behavior, employee scoring, global issue-list route, or router replacement
 
-Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8C` in one task.
+Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8D` in one task.

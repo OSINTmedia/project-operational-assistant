@@ -2,6 +2,7 @@ import { AlertCircle, ArrowRightLeft, FolderKanban, RefreshCcw, UserCircle2 } fr
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
+import { createIssueNavigationState } from '../issues/issueNavigationState'
 import { usePersonalView, type PersonalIssueSummary, type PersonalSection } from './usePersonalView'
 
 function formatUpdatedAt(value: string): string {
@@ -27,6 +28,12 @@ function PersonalIssueCard({ issue }: { issue: PersonalIssueSummary }) {
   return (
     <Link
       to={`/issues/${issue.id}`}
+      state={createIssueNavigationState({
+        source: 'personal',
+        label: 'Personal',
+        path: '/personal',
+        backLabel: 'Back to Personal',
+      })}
       className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel transition-colors hover:border-slate-300"
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">

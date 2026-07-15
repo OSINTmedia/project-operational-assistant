@@ -15,7 +15,7 @@ import {
   Users,
 } from 'lucide-react'
 import { useState, type ComponentType } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { useDemoAppState } from '../../app/state/useDemoAppState'
 import {
   confirmIssue,
@@ -27,6 +27,7 @@ import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import { STATUS_LABELS, type StatusId } from '../../shared/types'
 import { cn } from '../../shared/utils/cn'
+import { createIssueNavigationState, getIssueReturnContext } from './issueNavigationState'
 import { useIssueDetailView } from './useIssueDetailView'
 
 function formatDateTime(value: string): string {
@@ -155,11 +156,13 @@ function QuickActionButton({
 
 export function IssueDetailPage() {
   const { issueId } = useParams()
+  const location = useLocation()
   const issueView = useIssueDetailView(issueId ?? null)
   const currentUserId = useDemoAppState((state) => state.currentUserId)
   const [pendingActionId, setPendingActionId] = useState<QuickActionId | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const [actionMessage, setActionMessage] = useState<string | null>(null)
+  const sourceReturnContext = getIssueReturnContext(location.state)
 
   if (issueView.status === 'loading') {
     return (
@@ -218,6 +221,26 @@ export function IssueDetailPage() {
   }
 
   const { data } = issueView
+  const projectReturnContext = {
+    source: 'project' as const,
+    label: data.projectName,
+    path: `/projects/${data.projectId}`,
+    backLabel: `Back to ${data.projectName}`,
+  }
+  const returnContext = sourceReturnContext ?? projectReturnContext
+  const returnNavigationState = createIssueNavigationState(returnContext)
+  const breadcrumbItems =
+    returnContext.source === 'project'
+      ? [
+          { label: 'Projects', to: '/projects' },
+          { label: data.projectName, to: `/projects/${data.projectId}` },
+          { label: data.title },
+        ]
+      : [
+          { label: returnContext.label, to: returnContext.path },
+          { label: data.projectName, to: `/projects/${data.projectId}` },
+          { label: data.title },
+        ]
   const actorDisabledReason = currentUserId ? null : 'Select a demo user before taking action.'
   const statusActions: Array<{
     statusId: StatusId
@@ -328,23 +351,23 @@ export function IssueDetailPage() {
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
-        <ContextBreadcrumbs
-          items={[
-            { label: 'Projects', to: '/projects' },
-            { label: data.projectName, to: `/projects/${data.projectId}` },
-            { label: data.title },
-          ]}
-        />
+        <ContextBreadcrumbs items={breadcrumbItems} />
 
         <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <Link
-              to={`/projects/${data.projectId}`}
+              to={returnContext.path}
               className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to {data.projectName}
+              {returnContext.backLabel}
             </Link>
+
+            {returnContext.source !== 'project' ? (
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Opened from {returnContext.label}. This issue still belongs to {data.projectName}.
+              </p>
+            ) : null}
 
             <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue detail
@@ -363,6 +386,7 @@ export function IssueDetailPage() {
           <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto">
             <Link
               to={`/issues/${data.id}/edit`}
+              state={returnNavigationState}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <FilePenLine className="h-4 w-4" />
@@ -412,6 +436,7 @@ export function IssueDetailPage() {
           </div>
           <Link
             to={`/issues/${data.id}/edit`}
+            state={returnNavigationState}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
           >
             <FilePenLine className="h-4 w-4" />

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
+import { createIssueNavigationState } from '../issues/issueNavigationState'
 import { useTeamWorkspaceView } from './useTeamWorkspaceView'
 
 function formatUpdatedAt(value: string): string {
@@ -242,6 +243,12 @@ export function TeamsPage() {
                               <p className="text-xs text-slate-500">{formatUpdatedAt(issue.updatedAt)}</p>
                               <Link
                                 to={`/issues/${issue.id}`}
+                                state={createIssueNavigationState({
+                                  source: 'teams',
+                                  label: 'Team Workspace',
+                                  path: '/teams',
+                                  backLabel: 'Back to Team Workspace',
+                                })}
                                 className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
                               >
                                 View issue
@@ -286,6 +293,12 @@ export function TeamsPage() {
                             </div>
                             <Link
                               to={`/issues/${issue.id}`}
+                              state={createIssueNavigationState({
+                                source: 'teams',
+                                label: 'Team Workspace',
+                                path: '/teams',
+                                backLabel: 'Back to Team Workspace',
+                              })}
                               className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-950"
                             >
                               Open

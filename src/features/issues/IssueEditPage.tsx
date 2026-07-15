@@ -1,11 +1,12 @@
 import { AlertCircle, ArrowLeft, FilePenLine } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { saveIssueEdits } from '../../domain/issueRules'
 import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import type { DependencyTypeId, IssueTypeId, PriorityId, StatusId } from '../../shared/types'
 import { IssueFormFields } from './IssueFormFields'
+import { createIssueNavigationState, getIssueReturnContext } from './issueNavigationState'
 import { getIssueFormBlockingMessage } from './issueFormValidation'
 import {
   useIssueEditFormPrefill,
@@ -94,6 +95,7 @@ function IssueEditPageReady({
   data: IssueEditFormPrefillData
 }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const currentUserId = useDemoAppState((state) => state.currentUserId)
   const [title, setTitle] = useState(data.title)
   const [description, setDescription] = useState(data.description)
@@ -116,6 +118,38 @@ function IssueEditPageReady({
     () => data.projectOptions.find((project) => project.id === selectedProjectId) ?? null,
     [data.projectOptions, selectedProjectId],
   )
+  const sourceReturnContext = getIssueReturnContext(location.state)
+  const projectReturnContext = {
+    source: 'project' as const,
+    label: currentProject?.name ?? 'Project',
+    path: selectedProjectId ? `/projects/${selectedProjectId}` : '/projects',
+    backLabel: currentProject ? `Back to ${currentProject.name}` : 'Back to Project',
+  }
+  const returnContext = sourceReturnContext ?? projectReturnContext
+  const returnNavigationState = createIssueNavigationState(returnContext)
+  const issueDetailLink = getIssueDetailLink(issueId)
+  const breadcrumbItems =
+    returnContext.source === 'project'
+      ? [
+          { label: 'Projects', to: '/projects' },
+          currentProject
+            ? { label: currentProject.name, to: `/projects/${currentProject.id}` }
+            : { label: 'Project context' },
+          { label: data.title, to: issueDetailLink, state: returnNavigationState },
+          { label: 'Edit' },
+        ]
+      : [
+          { label: returnContext.label, to: returnContext.path },
+          currentProject
+            ? { label: currentProject.name, to: `/projects/${currentProject.id}` }
+            : { label: 'Project context' },
+          { label: data.title, to: issueDetailLink, state: returnNavigationState },
+          { label: 'Edit' },
+        ]
+  const saveBehaviorDescription =
+    returnContext.source === 'project'
+      ? 'Save returns to the current project context after success.'
+      : `Save returns to Issue Detail with ${returnContext.label} preserved as the back path.`
   const dependencyTargetOptions = selectedProjectId
     ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
     : []
@@ -216,7 +250,11 @@ function IssueEditPageReady({
         dependencyTargetId: dependencyType === 'none' ? null : selectedDependencyTargetId,
       })
 
-      navigate(`/projects/${savedIssue.projectId}`)
+      if (returnContext.source === 'project') {
+        navigate(`/projects/${savedIssue.projectId}`)
+      } else {
+        navigate(getIssueDetailLink(savedIssue.id), { state: returnNavigationState })
+      }
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : 'Failed to save issue changes in local demo data.',
@@ -228,19 +266,11 @@ function IssueEditPageReady({
   return (
     <section className="grid gap-6">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
-        <ContextBreadcrumbs
-          items={[
-            { label: 'Projects', to: '/projects' },
-            currentProject
-              ? { label: currentProject.name, to: `/projects/${currentProject.id}` }
-              : { label: 'Project context' },
-            { label: data.title, to: getIssueDetailLink(issueId) },
-            { label: 'Edit' },
-          ]}
-        />
+        <ContextBreadcrumbs items={breadcrumbItems} />
 
         <Link
-          to={getIssueDetailLink(issueId)}
+          to={issueDetailLink}
+          state={returnNavigationState}
           className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -257,6 +287,12 @@ function IssueEditPageReady({
               Structured issue editing for the local demo with controlled validation, preserved
               system-label semantics, and repository-backed save behavior.
             </p>
+            {returnContext.source !== 'project' ? (
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Opened from {returnContext.label}. Cancel returns to Issue Detail, and the issue
+                detail back path returns to that source.
+              </p>
+            ) : null}
           </div>
 
           <div className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 lg:w-auto">
@@ -274,8 +310,7 @@ function IssueEditPageReady({
           <div>
             <p className="text-sm font-medium text-slate-950">Save structured issue changes</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Save updates stay inside domain and repository boundaries and return the user to
-              Project Detail after success.
+              Save updates stay inside domain and repository boundaries. {saveBehaviorDescription}
             </p>
           </div>
         </div>
@@ -343,8 +378,8 @@ function IssueEditPageReady({
                 {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
               </p>
               <p>
-                <span className="font-medium text-slate-950">Save behavior:</span> Persists
-                structured changes and returns to Project Detail
+                <span className="font-medium text-slate-950">Save behavior:</span>{' '}
+                {saveBehaviorDescription}
               </p>
             </div>
             {data.readonlySystemLabelNames.length > 0 ? (
@@ -362,7 +397,8 @@ function IssueEditPageReady({
             </p>
             <div className="grid w-full gap-3 sm:grid-cols-2 lg:w-auto">
               <Link
-                to={getIssueDetailLink(issueId)}
+                to={issueDetailLink}
+                state={returnNavigationState}
                 className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
               >
                 Cancel
