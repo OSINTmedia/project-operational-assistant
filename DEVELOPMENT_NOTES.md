@@ -8,6 +8,41 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Keep Dashboard assistant action counts read-model only
+
+**Context:**
+`Phase 5.8B1` needed the Dashboard to answer what matters for the selected demo user without adding real permissions, notifications, workflow behavior, or employee scoring.
+
+**Decision:**
+Add selected-user action counts to the Dashboard read model only:
+open assigned issues, open curated issues, related `Needs Update` issues, and pending `Ready for Confirmation` items targeted at the selected user. Keep separate workspace-risk counts for blocked, delayed, and workspace-wide `Needs Update` issues.
+
+**Reasoning:**
+This makes Dashboard feel more like an assistant home while preserving the existing local-first architecture and system-label semantics. It also keeps personal next actions separate from workspace risk visibility so the UI does not imply performance scoring.
+
+**Alternatives considered:**
+Adding new notification-like queues, adding list-level quick actions, changing confirmation into a status, or introducing real role permissions.
+
+**Impact:**
+The Dashboard now surfaces selected-user action clarity before broader AppShell, navigation, drawer, preview, or route-hopping work. No persistence schema, domain model, route, backend, auth, or notification behavior changed.
+
+### 2026-07-15 — Split Phase 5.8B before implementation
+
+**Context:**
+`Phase 5.8A` produced an accepted code-first design review. The review found that the app is functionally complete and coherent, but the first user-experience gap is weak selected-user next-action clarity rather than the absence of drawers or modals.
+
+**Decision:**
+Split `Phase 5.8B — Assistant Home and Role-aware Action Clarity` into `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` and `Phase 5.8B2 — AppShell Selected-user Orientation`.
+
+**Reasoning:**
+The Dashboard should first answer what matters for the selected demo user now. Drawer, modal, preview, and route-hopping reductions should come later, after the app clearly surfaces selected-user responsibilities, needs-update work, confirmation-needed work, and workspace risks.
+
+**Alternatives considered:**
+Start with drawer/preview patterns, keep `Phase 5.8B` as one broad implementation slice, or proceed directly to navigation/context recovery before clarifying the assistant home.
+
+**Impact:**
+Phase 5.8 now starts with a narrow Dashboard action-summary slice that improves assistant behavior without changing MVP scope, authentication constraints, permissions, notifications, or the project/issue data model.
+
 ### 2026-07-14 — Add app-experience refinement before final QA
 
 **Context:**

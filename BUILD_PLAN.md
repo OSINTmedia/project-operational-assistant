@@ -1873,6 +1873,10 @@ Improve the product experience after the full feature and polish surface is visi
 
 This phase should make the app feel like an operational assistant rather than a collection of disconnected admin pages.
 
+Execution note:
+
+Detailed execution for this phase is tracked in `APP_EXPERIENCE_PLAN.md`. `design_review.md` is the accepted diagnostic source for `Phase 5.8A`; `APP_EXPERIENCE_PLAN.md` is the focused implementation roadmap for the remaining Phase 5.8 slices.
+
 Scope:
 
 - reduce unnecessary page hopping
@@ -1905,7 +1909,7 @@ Explicit exclusions:
 
 ### Phase 5.8A — UX / Navigation Diagnostic and Target Plan
 
-Status: `Next active phase`
+Status: `Completed`
 
 Goal:
 
@@ -1946,6 +1950,15 @@ Status: `Later`
 Goal:
 
 Make the app entry experience and Dashboard/Personal surfaces clearly show what the selected demo user should pay attention to next.
+
+Refinement note:
+
+The accepted Phase 5.8A design review split this broad implementation area into:
+
+- `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary`
+- `Phase 5.8B2 — AppShell Selected-user Orientation`
+
+Use `APP_EXPERIENCE_PLAN.md` for exact slice scope before implementation.
 
 Scope:
 

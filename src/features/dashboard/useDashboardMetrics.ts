@@ -5,6 +5,7 @@ import {
   type DashboardDistributions,
   type DashboardMetricCounts,
 } from '../../domain/dashboardMetrics'
+import type { Issue, UserId } from '../../entities'
 import { issueRepository } from '../../repositories/issueRepository'
 import { labelRepository } from '../../repositories/labelRepository'
 import { projectRepository } from '../../repositories/projectRepository'
@@ -18,6 +19,7 @@ import {
 } from '../../shared/types'
 
 const NEEDS_UPDATE_LABEL_NAME = 'Needs Update'
+const READY_FOR_CONFIRMATION_LABEL_NAME = 'Ready for Confirmation'
 
 export interface DashboardIssueSummary {
   id: string
@@ -39,11 +41,26 @@ export interface DashboardFilterOption {
   count: number
 }
 
+export interface DashboardSelectedUserActions {
+  assignedIssues: number
+  curatedIssues: number
+  needsUpdateIssues: number
+  confirmationNeededIssues: number
+}
+
+export interface DashboardWorkspaceRisks {
+  blockedIssues: number
+  delayedIssues: number
+  needsUpdateIssues: number
+}
+
 export interface DashboardMetricsViewData {
   currentUserName: string
   currentUserRoleLabel: string
   metrics: DashboardMetricCounts
   distributions: DashboardDistributions
+  selectedUserActions: DashboardSelectedUserActions
+  workspaceRisks: DashboardWorkspaceRisks
   issues: DashboardIssueSummary[]
   filterOptions: {
     statuses: DashboardFilterOption[]
@@ -58,10 +75,11 @@ type DashboardMetricsViewState =
   | { status: 'ready'; data: DashboardMetricsViewData }
 
 async function loadDashboardMetricsViewData(params: {
+  currentUserId: UserId
   currentUserName: string
   currentUserRole: UserRoleId
 }): Promise<DashboardMetricsViewData> {
-  const { currentUserName, currentUserRole } = params
+  const { currentUserId, currentUserName, currentUserRole } = params
   const [issues, labels, projects, statuses, users] = await Promise.all([
     issueRepository.list(),
     labelRepository.list(),
@@ -72,9 +90,25 @@ async function loadDashboardMetricsViewData(params: {
   const needsUpdateLabelIds = labels
     .filter((label) => label.type === 'system' && label.name === NEEDS_UPDATE_LABEL_NAME)
     .map((label) => label.id)
+  const readyForConfirmationLabelIds = labels
+    .filter((label) => label.type === 'system' && label.name === READY_FOR_CONFIRMATION_LABEL_NAME)
+    .map((label) => label.id)
   const projectNames = new Map(projects.map((project) => [project.id, project.name]))
   const statusNames = new Map(statuses.map((status) => [status.id, status.name]))
   const userNames = new Map(users.map((user) => [user.id, user.name]))
+  const selectedUserActions = calculateSelectedUserActions({
+    currentUserId,
+    issues,
+    needsUpdateLabelIds,
+    readyForConfirmationLabelIds,
+  })
+  const workspaceRisks = {
+    blockedIssues: issues.filter((issue) => issue.statusId === 'blocked').length,
+    delayedIssues: issues.filter((issue) => issue.statusId === 'delayed').length,
+    needsUpdateIssues: issues.filter((issue) =>
+      issue.labelIds.some((labelId) => needsUpdateLabelIds.includes(labelId)),
+    ).length,
+  }
   const issueSummaries = [...issues]
     .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt))
     .map((issue) => ({
@@ -115,12 +149,68 @@ async function loadDashboardMetricsViewData(params: {
       statuses,
       users,
     }),
+    selectedUserActions,
+    workspaceRisks,
     issues: issueSummaries,
     filterOptions: {
       statuses: statusOptions,
       priorities: priorityOptions,
       projects: projectOptions,
     },
+  }
+}
+
+function isOpenIssue(issue: Issue): boolean {
+  return issue.statusId !== 'done' && issue.statusId !== 'canceled'
+}
+
+function hasAnyLabel(issue: Issue, labelIds: string[]): boolean {
+  return issue.labelIds.some((labelId) => labelIds.includes(labelId))
+}
+
+function isIssueRelatedToUser(issue: Issue, currentUserId: UserId): boolean {
+  return (
+    issue.ownerId === currentUserId ||
+    issue.createdBy === currentUserId ||
+    issue.curatorId === currentUserId ||
+    issue.participantIds.includes(currentUserId) ||
+    issue.dependencyTargetId === currentUserId
+  )
+}
+
+function calculateSelectedUserActions(input: {
+  currentUserId: UserId
+  issues: Issue[]
+  needsUpdateLabelIds: string[]
+  readyForConfirmationLabelIds: string[]
+}): DashboardSelectedUserActions {
+  const {
+    currentUserId,
+    issues,
+    needsUpdateLabelIds,
+    readyForConfirmationLabelIds,
+  } = input
+
+  return {
+    assignedIssues: issues.filter(
+      (issue) => isOpenIssue(issue) && issue.ownerId === currentUserId,
+    ).length,
+    curatedIssues: issues.filter(
+      (issue) => isOpenIssue(issue) && issue.curatorId === currentUserId,
+    ).length,
+    needsUpdateIssues: issues.filter(
+      (issue) =>
+        isIssueRelatedToUser(issue, currentUserId) &&
+        hasAnyLabel(issue, needsUpdateLabelIds),
+    ).length,
+    confirmationNeededIssues: issues.filter(
+      (issue) =>
+        issue.confirmationRequired &&
+        issue.confirmedAt === null &&
+        issue.dependencyType === 'user' &&
+        issue.dependencyTargetId === currentUserId &&
+        hasAnyLabel(issue, readyForConfirmationLabelIds),
+    ).length,
   }
 }
 
@@ -162,16 +252,17 @@ function calculateFilterOptions(
 }
 
 export function useDashboardMetrics(params: {
+  currentUserId: UserId | null
   currentUserName: string | null
   currentUserRole: UserRoleId | null
 }): DashboardMetricsViewState {
-  const { currentUserName, currentUserRole } = params
+  const { currentUserId, currentUserName, currentUserRole } = params
   const [state, setState] = useState<DashboardMetricsViewState>({ status: 'loading' })
 
   useEffect(() => {
     let isActive = true
 
-    if (!currentUserName || !currentUserRole) {
+    if (!currentUserId || !currentUserName || !currentUserRole) {
       setState({
         status: 'error',
         message: 'A demo user must be selected before the Dashboard can load.',
@@ -182,6 +273,7 @@ export function useDashboardMetrics(params: {
     setState({ status: 'loading' })
 
     void loadDashboardMetricsViewData({
+      currentUserId,
       currentUserName,
       currentUserRole,
     })
@@ -210,7 +302,7 @@ export function useDashboardMetrics(params: {
     return () => {
       isActive = false
     }
-  }, [currentUserName, currentUserRole])
+  }, [currentUserId, currentUserName, currentUserRole])
 
   return useMemo(() => state, [state])
 }

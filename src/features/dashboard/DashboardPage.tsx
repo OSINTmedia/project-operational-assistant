@@ -25,6 +25,14 @@ interface MetricCardProps {
   icon: React.ComponentType<{ className?: string }>
 }
 
+interface AssistantSummaryCardProps {
+  title: string
+  value: number
+  description: string
+  icon: React.ComponentType<{ className?: string }>
+  tone?: 'default' | 'warning' | 'danger' | 'success'
+}
+
 function MetricCard({ title, value, description, icon: Icon }: MetricCardProps) {
   return (
     <article className="min-w-0 rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
@@ -36,6 +44,36 @@ function MetricCard({ title, value, description, icon: Icon }: MetricCardProps) 
       </div>
       <p className="mt-4 text-3xl font-semibold leading-none text-slate-950">{value}</p>
       <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p>
+    </article>
+  )
+}
+
+function AssistantSummaryCard({
+  title,
+  value,
+  description,
+  icon: Icon,
+  tone = 'default',
+}: AssistantSummaryCardProps) {
+  const toneStyles = {
+    default: 'border-slate-200 bg-white text-accent',
+    warning: 'border-orange-200 bg-orange-50/40 text-orange-600',
+    danger: 'border-rose-200 bg-rose-50/40 text-rose-600',
+    success: 'border-emerald-200 bg-emerald-50/40 text-emerald-600',
+  }[tone]
+
+  return (
+    <article className={`min-w-0 rounded-xl border p-4 ${toneStyles}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-slate-950">{title}</p>
+          <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
+        </div>
+        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/80">
+          <Icon className="h-4 w-4" />
+        </span>
+      </div>
+      <p className="mt-4 text-3xl font-semibold leading-none text-slate-950">{value}</p>
     </article>
   )
 }
@@ -68,6 +106,7 @@ export function DashboardPage() {
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const dashboardMetrics = useDashboardMetrics({
+    currentUserId,
     currentUserName: currentUser?.name ?? null,
     currentUserRole: currentUser?.role ?? null,
   })
@@ -202,6 +241,59 @@ export function DashboardPage() {
       icon: AlertCircle,
     },
   ] as const
+  const selectedUserActionCards = [
+    {
+      title: 'Assigned to me',
+      value: data.selectedUserActions.assignedIssues,
+      description: 'Open issues where this selected user owns the next operational action.',
+      icon: UserCircle2,
+      tone: 'default',
+    },
+    {
+      title: 'Curated by me',
+      value: data.selectedUserActions.curatedIssues,
+      description: 'Open group work where this user keeps context and continuity visible.',
+      icon: FolderKanban,
+      tone: 'default',
+    },
+    {
+      title: 'Needs my update',
+      value: data.selectedUserActions.needsUpdateIssues,
+      description: 'Related issues carrying the Needs Update system attention label.',
+      icon: AlertCircle,
+      tone: 'warning',
+    },
+    {
+      title: 'Needs my confirmation',
+      value: data.selectedUserActions.confirmationNeededIssues,
+      description: 'Ready for Confirmation items currently waiting on this selected user.',
+      icon: CheckCircle2,
+      tone: 'success',
+    },
+  ] as const
+  const workspaceRiskCards = [
+    {
+      title: 'Blocked',
+      value: data.workspaceRisks.blockedIssues,
+      description: 'Workspace issues that cannot move without intervention or resolution.',
+      icon: OctagonAlert,
+      tone: 'danger',
+    },
+    {
+      title: 'Delayed',
+      value: data.workspaceRisks.delayedIssues,
+      description: 'Workspace issues behind expectation and worth checking early.',
+      icon: TimerReset,
+      tone: 'warning',
+    },
+    {
+      title: 'Needs Update',
+      value: data.workspaceRisks.needsUpdateIssues,
+      description: 'Workspace issues with stale operational context, not a performance score.',
+      icon: AlertCircle,
+      tone: 'warning',
+    },
+  ] as const
 
   function resetFilters() {
     setStatusFilter('all')
@@ -236,6 +328,73 @@ export function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-lg font-semibold text-slate-950">Assistant home</h3>
+              <Badge variant="accent">Selected user</Badge>
+            </div>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              Start with what matters for {data.currentUserName}, then separate personal action
+              cues from workspace-level operational risks. These counts are local demo signals,
+              not permissions, notifications, or performance scoring.
+            </p>
+          </div>
+          <Link
+            to="/personal"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
+          >
+            Open Personal
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)]">
+          <div className="grid gap-3">
+            <div>
+              <p className="text-sm font-semibold text-slate-950">My next actions</p>
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                Role-aware cues for work related to the selected demo user.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {selectedUserActionCards.map((card) => (
+                <AssistantSummaryCard
+                  key={card.title}
+                  title={card.title}
+                  value={card.value}
+                  description={card.description}
+                  icon={card.icon}
+                  tone={card.tone}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-3">
+            <div>
+              <p className="text-sm font-semibold text-slate-950">Workspace risks</p>
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                Shared operational signals to inspect without reading them as employee scores.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              {workspaceRiskCards.map((card) => (
+                <AssistantSummaryCard
+                  key={card.title}
+                  title={card.title}
+                  value={card.value}
+                  description={card.description}
+                  icon={card.icon}
+                  tone={card.tone}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (

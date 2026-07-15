@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.7 — Phase 5 Polish Audit`
+- `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary`
 
 Next concrete micro-phase:
 
-- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`
+- `Phase 5.8B2 — AppShell Selected-user Orientation`
 
 ## Documentation Trust Order
 
@@ -18,9 +18,11 @@ Use the project docs in this order when deciding what is current and what should
 
 1. `changelog_checkpoint.md` for the live handoff, latest completed micro-phase, and next concrete micro-phase
 2. `BUILD_PLAN.md` for roadmap order, scope boundaries, and acceptance criteria
-3. `DEVELOPMENT_NOTES.md` for meaningful implementation decisions and trade-offs
-4. frozen docs in `docs/` for product and technical context only
-5. `README.md` for public portfolio presentation only, not implementation guidance
+3. `APP_EXPERIENCE_PLAN.md` for Phase 5.8 execution details while Phase 5.8 is active
+4. `design_review.md` for Phase 5.8 UX findings and severity while Phase 5.8 is active
+5. `DEVELOPMENT_NOTES.md` for meaningful implementation decisions and trade-offs
+6. frozen docs in `docs/` for product and technical context only
+7. `README.md` for public portfolio presentation only, not implementation guidance
 
 ## Documentation Interpretation Notes
 
@@ -226,15 +228,30 @@ Use the project docs in this order when deciding what is current and what should
 - Documented the rationale for `Phase 5.8`:
   the app is functional and portfolio-polished, but navigation, selected-user orientation, role-aware next actions, update/confirmation visibility, and context recovery need a focused pass before final QA and deployment.
 - Kept the `Phase 5.8` roadmap update documentation-only; no source code, frozen docs, backend/auth behavior, notification behavior, organization scope, employee scoring, deployment work, or Phase 6 work was added.
+- Completed `Phase 5.8A — UX / Navigation Diagnostic and Target Plan` by creating `design_review.md` as the accepted code-first app experience inspection act.
+- Created `APP_EXPERIENCE_PLAN.md` to translate the accepted design review into a practical Phase 5.8 execution roadmap.
+- Split the broad `Phase 5.8B — Assistant Home and Role-aware Action Clarity` implementation area into:
+  `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` and `Phase 5.8B2 — AppShell Selected-user Orientation`.
+- Confirmed the next implementation priority is selected-user next-action clarity before drawers, modals, or broader route-hopping reduction.
+- Completed `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary`.
+- Extended the Dashboard read model with selected-user action counts and workspace-risk counts behind the existing feature hook and repository boundaries.
+- Added a read-only Dashboard `Assistant home` section that separates `My next actions` from `Workspace risks`.
+- Surfaced selected-user assigned, curated, needs-update, and confirmation-needed counts without adding real permissions, auth, notifications, employee scoring, drawer/modal work, or route changes.
 
 ## Changed Files
 
-Latest implementation slice:
+Latest implementation/audit slice:
 
-- `BUILD_PLAN.md`
+- `src/features/dashboard/useDashboardMetrics.ts`
+- `src/features/dashboard/DashboardPage.tsx`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
-- `README.md`
+
+Current uncommitted planning context:
+
+- `design_review.md`
+- `APP_EXPERIENCE_PLAN.md`
+- `BUILD_PLAN.md`
 
 Full implementation history:
 
@@ -366,6 +383,9 @@ Full implementation history:
 - Demo reset now executes through app-state orchestration rather than feature-level persistence calls, keeping the Demo page inside the intended UI/state boundary.
 - Demo role switching now uses one reusable UI control across the sidebar and Demo page so visible identity state stays consistent without adding auth-like complexity.
 - Personal issue grouping now stays in a screen-scoped read-model hook instead of widening the shared repository API prematurely, keeping Phase 3.2 small while still respecting repository boundaries.
+- Phase 5.8B1 keeps selected-user action counts as read-model signals:
+  open assigned issues, open curated issues, related `Needs Update` issues, and pending `Ready for Confirmation` items targeted at the selected user.
+- Phase 5.8B1 keeps workspace risks separate from personal next actions so blocked, delayed, and workspace-wide `Needs Update` counts do not read as employee scoring.
 
 ## Known Issues
 
@@ -412,12 +432,17 @@ Full implementation history:
 - Phase 5.6 README work intentionally updates only public portfolio documentation. It does not claim final deployment is complete, and it keeps live implementation handoff guidance in `changelog_checkpoint.md`.
 - Phase 5.7 polish audit closed Phase 5 without new feature work. Remaining pre-QA app-experience work now belongs to Phase 5.8, with Phase 6 quality, validation, deployment setup, live-demo verification, and final release readiness preserved after that refinement phase.
 - Phase 5.8 was inserted before Phase 6 to address app-experience friction revealed after the full functional and polish surface was visible. It is bounded to navigation, information architecture, role-aware workflow clarity, context recovery, and responsive usability without changing MVP product scope.
+- Phase 5.8A accepted the code-first design review as the diagnostic output and split Phase 5.8B before implementation. The first implementation slice is selected-user Dashboard action clarity, not drawers or modals.
+- Phase 5.8B1 passed build/typecheck/lint, but a manual browser walkthrough across Manager, Project Manager, User, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
 - `npm run build` passed
 - `npm run typecheck` passed
 - `npm run lint` passed
+- Docs-only Phase 5.8A planning updates did not require rerunning build/typecheck/lint because no source files were changed.
+- Phase 5.8B1 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -468,11 +493,14 @@ Full implementation history:
 - `Phase 5.7 — Phase 5 Polish Audit` is now complete.
 - `Phase 5 — Portfolio Polish` is now complete.
 - `Phase 5.8 — App Experience Refinement Before Final QA` is now the active roadmap phase.
-- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan` is the next concrete micro-phase.
+- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan` is now complete.
+- `APP_EXPERIENCE_PLAN.md` is the focused execution roadmap for the remaining Phase 5.8 implementation slices.
+- `Phase 5.8B — Assistant Home and Role-aware Action Clarity` has been refined into `Phase 5.8B1` and `Phase 5.8B2` before implementation.
+- `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`.
+- The next allowed implementation slice is `Phase 5.8B2 — AppShell Selected-user Orientation`.
 
 ## Next Recommended Task
 
@@ -480,14 +508,15 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8A — UX / Navigation Diagnostic and Target Plan`
+- `Phase 5.8B2 — AppShell Selected-user Orientation`
 
 Scope for the next task only:
 
-- inspect Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, and Demo
-- assess role-specific flows for Manager, Project Manager, and User
-- identify page-hopping, context loss, unclear role responsibilities, and confusing action visibility
-- classify findings by severity
-- define which refinements belong in `Phase 5.8` and which remain post-MVP
+- improve shell/topbar selected-user context so the active demo user and role are obvious from every main route
+- reduce generic demo/auth-exclusion copy only if it competes with task orientation
+- add compact links or cues to Dashboard/Personal only if clearly useful
+- preserve existing role-switch behavior
+- preserve `Needs Update` and `Ready for Confirmation` as system labels
+- do not add real permissions, real auth, notification behavior, employee scoring, new user picker, broad AppShell redesign, drawer/modal work, or route replacement
 
-Do not implement the whole of `Phase 5.8` in one task.
+Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8B` in one task.
