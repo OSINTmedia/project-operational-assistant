@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-15 — Use scoped inline preview before drawer framework
+
+**Context:**
+`Phase 5.8D1` needed to reduce Project Detail route-hopping for lightweight issue inspection without starting the broader `Phase 5.8D` interaction-pattern pass.
+
+**Decision:**
+Use one Project Detail inline preview pattern on issue cards and keep `Open full issue` as the deep-work route. Extend only the Project Detail read model with preview fields already available through existing repository-backed reads.
+
+**Reasoning:**
+Inline expansion solves the approved `F-04` design-review finding with lower accessibility and architecture risk than introducing a drawer/modal framework. It preserves project filters and context during lightweight inspection while leaving activity history, edit flow, and structured issue actions on the full Issue Detail route.
+
+**Alternatives considered:**
+Adding a reusable drawer framework, replacing Issue Detail with previews, adding Dashboard/Team previews in the same slice, or preserving full Project Detail filter state through route/query contracts.
+
+**Impact:**
+Project Detail now supports context-preserving issue inspection without changing routes, repositories, persistence schema, domain models, authentication, permissions, notifications, workflow behavior, or system-label semantics.
+
 ### 2026-07-15 — Use route-local state for source-aware issue return context
 
 **Context:**

@@ -2,6 +2,8 @@ import {
   AlertCircle,
   ArrowLeft,
   ArrowRight,
+  ChevronDown,
+  Eye,
   Filter,
   FolderKanban,
   Plus,
@@ -62,26 +64,46 @@ function getLabelBadgeVariant(label: string): BadgeVariant {
   return 'info'
 }
 
+function PreviewFact({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-4 py-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <p className="mt-1 break-words text-sm font-medium text-slate-950">{value}</p>
+    </div>
+  )
+}
+
 function ProjectIssueCard({
   issue,
   projectId,
   projectName,
+  isPreviewOpen,
+  onTogglePreview,
 }: {
   issue: ProjectIssueSummary
   projectId: string
   projectName: string
+  isPreviewOpen: boolean
+  onTogglePreview: () => void
 }) {
+  const issueDetailState = createIssueNavigationState({
+    source: 'project',
+    label: projectName,
+    path: `/projects/${projectId}`,
+    backLabel: `Back to ${projectName}`,
+  })
+  const previewId = `project-issue-preview-${issue.id}`
+  const hasNeedsUpdate = issue.labelNames.includes('Needs Update')
+  const hasReadyForConfirmation = issue.labelNames.includes('Ready for Confirmation')
+
   return (
-    <Link
-      to={`/issues/${issue.id}`}
-      state={createIssueNavigationState({
-        source: 'project',
-        label: projectName,
-        path: `/projects/${projectId}`,
-        backLabel: `Back to ${projectName}`,
-      })}
-      className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel transition-colors hover:border-slate-300"
-    >
+    <article className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
@@ -106,6 +128,8 @@ function ProjectIssueCard({
 
       <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
         <span>Updated {formatUpdatedAt(issue.updatedAt)}</span>
+        <span className="text-slate-300">•</span>
+        <span>Updated by {issue.updatedByName}</span>
       </div>
 
       {issue.labelNames.length > 0 ? (
@@ -128,11 +152,80 @@ function ProjectIssueCard({
         </div>
       ) : null}
 
-      <div className="flex items-center justify-end gap-2 text-sm font-medium text-slate-600">
-        <span className="text-right">Open issue</span>
-        <ArrowRight className="h-4 w-4" />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+        <button
+          type="button"
+          onClick={onTogglePreview}
+          aria-expanded={isPreviewOpen}
+          aria-controls={previewId}
+          className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+        >
+          <Eye className="h-4 w-4" />
+          {isPreviewOpen ? 'Hide preview' : 'Preview'}
+          <ChevronDown
+            className={`h-4 w-4 transition-transform ${isPreviewOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
+        <Link
+          to={`/issues/${issue.id}`}
+          state={issueDetailState}
+          className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-950"
+        >
+          Open full issue
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
-    </Link>
+
+      {isPreviewOpen ? (
+        <div id={previewId} className="grid gap-4 border-t border-slate-200 pt-4">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Quick context
+            </p>
+            <p className="mt-2 text-sm leading-6 text-slate-700">
+              {issue.description || 'No description has been added for this issue.'}
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <PreviewFact label="Next action" value={issue.ownerName} />
+            <PreviewFact label="Curator" value={issue.curatorName ?? 'No curator assigned'} />
+            <PreviewFact
+              label="Dependency"
+              value={
+                issue.dependencyTargetLabel
+                  ? `${issue.dependencyLabel}: ${issue.dependencyTargetLabel}`
+                  : issue.dependencyLabel
+              }
+            />
+            <PreviewFact
+              label="Confirmation"
+              value={issue.confirmationRequired ? 'Confirmation requested' : 'Not requested'}
+            />
+          </div>
+
+          {issue.participantNames.length > 0 ? (
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Participants
+              </p>
+              <p className="mt-1 text-sm font-medium text-slate-950">
+                {issue.participantNames.join(', ')}
+              </p>
+            </div>
+          ) : null}
+
+          {hasNeedsUpdate || hasReadyForConfirmation ? (
+            <div className="flex flex-wrap gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3">
+              {hasNeedsUpdate ? <Badge variant="warning">Needs Update</Badge> : null}
+              {hasReadyForConfirmation ? (
+                <Badge variant="violet">Ready for Confirmation</Badge>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </article>
   )
 }
 
@@ -144,6 +237,7 @@ export function ProjectDetailPage() {
   const [typeFilter, setTypeFilter] = useState('all')
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [previewIssueId, setPreviewIssueId] = useState<string | null>(null)
   const issues = useMemo(
     () => (projectView.status === 'ready' ? projectView.data.issues : []),
     [projectView],
@@ -413,7 +507,8 @@ export function ProjectDetailPage() {
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
               Read-only project issues for the selected project. Search and structured filters help
               scan the list without introducing saved filters, inline actions, or broader query
-              behavior.
+              behavior. Use Preview for lightweight context and Open full issue for activity
+              history or deep edits.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
@@ -548,6 +643,12 @@ export function ProjectDetailPage() {
                 issue={issue}
                 projectId={data.id}
                 projectName={data.name}
+                isPreviewOpen={previewIssueId === issue.id}
+                onTogglePreview={() =>
+                  setPreviewIssueId((currentIssueId) =>
+                    currentIssueId === issue.id ? null : issue.id,
+                  )
+                }
               />
             ))
           ) : (

@@ -6,7 +6,12 @@ import { projectRepository } from '../../repositories/projectRepository'
 import { tagRepository } from '../../repositories/tagRepository'
 import { teamRepository } from '../../repositories/teamRepository'
 import { userRepository } from '../../repositories/userRepository'
-import { ISSUE_TYPE_LABELS, PRIORITY_LABELS, STATUS_LABELS } from '../../shared/types'
+import {
+  DEPENDENCY_TYPE_LABELS,
+  ISSUE_TYPE_LABELS,
+  PRIORITY_LABELS,
+  STATUS_LABELS,
+} from '../../shared/types'
 
 const NEEDS_UPDATE_LABEL_NAME = 'Needs Update'
 
@@ -30,12 +35,18 @@ export interface ProjectDetailData {
 export interface ProjectIssueSummary {
   id: string
   title: string
+  description: string
   typeLabel: string
   statusLabel: string
   priorityLabel: string
   ownerName: string
   curatorName: string | null
+  updatedByName: string
   updatedAt: string
+  dependencyLabel: string
+  dependencyTargetLabel: string | null
+  confirmationRequired: boolean
+  participantNames: string[]
   tagNames: string[]
   labelNames: string[]
 }
@@ -45,6 +56,26 @@ type ProjectDetailViewState =
   | { status: 'error'; message: string }
   | { status: 'missing'; message: string }
   | { status: 'ready'; data: ProjectDetailData }
+
+function resolveDependencyTargetLabel(params: {
+  dependencyTargetId: string | null
+  issueTitles: Map<string, string>
+  userNames: Map<string, string>
+  teamNames: Map<string, string>
+}): string | null {
+  const { dependencyTargetId, issueTitles, userNames, teamNames } = params
+
+  if (!dependencyTargetId) {
+    return null
+  }
+
+  return (
+    issueTitles.get(dependencyTargetId) ??
+    userNames.get(dependencyTargetId) ??
+    teamNames.get(dependencyTargetId) ??
+    dependencyTargetId
+  )
+}
 
 async function loadProjectDetailData(projectId: ProjectId): Promise<ProjectDetailData | null> {
   const [project, projectIssues, users, teams, labels, tags] = await Promise.all([
@@ -67,6 +98,7 @@ async function loadProjectDetailData(projectId: ProjectId): Promise<ProjectDetai
   const teamNames = new Map(teams.map((team) => [team.id, team.name]))
   const labelNames = new Map(labels.map((label) => [label.id, label.name]))
   const tagNames = new Map(tags.map((tag) => [tag.id, tag.name]))
+  const issueTitles = new Map(projectIssues.map((issue) => [issue.id, issue.title]))
   const latestIssueActivityAt =
     [...projectIssues]
       .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt))[0]
@@ -76,12 +108,25 @@ async function loadProjectDetailData(projectId: ProjectId): Promise<ProjectDetai
     .map((issue) => ({
       id: issue.id,
       title: issue.title,
+      description: issue.description,
       typeLabel: ISSUE_TYPE_LABELS[issue.type],
       statusLabel: STATUS_LABELS[issue.statusId],
       priorityLabel: PRIORITY_LABELS[issue.priority],
       ownerName: userNames.get(issue.ownerId) ?? 'Unknown owner',
       curatorName: issue.curatorId ? (userNames.get(issue.curatorId) ?? 'Unknown curator') : null,
+      updatedByName: userNames.get(issue.updatedBy) ?? 'Unknown updater',
       updatedAt: issue.updatedAt,
+      dependencyLabel: DEPENDENCY_TYPE_LABELS[issue.dependencyType],
+      dependencyTargetLabel: resolveDependencyTargetLabel({
+        dependencyTargetId: issue.dependencyTargetId,
+        issueTitles,
+        userNames,
+        teamNames,
+      }),
+      confirmationRequired: issue.confirmationRequired,
+      participantNames: issue.participantIds
+        .map((participantId) => userNames.get(participantId))
+        .filter((participantName): participantName is string => Boolean(participantName)),
       tagNames: issue.tagIds
         .map((tagId) => tagNames.get(tagId))
         .filter((tagName): tagName is string => Boolean(tagName)),

@@ -6,11 +6,11 @@ Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
 
 Completed micro-phase:
 
-- `Phase 5.8C2 — Source-aware Return Flow`
+- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
 
 Next concrete micro-phase:
 
-- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
+- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
 
 ## Documentation Trust Order
 
@@ -250,19 +250,18 @@ Use the project docs in this order when deciding what is current and what should
 - Passed source context from Dashboard, Personal, Project Detail, and Team Workspace issue links into Issue Detail.
 - Carried source context from Issue Detail into Issue Edit so cancel/back and save behavior preserve Dashboard, Personal, Team Workspace, or Project Detail origin where appropriate.
 - Kept Project Detail as the fallback and true project-origin return path; no global navigation history, router rewrite, query contract, drawer/modal behavior, preview framework, workflow engine, real permissions, auth, notifications, employee scoring, repository changes, or persistence/schema changes were introduced.
+- Completed `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`.
+- Reworked Project Detail issue cards so lightweight inspection uses a scoped inline preview instead of forcing every issue card interaction into the full Issue Detail route.
+- Kept the full Issue Detail route available through a separate `Open full issue` link with the existing project source-aware route state.
+- Extended the Project Detail read model with preview-only issue context for description, updated-by, dependency, confirmation, participants, and system attention labels through existing repository-backed reads.
+- Kept the preview read-oriented and scoped to Project Detail; no universal modal/drawer framework, Dashboard preview, Team preview, route replacement, workflow engine, real permissions, auth, notifications, employee scoring, repository-layer rewrite, or persistence/schema change was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/issues/issueNavigationState.ts`
-- `src/shared/components/ContextBreadcrumbs.tsx`
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/personal/PersonalPage.tsx`
 - `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueEditPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
+- `src/features/projects/useProjectDetailView.ts`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
@@ -405,6 +404,7 @@ Full implementation history:
 - Phase 5.8B1 keeps selected-user action counts as read-model signals:
   open assigned issues, open curated issues, related `Needs Update` issues, and pending `Ready for Confirmation` items targeted at the selected user.
 - Phase 5.8B1 keeps workspace risks separate from personal next actions so blocked, delayed, and workspace-wide `Needs Update` counts do not read as employee scoring.
+- Phase 5.8D1 uses scoped inline expansion on Project Detail issue cards instead of introducing a drawer or modal framework for the first preview slice.
 
 ## Known Issues
 
@@ -425,14 +425,12 @@ Full implementation history:
 - The Demo controls slice intentionally exposes reset only; the separate `Load Seed Data` wording in frozen technical planning remains deferred unless a later roadmap slice explicitly requires a dedicated control.
 - The Personal screen currently groups repository reads in-memory for created/curated/needs-update relationships because the shared issue repository still exposes only the narrower Phase 2B read methods.
 - Blocked / delayed related-to-me visibility described in frozen product docs remains deferred because it is outside the narrower approved scope of `Phase 3.2`.
-- Personal issue cards currently navigate to the existing placeholder Issue Detail route. This is an acceptable deferred behavior for `Phase 3.6 — Issue Detail View`, but it remains a small current UX limitation until that route is implemented.
-- Project Detail issue links currently navigate to the existing placeholder Issue Detail route. This remains an acceptable deferred behavior until `Phase 3.6 — Issue Detail View`.
 - Project Detail filters remain intentionally local to this screen. No shared list/filter infrastructure exists yet, which is acceptable until a later broader slice actually requires it.
 - The Create Issue shell currently starts from Project Detail context only. A broader global create entry remains deferred unless a later slice explicitly requires it.
 - Issue creation currently returns users to Project Detail after success; broader post-create navigation patterns remain deferred until later create/edit slices require them.
 - The first Issue Detail slice is no longer read-only: Phase 5.3 added narrow domain-backed quick actions for status and confirmation updates while leaving broader workflow expansion out of scope.
 - The Issue Edit surface currently enters from the Issue Detail screen, but broader edit-entry patterns can still be revisited later if the workflow surface grows.
-- The first edit-save success path currently returns users to Project Detail rather than back into Issue Detail. This remains acceptable for now, but the navigation can be revisited if a later workflow slice requires a richer post-save detail surface.
+- Project-origin edit-save success still returns users to Project Detail. Dashboard, Personal, and Team Workspace source contexts now return through Issue Detail with the source-aware back path preserved; direct refresh or missing route state intentionally falls back to Project Detail.
 - Direct edit-save orchestration currently writes one generic `issue-updated` activity entry for changed freeform / structural fields, while status, priority, owner, curator, tag, and label updates continue to use their more specific existing activity helpers.
 - Create and edit validation is intentionally MVP-level and controlled at the screen/domain boundary; advanced inline form UX and richer field-level guidance remain deferred.
 - Dependency target rendering in Issue Detail falls back to raw ids when the target does not resolve cleanly to a known issue, user, or team record.
@@ -459,6 +457,8 @@ Full implementation history:
 - Phase 5.8C1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail, Issue Detail, Issue Create, Issue Edit, Team Workspace, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8C2 uses React Router route state for source-aware issue return context. It intentionally falls back to Project Detail on direct refresh or missing state instead of adding URL query contracts, global navigation history, saved filters, or router rewrites.
 - Phase 5.8C2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard -> Issue -> Edit, Personal -> Issue -> Edit, Teams -> Issue/Edit, and Project Detail -> Issue -> Edit is still recommended before closing the broader Phase 5.8 app-experience work.
+- Phase 5.8D1 uses one scoped inline preview pattern on Project Detail issue cards. It intentionally avoids a drawer/modal framework and does not preserve full filter state through Issue Detail; users should use inline preview for lightweight inspection and the full Issue Detail route for deep work.
+- Phase 5.8D1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail issue filters, inline previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 
 ## Verification Results
 
@@ -473,6 +473,8 @@ Full implementation history:
 - Phase 5.8C1 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8C2 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.8D1 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -531,10 +533,11 @@ Full implementation history:
 - `Phase 5.8B2 — AppShell Selected-user Orientation` is now complete.
 - `Phase 5.8C1 — Breadcrumbs and Context Headers` is now complete.
 - `Phase 5.8C2 — Source-aware Return Flow` is now complete.
+- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection` is now complete.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`.
+- The next allowed implementation slice is `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`.
 
 ## Next Recommended Task
 
@@ -542,16 +545,17 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection`
+- `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping`
 
 Scope for the next task only:
 
-- evaluate and implement one scoped preview or inline-inspection pattern for Project Detail issue cards
-- allow users to inspect key issue context without leaving Project Detail
-- keep the full Issue Detail route available for deep inspection, activity history, and structured actions
-- keep the preview read-oriented or very limited-action only
+- evaluate and implement one scoped preview or expandable-details pattern for Dashboard queue issue cards
+- allow users to inspect lightweight issue context from the Dashboard queue without forcing every item into Issue Detail
+- preserve existing links to the full Issue Detail route for deep inspection, activity history, and structured actions
+- support the selected-user action summary added in `Phase 5.8B1`
+- keep the preview accessible and scoped to Dashboard only
 - preserve existing route tree, HashRouter behavior, and GitHub Pages compatibility
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- do not add a universal modal/drawer framework, replace Issue Detail, add a complex state machine, introduce new workflow types, real permissions, real auth, notification behavior, employee scoring, global issue-list route, or router replacement
+- do not replace the Dashboard queue with a global issue-list route, add saved filters, add a command palette, add a universal drawer system unless explicitly justified from the prior slice, replace Issue Detail, add a complex state machine, introduce new workflow types, real permissions, real auth, notification behavior, employee scoring, or router replacement
 
 Do not implement the whole of `Phase 5.8` or the whole of `Phase 5.8D` in one task.
