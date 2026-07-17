@@ -1877,7 +1877,7 @@ Execution note:
 
 Phase 5.8 completed the first app-experience sequence through selected-user orientation, source-aware return flow, inline previews, and responsive working-layout repair.
 
-After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, `Phase 5.9E — Mobile Survival Pass`, and `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` are complete. The next micro-phase is `Phase 5.9F — Final Compact UX Audit`.
+After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, `Phase 5.9E — Mobile Survival Pass`, `Phase 5.9E2 — Project Manager Project Management and Project Status Sync`, and `Phase 5.9E3 — Live Demo Dataset Expansion` are complete. The next micro-phase is `Phase 5.9F — Final Compact UX Audit`.
 
 The older Phase 5.8 micro-phase entries below are retained as historical roadmap context. They are no longer the source for the next task.
 
@@ -2177,6 +2177,7 @@ Scope:
 - complete a mobile survival pass after desktop/layout order changes
 - add bounded Project Manager project create/edit capability required by frozen scope docs
 - keep project status synchronized with issue status where project issues determine the state
+- expand local seed data so a first-time portfolio visitor can see complete Manager, Project Manager, and User workflows
 - preserve existing route model, `HashRouter`, GitHub Pages compatibility, local-first architecture, and system-label semantics
 
 Explicit exclusions:
@@ -2426,6 +2427,42 @@ Verification requirements:
 Suggested commit message:
 
 - `feat: add project management for project managers`
+
+### Phase 5.9E3 — Live Demo Dataset Expansion
+
+Status: `Complete`
+
+Goal:
+
+Prepare richer local-first seed data before GitHub Pages live demo deployment.
+
+Scope:
+
+- expand demo users across Manager, Project Manager, and User roles
+- expand teams, projects, tags, labels, issues, dependencies, assignments, curator relationships, participants, statuses, confirmation states, and activity history
+- include a fully `Done` project so issue-derived project status sync is visible
+- include active, blocked, delayed, waiting, planned, new, done, and canceled work examples
+- keep data in the existing local-first seed path
+
+Explicit exclusions:
+
+- no schema migration
+- no backend/auth
+- no real organization data
+- no new data model
+- no README/public deployment copy update
+
+Acceptance criteria:
+
+- first-time visitors see full workspace coverage without manual setup
+- Manager, Project Manager, and User role switching reveals distinct useful work
+- Projects, Project Detail, Personal, Dashboard, Issue Detail, Teams, and create/edit forms have richer reference data
+- users with old local IndexedDB can use Demo reset to reseed the expanded dataset
+- build / typecheck / lint pass
+
+Suggested commit message:
+
+- `chore: expand live demo seed data`
 
 ### Phase 5.9F — Final Compact UX Audit
 

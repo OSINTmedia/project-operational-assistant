@@ -15,6 +15,7 @@ Completed micro-phase:
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete
 - `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete
+- `Phase 5.9E3 — Live Demo Dataset Expansion` implementation is complete
 
 Next concrete micro-phase:
 
@@ -42,6 +43,7 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 5.8F` is no longer the next task. The deeper `design_review_V2.md` audit found remaining P0/P1 navigation, first-viewport, density, and mobile risks, so the project moved into corrective `Phase 5.9` before Phase 6.
 - `Phase 5.9` is a controlled compact UX and actionability refinement phase, not scope creep and not a new product-feature phase.
 - `Phase 5.9E2` is the bounded exception that resolves the documented Project Manager project-management gap from frozen docs without adding delete/archive, workflow-engine, backend, auth, or a new data model.
+- `Phase 5.9E3` expands local seed data for portfolio/live-demo readiness. Existing local browsers with old IndexedDB data should use Demo reset to load the expanded dataset.
 
 ## Completed Work
 
@@ -226,6 +228,10 @@ Use the project docs in this order when deciding what is current and what should
 - Added project status synchronization after issue create, issue edit, issue status change, and confirmation-related status changes.
 - Ensured project status derives to `Done` when every issue in the project is `Done`.
 - Kept the Project Manager capability repair free of project delete/archive, workflow engine, backend/auth behavior, broad permissions, new project data model, route replacement, or `/personal` changes.
+- Expanded live demo seed data to cover:
+  13 demo users, 3 teams, 6 projects, 12 tags, 5 labels, 22 issues, and 27 activity history entries.
+- Added demo coverage for Manager, multiple Project Managers, cross-team Users, assigned work, created work, curated group work, participants, dependencies, Needs Update, Ready for Confirmation, confirmed work, canceled work, blocked work, delayed work, and all-Done project status.
+- Kept the dataset expansion inside `src/persistence/seedData.ts`; no schema migration, backend/auth behavior, real organization data, new data model, README update, or frozen-doc edit was introduced.
 - Kept the responsive pass free of information-architecture redesign, new workflow behavior, domain logic changes, and persistence changes.
 - Added a shared `Badge` presentation component for consistent badge/chip rendering across existing demo screens.
 - Replaced repeated ad hoc badge markup across Dashboard, Demo, Projects, Project Detail, Personal, Issue Detail, and Team Workspace surfaces.
@@ -594,6 +600,8 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9E2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9E3 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -663,6 +671,7 @@ Full implementation history:
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete.
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete.
 - `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete.
+- `Phase 5.9E3 — Live Demo Dataset Expansion` implementation is complete.
 - The next allowed micro-phase is `Phase 5.9F — Final Compact UX Audit`, not Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
@@ -689,6 +698,7 @@ Scope for the next task only:
 - preserve 5.9D Issue Detail/Form compression behavior
 - preserve 5.9E mobile survival behavior
 - preserve 5.9E2 bounded Project Manager project create/edit behavior and issue-derived project status sync
+- preserve 5.9E3 expanded live demo seed coverage and Demo reset behavior
 - verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
 - verify no project delete/archive or new project data model is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels

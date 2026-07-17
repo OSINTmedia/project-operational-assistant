@@ -2,7 +2,7 @@
 
 Status: active planning document  
 Source diagnosis: `design_review_V2.md`  
-Execution state: `5.9E2 - Project Manager Project Management and Project Status Sync` complete; `5.9F - Final Compact UX Audit` is next
+Execution state: `5.9E3 - Live Demo Dataset Expansion` complete; `5.9F - Final Compact UX Audit` is next
 Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
 
 ## 1. Purpose
@@ -49,6 +49,7 @@ The next target is **5.9F - Final Compact UX Audit**.
 - Keep UI out of persistence internals.
 - Keep `Needs Update` and `Ready for Confirmation` as system labels, not statuses or tags.
 - Keep Project Manager project management bounded to create/edit project context and issue-derived project status sync.
+- Keep live demo seed data broad enough to show complete role-specific workflows on first visit.
 
 Not allowed:
 
@@ -149,6 +150,7 @@ AppShell compression is a support slice. It must not distract from the first pri
 | 5.9D | Issue Detail and Form Compression | Complete | Issue/work forms feel like long documents | Implementation and self-audit passed |
 | 5.9E | Mobile Survival Pass | Complete | Endless stacked mobile scrolling | Implementation and self-audit passed |
 | 5.9E2 | Project Manager Project Management and Project Status Sync | Complete | Frozen PM scope conflicted with live project-list-only UI | Bounded capability repair; no delete/archive/workflow engine |
+| 5.9E3 | Live Demo Dataset Expansion | Complete | Portfolio visitor may not see full functionality | Expanded seed data for roles, teams, projects, issues, relationships, statuses, labels, and history |
 | 5.9F | Final Compact UX Audit | Next | Phase 6 readiness uncertainty | Audit-only |
 
 ## 9. Phase Dependency Map
@@ -159,6 +161,7 @@ AppShell compression is a support slice. It must not distract from the first pri
 - 5.9C and 5.9D should happen after Dashboard because compact work-surface patterns should be proven on the primary assistant home first.
 - 5.9E must happen after the major desktop/layout changes.
 - 5.9E2 must happen before final audit because Project Manager workflows cannot be honestly audited while project management is absent.
+- 5.9E3 must happen before final audit and deployment because the live demo needs enough seed data to expose the completed functionality.
 - 5.9F must remain audit-only.
 
 Recommended order:
@@ -170,7 +173,8 @@ Recommended order:
 5. 5.9D - Issue Detail and Form Compression
 6. 5.9E - Mobile Survival Pass
 7. 5.9E2 - Project Manager Project Management and Project Status Sync
-8. 5.9F - Final Compact UX Audit
+8. 5.9E3 - Live Demo Dataset Expansion
+9. 5.9F - Final Compact UX Audit
 
 ## 10. Micro-phase Execution Plan
 
@@ -580,6 +584,63 @@ Suggested commit:
 
 Risk level: Medium. This is a bounded capability repair, not a workflow-system expansion.
 
+### 5.9E3 - Live Demo Dataset Expansion
+
+Goal:
+
+Prepare richer local-first seed data before GitHub Pages live demo deployment.
+
+Scope:
+
+- Expand demo users across Manager, Project Manager, and User roles.
+- Expand teams, projects, tags, labels, issues, dependencies, assignments, curator relationships, participants, statuses, confirmation states, and activity history.
+- Include a fully Done project so issue-derived project status sync is visible.
+- Include active, blocked, delayed, waiting, planned, new, done, and canceled work examples.
+- Keep data in the existing local-first seed path.
+
+Exclusions:
+
+- no schema migration
+- no backend/auth
+- no real organization data
+- no new data model
+- no README/public deployment copy update
+
+Likely files:
+
+- `src/persistence/seedData.ts`
+- `BUILD_PLAN.md`
+- `APP_EXPERIENCE_PLAN.md`
+- `changelog_checkpoint.md`
+- `DEVELOPMENT_NOTES.md`
+
+Acceptance criteria:
+
+- First-time visitors see full workspace coverage without manual setup.
+- Manager, Project Manager, and User role switching reveals distinct useful work.
+- Projects, Project Detail, Personal, Dashboard, Issue Detail, Teams, and create/edit forms have richer reference data.
+- Users with old local IndexedDB can use Demo reset to reseed the expanded dataset.
+- `npm run build`, `npm run typecheck`, and `npm run lint` pass.
+
+Manual test:
+
+- Reset demo data from Demo.
+- Switch Manager, Project Manager, and User roles.
+- Confirm Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, and forms show richer records.
+- Confirm `Signal QA Readiness` shows a Done project with all issues Done.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `chore: expand live demo seed data`
+
+Risk level: Low-medium. This changes demo state breadth, not application architecture.
+
 ### 5.9F - Final Compact UX Audit
 
 Goal:
@@ -721,11 +782,11 @@ Next phase: **5.9F - Final Compact UX Audit**
 Recommended implementation prompt:
 
 ```text
-Audit Phase 5.9F only. Perform the final compact UX audit after completed 5.9A1 through 5.9E2: verify route recovery, first-viewport usefulness, Dashboard action-first behavior, Project Manager project create/edit, issue-derived project status sync, Personal/Projects/Issue/Teams compactness, desktop/tablet/mobile survival, keyboard accessibility, and strict MVP scope control. Do not implement product changes, deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, project delete/archive, route removal, /personal removal, or Phase 6 work. Run npm run build, npm run typecheck, and npm run lint. Update active handoff docs only if needed. Do not commit or push.
+Audit Phase 5.9F only. Perform the final compact UX audit after completed 5.9A1 through 5.9E3: verify route recovery, first-viewport usefulness, Dashboard action-first behavior, Project Manager project create/edit, issue-derived project status sync, expanded live demo seed coverage, Personal/Projects/Issue/Teams compactness, desktop/tablet/mobile survival, keyboard accessibility, and strict MVP scope control. Do not implement product changes, deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, project delete/archive, route removal, /personal removal, or Phase 6 work. Run npm run build, npm run typecheck, and npm run lint. Update active handoff docs only if needed. Do not commit or push.
 ```
 
-Suggested commit for completed 5.9E2 after checkpoint approval:
+Suggested commit for completed 5.9E3 after checkpoint approval:
 
 ```text
-feat: add project management for project managers
+chore: expand live demo seed data
 ```

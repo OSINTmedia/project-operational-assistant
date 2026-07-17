@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Expand seed data for live demo readiness
+
+**Context:**
+Before publishing the GitHub Pages live demo, the seeded workspace needed to show the completed product breadth. The previous dataset was useful for development but too small to demonstrate all role-specific flows, project management, status sync, confirmation, Needs Update, group issues, dependencies, and team/project context to a first-time portfolio visitor.
+
+**Decision:**
+Expand `src/persistence/seedData.ts` only. The live demo seed now includes more demo users, teams, projects, tags, labels, issues, assignments, curator relationships, participants, dependency types, status variety, confirmation states, a fully Done project, and richer activity history.
+
+**Reasoning:**
+The app is local-first and demo-driven, so seed data is the fastest and safest way to show the full MVP without backend work. A first-time visitor should not need to create data manually to understand Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, create/edit forms, and Project Manager project management.
+
+**Alternatives considered:**
+Adding a backend demo dataset, changing the persistence schema, creating a guided tour, editing frozen docs, or relying on visitors to manually create projects/issues.
+
+**Impact:**
+The change improves live-demo credibility while preserving local-first architecture, existing repositories, `HashRouter`, `/personal`, system labels, and the current data model. Existing local browsers with old IndexedDB data can use Demo reset to load the expanded dataset.
+
 ### 2026-07-17 — Add bounded Project Manager project management before final UX audit
 
 **Context:**
