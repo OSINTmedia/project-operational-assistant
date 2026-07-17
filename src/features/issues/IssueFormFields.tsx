@@ -62,261 +62,293 @@ export function IssueFormFields({
   const dependencyTargetOptions = selectedProjectId
     ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
     : []
+  const shouldOpenSecondaryDetails =
+    dependencyType !== 'none' || selectedTagIds.length > 0 || selectedLabelIds.length > 0
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-4">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-medium text-slate-950">Required work fields</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              Fill the fields needed to save a valid local issue record.
+            </p>
+          </div>
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Title
+            Required first
           </span>
-          <input
-            value={title}
-            onChange={(event) => onTitleChange(event.target.value)}
-            placeholder="Summarize the issue briefly"
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          />
-        </label>
+        </div>
 
-        <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Description
-          </span>
-          <textarea
-            value={description}
-            onChange={(event) => onDescriptionChange(event.target.value)}
-            rows={4}
-            placeholder="Add optional context for the issue"
-            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          />
-        </label>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Title
+            </span>
+            <input
+              value={title}
+              onChange={(event) => onTitleChange(event.target.value)}
+              placeholder="Summarize the issue briefly"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            />
+          </label>
 
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Project
-          </span>
-          <select
-            value={selectedProjectId}
-            onChange={(event) => onSelectedProjectIdChange(event.target.value)}
-            disabled={data.projectOptions.length === 0}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {data.projectOptions.length === 0 ? (
-              <option value="">No projects available</option>
-            ) : (
-              data.projectOptions.map((project) => (
-                <option key={project.id} value={project.id}>
-                  {project.name} · {project.teamName}
+          <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Description
+            </span>
+            <textarea
+              value={description}
+              onChange={(event) => onDescriptionChange(event.target.value)}
+              rows={3}
+              placeholder="Add optional context for the issue"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            />
+          </label>
+
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Project
+            </span>
+            <select
+              value={selectedProjectId}
+              onChange={(event) => onSelectedProjectIdChange(event.target.value)}
+              disabled={data.projectOptions.length === 0}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            >
+              {data.projectOptions.length === 0 ? (
+                <option value="">No projects available</option>
+              ) : (
+                data.projectOptions.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name} · {project.teamName}
+                  </option>
+                ))
+              )}
+            </select>
+          </label>
+
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Owner
+            </span>
+            <select
+              value={selectedOwnerId}
+              onChange={(event) => onSelectedOwnerIdChange(event.target.value)}
+              disabled={data.ownerOptions.length === 0}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            >
+              {data.ownerOptions.length === 0 ? (
+                <option value="">No owners available</option>
+              ) : (
+                data.ownerOptions.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name} · {user.roleLabel}
+                  </option>
+                ))
+              )}
+            </select>
+          </label>
+
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Status
+            </span>
+            <select
+              value={selectedStatusId}
+              onChange={(event) => onSelectedStatusIdChange(event.target.value)}
+              disabled={data.statusOptions.length === 0}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            >
+              {data.statusOptions.length === 0 ? (
+                <option value="">No statuses available</option>
+              ) : (
+                data.statusOptions.map((status) => (
+                  <option key={status.id} value={status.id}>
+                    {status.name}
+                  </option>
+                ))
+              )}
+            </select>
+          </label>
+
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Priority
+            </span>
+            <select
+              value={priority}
+              onChange={(event) => onPriorityChange(event.target.value as PriorityId)}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            >
+              {Object.entries(issueCreateFormShellLabels.priority).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
                 </option>
-              ))
-            )}
-          </select>
-        </label>
+              ))}
+            </select>
+          </label>
 
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Status
-          </span>
-          <select
-            value={selectedStatusId}
-            onChange={(event) => onSelectedStatusIdChange(event.target.value)}
-            disabled={data.statusOptions.length === 0}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {data.statusOptions.length === 0 ? (
-              <option value="">No statuses available</option>
-            ) : (
-              data.statusOptions.map((status) => (
-                <option key={status.id} value={status.id}>
-                  {status.name}
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Type
+            </span>
+            <select
+              value={type}
+              onChange={(event) => onTypeChange(event.target.value as IssueTypeId)}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+            >
+              {Object.entries(issueCreateFormShellLabels.type).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
                 </option>
-              ))
-            )}
-          </select>
-        </label>
+              ))}
+            </select>
+          </label>
 
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Type
-          </span>
-          <select
-            value={type}
-            onChange={(event) => onTypeChange(event.target.value as IssueTypeId)}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {Object.entries(issueCreateFormShellLabels.type).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+          <label className="grid gap-2 text-sm text-slate-600">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Curator
+            </span>
+            <select
+              value={type === 'group' ? selectedCuratorId : ''}
+              onChange={(event) => onSelectedCuratorIdChange(event.target.value)}
+              disabled={type !== 'group' || data.curatorOptions.length === 0}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
+            >
+              {type !== 'group' ? (
+                <option value="">Only relevant for group issues</option>
+              ) : data.curatorOptions.length === 0 ? (
+                <option value="">No curator options available</option>
+              ) : (
+                data.curatorOptions.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name} · {user.roleLabel}
+                  </option>
+                ))
+              )}
+            </select>
+          </label>
+        </div>
+      </section>
 
-        <label className="grid gap-2 text-sm text-slate-600">
+      <details
+        className="rounded-xl border border-slate-200 bg-slate-50 p-3 shadow-panel sm:p-4"
+        open={shouldOpenSecondaryDetails || undefined}
+      >
+        <summary className="flex cursor-pointer items-center justify-between gap-3 text-sm font-medium text-slate-950">
+          <span>Secondary details</span>
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Priority
+            Dependency, tags, labels
           </span>
-          <select
-            value={priority}
-            onChange={(event) => onPriorityChange(event.target.value as PriorityId)}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {Object.entries(issueCreateFormShellLabels.priority).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+        </summary>
 
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Owner
-          </span>
-          <select
-            value={selectedOwnerId}
-            onChange={(event) => onSelectedOwnerIdChange(event.target.value)}
-            disabled={data.ownerOptions.length === 0}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {data.ownerOptions.length === 0 ? (
-              <option value="">No owners available</option>
-            ) : (
-              data.ownerOptions.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} · {user.roleLabel}
-                </option>
-              ))
-            )}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Curator
-          </span>
-          <select
-            value={type === 'group' ? selectedCuratorId : ''}
-            onChange={(event) => onSelectedCuratorIdChange(event.target.value)}
-            disabled={type !== 'group' || data.curatorOptions.length === 0}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
-          >
-            {type !== 'group' ? (
-              <option value="">Only relevant for group issues</option>
-            ) : data.curatorOptions.length === 0 ? (
-              <option value="">No curator options available</option>
-            ) : (
-              data.curatorOptions.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} · {user.roleLabel}
-                </option>
-              ))
-            )}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Dependency
-          </span>
-          <select
-            value={dependencyType}
-            onChange={(event) => onDependencyTypeChange(event.target.value as DependencyTypeId)}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-          >
-            {Object.entries(issueCreateFormShellLabels.dependency).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm text-slate-600">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Dependency target
-          </span>
-          <select
-            value={selectedDependencyTargetId}
-            onChange={(event) => onSelectedDependencyTargetIdChange(event.target.value)}
-            disabled={dependencyType === 'none' || dependencyTargetOptions.length === 0}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
-          >
-            {dependencyType === 'none' ? (
-              <option value="">No dependency target needed</option>
-            ) : dependencyTargetOptions.length === 0 ? (
-              <option value="">No issue targets in this project yet</option>
-            ) : (
-              <>
-                <option value="">Select related issue</option>
-                {dependencyTargetOptions.map((issue) => (
-                  <option key={issue.id} value={issue.id}>
-                    {issue.title}
+        <div className="mt-4 grid gap-4">
+          <div className="grid gap-3 md:grid-cols-2">
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Dependency
+              </span>
+              <select
+                value={dependencyType}
+                onChange={(event) => onDependencyTypeChange(event.target.value as DependencyTypeId)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+              >
+                {Object.entries(issueCreateFormShellLabels.dependency).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
                   </option>
                 ))}
-              </>
-            )}
-          </select>
-        </label>
-      </div>
+              </select>
+            </label>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <fieldset className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Tags
-          </legend>
-          <div className="mt-3 grid gap-2">
-            {data.tagOptions.length === 0 ? (
-              <p className="text-sm text-slate-500">No reusable tags are available yet.</p>
-            ) : (
-              data.tagOptions.map((tag) => (
-                <label
-                  key={tag.id}
-                  className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedTagIds.includes(tag.id)}
-                    onChange={() => onToggleTagId(tag.id)}
-                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
-                  />
-                  <span className="min-w-0 break-words">{tag.name}</span>
-                </label>
-              ))
-            )}
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Dependency target
+              </span>
+              <select
+                value={selectedDependencyTargetId}
+                onChange={(event) => onSelectedDependencyTargetIdChange(event.target.value)}
+                disabled={dependencyType === 'none' || dependencyTargetOptions.length === 0}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400 disabled:bg-slate-50 disabled:text-slate-400"
+              >
+                {dependencyType === 'none' ? (
+                  <option value="">No dependency target needed</option>
+                ) : dependencyTargetOptions.length === 0 ? (
+                  <option value="">No issue targets in this project yet</option>
+                ) : (
+                  <>
+                    <option value="">Select related issue</option>
+                    {dependencyTargetOptions.map((issue) => (
+                      <option key={issue.id} value={issue.id}>
+                        {issue.title}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </select>
+            </label>
           </div>
-        </fieldset>
 
-        <fieldset className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Labels
-          </legend>
-          <div className="mt-3 grid gap-2">
-            {data.labelOptions.length === 0 ? (
-              <p className="text-sm text-slate-500">No editable labels are available yet.</p>
-            ) : (
-              data.labelOptions.map((label) => (
-                <label
-                  key={label.id}
-                  className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedLabelIds.includes(label.id)}
-                    onChange={() => onToggleLabelId(label.id)}
-                    className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
-                  />
-                  <span className="min-w-0 break-words">{label.name}</span>
-                </label>
-              ))
-            )}
+          <div className="grid gap-4 md:grid-cols-2">
+            <fieldset className="rounded-lg border border-slate-200 bg-white p-3">
+              <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Tags
+              </legend>
+              <div className="mt-3 grid gap-2">
+                {data.tagOptions.length === 0 ? (
+                  <p className="text-sm text-slate-500">No reusable tags are available yet.</p>
+                ) : (
+                  data.tagOptions.map((tag) => (
+                    <label
+                      key={tag.id}
+                      className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedTagIds.includes(tag.id)}
+                        onChange={() => onToggleTagId(tag.id)}
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
+                      />
+                      <span className="min-w-0 break-words">{tag.name}</span>
+                    </label>
+                  ))
+                )}
+              </div>
+            </fieldset>
+
+            <fieldset className="rounded-lg border border-slate-200 bg-white p-3">
+              <legend className="px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Labels
+              </legend>
+              <div className="mt-3 grid gap-2">
+                {data.labelOptions.length === 0 ? (
+                  <p className="text-sm text-slate-500">No editable labels are available yet.</p>
+                ) : (
+                  data.labelOptions.map((label) => (
+                    <label
+                      key={label.id}
+                      className="flex min-w-0 items-start gap-3 text-sm text-slate-700"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedLabelIds.includes(label.id)}
+                        onChange={() => onToggleLabelId(label.id)}
+                        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300"
+                      />
+                      <span className="min-w-0 break-words">{label.name}</span>
+                    </label>
+                  ))
+                )}
+              </div>
+              <p className="mt-3 text-xs leading-5 text-slate-500">
+                System labels such as `Needs Update` and `Ready for Confirmation` are intentionally
+                excluded from manual selection in this form.
+              </p>
+            </fieldset>
           </div>
-          <p className="mt-3 text-xs leading-5 text-slate-500">
-            System labels such as `Needs Update` and `Ready for Confirmation` are intentionally
-            excluded from manual selection in this form.
-          </p>
-        </fieldset>
-      </div>
+        </div>
+      </details>
     </>
   )
 }

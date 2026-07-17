@@ -176,6 +176,7 @@ function IssueEditPageReady({
     dependencyTargetOptionCount: dependencyTargetOptions.length,
     currentProjectAvailable: currentProject !== null,
   })
+  const formId = 'issue-edit-form'
 
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
@@ -269,8 +270,8 @@ function IssueEditPageReady({
   }
 
   return (
-    <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+    <section className="grid gap-4">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
         <ContextBreadcrumbs items={breadcrumbItems} />
 
         <Link
@@ -282,15 +283,14 @@ function IssueEditPageReady({
           Back to issue detail
         </Link>
 
-        <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue edit
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-slate-950">Edit Issue</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Structured issue editing for the local demo with controlled validation, preserved
-              system-label semantics, and repository-backed save behavior.
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              Update required issue fields first while preserving system labels and return context.
             </p>
             <div className="mt-3 grid gap-1 text-sm leading-6 text-slate-600">
               <p>{openedFromDescription}</p>
@@ -298,27 +298,25 @@ function IssueEditPageReady({
             </div>
           </div>
 
-          <div className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 lg:w-auto">
+          <div className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 lg:max-w-sm">
             <p className="font-medium text-slate-950">{data.currentUserName}</p>
-            <p className="mt-1">
-              Existing issue values are prefilled through repository-backed reads.
-            </p>
+            <p className="mt-1">Existing values are prefilled through repository-backed reads.</p>
           </div>
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-4">
         <div className="flex items-start gap-3">
           <FilePenLine className="mt-1 h-5 w-5 text-accent" />
           <div>
             <p className="text-sm font-medium text-slate-950">Save structured issue changes</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Save updates stay inside domain and repository boundaries. {saveBehaviorDescription}
+              Save updates stay inside domain and repository boundaries.
             </p>
           </div>
         </div>
 
-        <form className="mt-6 grid gap-6" onSubmit={handleSubmit}>
+        <form id={formId} className="mt-4 grid gap-4" onSubmit={handleSubmit}>
           {submitError ? (
             <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {submitError}
@@ -330,6 +328,39 @@ function IssueEditPageReady({
               {blockingMessage}
             </div>
           ) : null}
+
+          <div className="sticky top-3 z-10 rounded-xl border border-slate-200 bg-white/95 p-3 shadow-panel backdrop-blur">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div className="grid gap-1 text-sm text-slate-600">
+                <p>
+                  <span className="font-medium text-slate-950">Project:</span>{' '}
+                  {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
+                </p>
+                <p>
+                  <span className="font-medium text-slate-950">After save:</span>{' '}
+                  {saveBehaviorDescription}
+                </p>
+              </div>
+              <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-auto">
+                <Link
+                  to={issueDetailLink}
+                  state={returnNavigationState}
+                  aria-label={`Cancel editing ${data.title} and return to issue detail.`}
+                  className="inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                >
+                  Cancel to issue detail
+                </Link>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || Boolean(blockingMessage)}
+                  aria-label={`Save changes for ${data.title}. ${saveBehaviorDescription}`}
+                  className="min-h-10 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+                >
+                  {isSubmitting ? 'Saving changes...' : 'Save changes'}
+                </button>
+              </div>
+            </div>
+          </div>
 
           <IssueFormFields
             data={data}
@@ -374,48 +405,17 @@ function IssueEditPageReady({
             }
           />
 
-          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
-            <div className="grid gap-2 text-sm text-slate-600 md:grid-cols-2">
-              <p>
-                <span className="font-medium text-slate-950">Current project:</span>{' '}
-                {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
-              </p>
-              <p>
-                <span className="font-medium text-slate-950">Save behavior:</span>{' '}
-                {saveBehaviorDescription}
-              </p>
-            </div>
+          <div className="grid gap-2 text-xs leading-5 text-slate-500">
+            <p>
+              Edit save stays inside domain and repository boundaries. System labels remain
+              read-only context rather than editable form inputs.
+            </p>
             {data.readonlySystemLabelNames.length > 0 ? (
-              <p className="mt-3 text-xs leading-5 text-slate-500">
+              <p>
                 Current system labels stay outside editable label controls in this slice:{' '}
                 {data.readonlySystemLabelNames.join(', ')}.
               </p>
             ) : null}
-          </div>
-
-          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
-            <p className="text-sm leading-6 text-slate-500 md:max-w-2xl">
-              Edit save stays inside domain and repository boundaries. System labels remain
-              read-only context rather than editable form inputs.
-            </p>
-            <div className="grid w-full gap-3 sm:grid-cols-2 md:w-auto">
-              <Link
-                to={issueDetailLink}
-                state={returnNavigationState}
-                aria-label={`Cancel editing ${data.title} and return to issue detail.`}
-                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
-              >
-                Cancel to issue detail
-              </Link>
-              <button
-                type="submit"
-                disabled={isSubmitting || Boolean(blockingMessage)}
-                aria-label={`Save changes for ${data.title}. ${saveBehaviorDescription}`}
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
-              >
-                {isSubmitting ? 'Saving changes...' : 'Save changes'}
-              </button>
-            </div>
           </div>
         </form>
       </section>

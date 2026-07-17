@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9D as issue/form composition only
+
+**Context:**
+`Phase 5.9D` needed to make Issue Detail, Issue Create, and Issue Edit feel like focused work surfaces without starting mobile survival work, comments, notification behavior, permissions expansion, or a Jira-style workflow redesign.
+
+**Decision:**
+Reorder and compress existing issue presentation only. Issue Detail now puts return/source context, title/status labels, edit entry, and quick actions before secondary metadata and history. Issue Create/Edit now show a compact save/cancel/return action area before the form fields, and shared issue fields are grouped as required-first with secondary dependency/tag/label controls behind native disclosure.
+
+**Reasoning:**
+The problem was screen economy and action hierarchy, not missing data or missing workflow capability. Existing hooks already expose the required issue, form, and return-state data, so the correction can stay inside feature UI composition while preserving route behavior and repository/domain boundaries.
+
+**Alternatives considered:**
+Adding a comments panel, adding notification subscriptions, replacing Issue Detail with a drawer/modal framework, creating a workflow-step engine, adding permissions, or changing the issue data model.
+
+**Impact:**
+5.9D improves issue work-surface density while preserving `HashRouter`, existing routes, `/personal`, 5.9A1 return behavior, 5.9A2 AppShell compression, 5.9B Dashboard behavior, 5.9C Personal/Projects density behavior, local-first architecture, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, comments, permissions expansion, data model, persistence, repository, or route-tree changes were introduced.
+
 ### 2026-07-17 — Keep Phase 5.9C as a work-surface density pass
 
 **Context:**

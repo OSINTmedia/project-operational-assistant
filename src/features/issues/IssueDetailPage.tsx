@@ -57,9 +57,9 @@ function MetadataCard({
   value: string
 }) {
   return (
-    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-4 py-3">
+    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-2">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</p>
-      <p className="mt-1 break-words font-medium text-slate-950">{value}</p>
+      <p className="mt-1 break-words text-sm font-medium text-slate-950">{value}</p>
     </div>
   )
 }
@@ -78,7 +78,7 @@ function ActivityCard({
   createdAt: string
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+    <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
       <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-medium text-slate-950">{actionLabel}</p>
@@ -88,7 +88,7 @@ function ActivityCard({
       </div>
 
       {oldValueLabel || newValueLabel ? (
-        <div className="mt-4 grid gap-3 text-sm text-slate-600 md:grid-cols-2">
+        <div className="mt-3 grid gap-2 text-sm text-slate-600 md:grid-cols-2">
           <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
             <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               From
@@ -137,7 +137,7 @@ function QuickActionButton({
       onClick={onClick}
       disabled={isDisabled}
       className={cn(
-        'grid min-h-[92px] min-w-0 gap-2 rounded-xl border p-4 text-left transition-colors',
+        'grid min-h-[76px] min-w-0 gap-1.5 rounded-lg border p-3 text-left transition-colors',
         isDisabled
           ? 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950',
@@ -357,12 +357,37 @@ export function IssueDetailPage() {
     )
   }
 
+  const primaryFacts = [
+    { label: 'Status', value: data.statusLabel },
+    { label: 'Priority', value: data.priorityLabel },
+    { label: 'Owner', value: data.ownerName },
+    { label: 'Curator', value: data.curatorName ?? 'None' },
+  ]
+  const secondaryFacts = [
+    { label: 'Project', value: data.projectName },
+    { label: 'Team', value: data.teamName },
+    { label: 'Created by', value: data.createdByName },
+    { label: 'Updated by', value: data.updatedByName },
+    { label: 'Dependency', value: data.dependencyLabel },
+    { label: 'Dependency target', value: data.dependencyTargetLabel ?? 'None' },
+    { label: 'Created at', value: formatDateTime(data.createdAt) },
+    { label: 'Updated at', value: formatDateTime(data.updatedAt) },
+    {
+      label: 'Completed at',
+      value: data.completedAt ? formatDateTime(data.completedAt) : 'Not completed',
+    },
+    {
+      label: 'Confirmed at',
+      value: data.confirmedAt ? formatDateTime(data.confirmedAt) : 'Not confirmed',
+    },
+  ]
+
   return (
-    <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+    <section className="grid gap-4">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
         <ContextBreadcrumbs items={breadcrumbItems} />
 
-        <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="mt-3 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0">
             <Link
               to={returnContext.path}
@@ -372,89 +397,85 @@ export function IssueDetailPage() {
               {returnContext.backLabel}
             </Link>
 
-            <div className="mt-3 grid gap-1 text-sm leading-6 text-slate-600">
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <Badge>{data.statusLabel}</Badge>
+              <Badge variant="info">{data.priorityLabel}</Badge>
+              <Badge>{data.typeLabel}</Badge>
+              {data.labelNames.map((labelName) => (
+                <Badge
+                  key={`${data.id}-header-label-${labelName}`}
+                  variant={getLabelBadgeVariant(labelName)}
+                >
+                  {labelName}
+                </Badge>
+              ))}
+            </div>
+
+            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Issue detail
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-950">{data.title}</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              {data.description || 'No description was added for this issue.'}
+            </p>
+
+            <div className="mt-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm leading-6 text-slate-600">
               <p>{openedFromDescription}</p>
               <p>{editBehaviorDescription}</p>
             </div>
-
-            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-              Issue detail
-            </p>
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-              <span>{data.projectName}</span>
-              <span className="text-slate-300">•</span>
-              <span>{data.typeLabel}</span>
-            </div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-950">{data.title}</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              {data.description || 'No description was added for this issue.'}
-            </p>
           </div>
 
-          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto">
+          <div className="grid w-full gap-3 text-sm text-slate-600 xl:max-w-sm">
             <Link
               to={`/issues/${data.id}/edit`}
               state={returnNavigationState}
               aria-label={`Edit issue ${data.title}. Return context: ${returnContext.backLabel}.`}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <FilePenLine className="h-4 w-4" />
               Edit issue
             </Link>
+
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+              {primaryFacts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-2"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    {fact.label}
+                  </p>
+                  <p className="mt-1 break-words text-sm font-medium text-slate-950">
+                    {fact.value}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetadataCard label="Status" value={data.statusLabel} />
-        <MetadataCard label="Priority" value={data.priorityLabel} />
-        <MetadataCard label="Owner" value={data.ownerName} />
-        <MetadataCard label="Curator" value={data.curatorName ?? 'None'} />
-        <MetadataCard label="Project" value={data.projectName} />
-        <MetadataCard label="Team" value={data.teamName} />
-        <MetadataCard label="Created by" value={data.createdByName} />
-        <MetadataCard label="Updated by" value={data.updatedByName} />
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-2">
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <p className="text-sm font-medium text-slate-950">Curator</p>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            The curator keeps operational context coherent, especially on group issues. This role
-            does not automatically mean the curator is the owner or the person doing the work.
-          </p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <p className="text-sm font-medium text-slate-950">Needs Update</p>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            Needs Update is a system label used when the latest issue context is no longer reliable
-            enough. It is an attention signal, not a workflow status.
-          </p>
-        </div>
-      </div>
-
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-sm font-medium text-slate-950">Quick actions</p>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              Apply common status and confirmation updates through the existing domain rules. Owner
-              and curator changes stay in the structured edit flow so responsibility changes remain
-              explicit.
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-600">
+              Apply status or confirmation updates without leaving this issue. Responsibility
+              changes remain in the structured edit flow.
             </p>
           </div>
           <Link
             to={`/issues/${data.id}/edit`}
             state={returnNavigationState}
             aria-label={`Change owner or curator for ${data.title}. Return context: ${returnContext.backLabel}.`}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
+            className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
           >
             <FilePenLine className="h-4 w-4" />
             Change owner or curator
           </Link>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-4">
           {statusActions.map((action) => {
             const disabledReason =
               actorDisabledReason ??
@@ -477,7 +498,7 @@ export function IssueDetailPage() {
           })}
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-2 grid gap-2 md:grid-cols-2">
           <QuickActionButton
             label="Request confirmation"
             description="Mark this issue done and ready for confirmation."
@@ -509,153 +530,126 @@ export function IssueDetailPage() {
         </div>
 
         {actionMessage ? (
-          <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
             {actionMessage}
           </p>
         ) : null}
         {actionError ? (
-          <p className="mt-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+          <p className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
             {actionError}
           </p>
         ) : null}
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
-        <div className="grid gap-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
-            <div className="flex items-center gap-2 text-slate-950">
-              <FolderKanban className="h-4 w-4 text-accent" />
-              <p className="text-sm font-medium">Structured issue context</p>
-            </div>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.8fr)]">
+        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+          <div className="flex items-center gap-2 text-slate-950">
+            <FolderKanban className="h-4 w-4 text-accent" />
+            <p className="text-sm font-medium">Issue context</p>
+          </div>
 
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <MetadataCard label="Dependency" value={data.dependencyLabel} />
-              <MetadataCard
-                label="Dependency target"
-                value={data.dependencyTargetLabel ?? 'None'}
-              />
-              <MetadataCard label="Created at" value={formatDateTime(data.createdAt)} />
-              <MetadataCard label="Updated at" value={formatDateTime(data.updatedAt)} />
-              <MetadataCard
-                label="Completed at"
-                value={data.completedAt ? formatDateTime(data.completedAt) : 'Not completed'}
-              />
-              <MetadataCard
-                label="Confirmed at"
-                value={data.confirmedAt ? formatDateTime(data.confirmedAt) : 'Not confirmed'}
-              />
-            </div>
+          <div className="mt-4 grid gap-2 md:grid-cols-2">
+            {secondaryFacts.map((fact) => (
+              <MetadataCard key={fact.label} label={fact.label} value={fact.value} />
+            ))}
+          </div>
 
-            {data.confirmationRequired || data.confirmedByName ? (
-              <div className="mt-5 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-800">
-                <div className="flex items-center gap-2 font-medium">
-                  <CheckCheck className="h-4 w-4" />
-                  <span>Confirmation context</span>
-                </div>
-                <p className="mt-2 leading-6">
-                  {data.confirmationRequired
-                    ? 'This issue currently requires confirmation before it is fully closed.'
-                    : 'Confirmation is not currently required for this issue.'}
+          {data.confirmationRequired || data.confirmedByName ? (
+            <div className="mt-4 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-sm text-violet-800">
+              <div className="flex items-center gap-2 font-medium">
+                <CheckCheck className="h-4 w-4" />
+                <span>Confirmation context</span>
+              </div>
+              <p className="mt-1 leading-6">
+                {data.confirmationRequired
+                  ? 'This issue currently requires confirmation before it is fully closed.'
+                  : 'Confirmation is not currently required for this issue.'}
+              </p>
+              {data.confirmedByName ? (
+                <p className="mt-1 leading-6">
+                  Confirmed by {data.confirmedByName}
+                  {data.confirmedAt ? ` on ${formatDateTime(data.confirmedAt)}` : ''}.
                 </p>
-                {data.confirmedByName ? (
-                  <p className="mt-2 leading-6">
-                    Confirmed by {data.confirmedByName}
-                    {data.confirmedAt ? ` on ${formatDateTime(data.confirmedAt)}` : ''}.
-                  </p>
-                ) : null}
+              ) : null}
+            </div>
+          ) : null}
+
+          {data.participantNames.length > 0 ? (
+            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+              <div className="flex items-center gap-2 text-slate-950">
+                <Users className="h-4 w-4 text-accent" />
+                <p className="text-sm font-medium">Participants</p>
               </div>
-            ) : null}
-
-            {data.participantNames.length > 0 ? (
-              <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="flex items-center gap-2 text-slate-950">
-                  <Users className="h-4 w-4 text-accent" />
-                  <p className="text-sm font-medium">Participants</p>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {data.participantNames.map((participantName) => (
-                    <Badge key={`${data.id}-participant-${participantName}`}>
-                      {participantName}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </section>
-
-          <section className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
-            <div className="flex items-center gap-2 text-slate-950">
-              <History className="h-4 w-4 text-accent" />
-              <p className="text-sm font-medium">Activity history</p>
-            </div>
-
-            <div className="mt-5 grid gap-4">
-              {data.activity.length > 0 ? (
-                data.activity.map((entry) => (
-                  <ActivityCard
-                    key={entry.id}
-                    actorName={entry.actorName}
-                    actionLabel={entry.actionLabel}
-                    oldValueLabel={entry.oldValueLabel}
-                    newValueLabel={entry.newValueLabel}
-                    createdAt={entry.createdAt}
-                  />
-                ))
-              ) : (
-                <div className="rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm leading-6 text-slate-500">
-                  No activity history has been recorded for this issue yet.
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
-
-        <aside className="grid gap-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
-            <div className="flex items-center gap-2 text-slate-950">
-              <Tag className="h-4 w-4 text-accent" />
-              <p className="text-sm font-medium">Tags</p>
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {data.tagNames.length > 0 ? (
-                data.tagNames.map((tagName) => (
-                  <Badge key={`${data.id}-tag-${tagName}`}>
-                    #{tagName}
+              <div className="mt-2 flex flex-wrap gap-2">
+                {data.participantNames.map((participantName) => (
+                  <Badge key={`${data.id}-participant-${participantName}`}>
+                    {participantName}
                   </Badge>
-                ))
-              ) : (
-                <p className="text-sm text-slate-500">No tags assigned.</p>
-              )}
+                ))}
+              </div>
             </div>
-          </section>
+          ) : null}
+        </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+        <aside className="grid gap-4">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
             <div className="flex items-center gap-2 text-slate-950">
               <Link2 className="h-4 w-4 text-accent" />
-              <p className="text-sm font-medium">Labels</p>
+              <p className="text-sm font-medium">Labels and tags</p>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {data.labelNames.length > 0 ? (
-                data.labelNames.map((labelName) => (
-                  <Badge
-                    key={`${data.id}-label-${labelName}`}
-                    variant={getLabelBadgeVariant(labelName)}
-                  >
-                    {labelName}
-                  </Badge>
-                ))
-              ) : (
-                <p className="text-sm text-slate-500">No labels assigned.</p>
-              )}
+
+            <div className="mt-4 grid gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-slate-950">
+                  <Link2 className="h-4 w-4 text-accent" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Labels
+                  </p>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {data.labelNames.length > 0 ? (
+                    data.labelNames.map((labelName) => (
+                      <Badge
+                        key={`${data.id}-label-${labelName}`}
+                        variant={getLabelBadgeVariant(labelName)}
+                      >
+                        {labelName}
+                      </Badge>
+                    ))
+                  ) : (
+                    <p className="text-sm text-slate-500">No labels assigned.</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 text-slate-950">
+                  <Tag className="h-4 w-4 text-accent" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Tags
+                  </p>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {data.tagNames.length > 0 ? (
+                    data.tagNames.map((tagName) => (
+                      <Badge key={`${data.id}-tag-${tagName}`}>
+                        #{tagName}
+                      </Badge>
+                    ))
+                  ) : (
+                    <p className="text-sm text-slate-500">No tags assigned.</p>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
             <div className="flex items-center gap-2 text-slate-950">
               <Clock3 className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Timeline summary</p>
             </div>
-            <div className="mt-4 grid gap-3 text-sm text-slate-600">
+            <div className="mt-3 grid gap-2 text-sm text-slate-600">
               <p>
                 <span className="font-medium text-slate-950">Created:</span>{' '}
                 {formatDateTime(data.createdAt)}
@@ -665,13 +659,44 @@ export function IssueDetailPage() {
                 {formatDateTime(data.updatedAt)}
               </p>
               <p>
-                <span className="font-medium text-slate-950">Latest activity entries:</span>{' '}
+                <span className="font-medium text-slate-950">Activity entries:</span>{' '}
                 {data.activity.length}
               </p>
             </div>
           </section>
         </aside>
       </div>
+
+      <details className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 text-sm font-medium text-slate-950">
+          <span className="inline-flex items-center gap-2">
+            <History className="h-4 w-4 text-accent" />
+            Activity history
+          </span>
+          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            {data.activity.length} entries
+          </span>
+        </summary>
+
+        <div className="mt-4 grid gap-3">
+          {data.activity.length > 0 ? (
+            data.activity.map((entry) => (
+              <ActivityCard
+                key={entry.id}
+                actorName={entry.actorName}
+                actionLabel={entry.actionLabel}
+                oldValueLabel={entry.oldValueLabel}
+                newValueLabel={entry.newValueLabel}
+                createdAt={entry.createdAt}
+              />
+            ))
+          ) : (
+            <div className="rounded-lg border border-dashed border-slate-300 bg-white p-3 text-sm leading-6 text-slate-500">
+              No activity history has been recorded for this issue yet.
+            </div>
+          )}
+        </div>
+      </details>
     </section>
   )
 }

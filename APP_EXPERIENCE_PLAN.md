@@ -2,7 +2,7 @@
 
 Status: active planning document  
 Source diagnosis: `design_review_V2.md`  
-Execution state: `5.9C - Project and Personal Density Pass` complete; `5.9D - Issue Detail and Form Compression` is next
+Execution state: `5.9D - Issue Detail and Form Compression` complete; `5.9E - Mobile Survival Pass` is next
 Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
 
 ## 1. Purpose
@@ -31,7 +31,7 @@ Accepted Phase 5.9 verdict:
 - Mobile risk is high because desktop layouts already stack too much content.
 - `/personal` remains in scope and must not be removed or deprecated without separate explicit approval.
 
-The next target is **5.9D - Issue Detail and Form Compression**.
+The next target is **5.9E - Mobile Survival Pass**.
 
 ## 3. Phase 5.9 Operating Principles
 
@@ -144,8 +144,8 @@ AppShell compression is a support slice. It must not distract from the first pri
 | 5.9A2 | Compact AppShell and Header Compression | Complete | Shell/header duplication pushes work down | Implementation and self-audit passed |
 | 5.9B | Dashboard Action-first Recomposition | Complete | Dashboard is report-first, not assistant-first | Implementation and self-audit passed |
 | 5.9C | Project and Personal Density Pass | Complete | Work lists appear too low | Implementation and self-audit passed |
-| 5.9D | Issue Detail and Form Compression | Next | Issue/work forms feel like long documents | Depends on A1 return context |
-| 5.9E | Mobile Survival Pass | Pending | Endless stacked mobile scrolling | Must happen after main layout changes |
+| 5.9D | Issue Detail and Form Compression | Complete | Issue/work forms feel like long documents | Implementation and self-audit passed |
+| 5.9E | Mobile Survival Pass | Next | Endless stacked mobile scrolling | Must happen after main layout changes |
 | 5.9F | Final Compact UX Audit | Pending | Phase 6 readiness uncertainty | Audit-only |
 
 ## 9. Phase Dependency Map
@@ -398,6 +398,8 @@ Risk level: Medium.
 
 ### 5.9D - Issue Detail and Form Compression
 
+Status: Complete. Implementation and self-audit passed.
+
 Goal:
 
 Turn Issue Detail/Edit/Create into focused work surfaces.
@@ -642,16 +644,16 @@ Approved. Commit and push with the approved message. Report commit hash, branch,
 
 ## 15. Next Concrete Step
 
-Next phase: **5.9D - Issue Detail and Form Compression**
+Next phase: **5.9E - Mobile Survival Pass**
 
 Recommended implementation prompt:
 
 ```text
-Implement Phase 5.9D only. Make Issue Detail feel like a focused work surface with title/status/source/action context first; compact or demote secondary metadata, dependency, and history blocks without hiding critical next actions; and make Issue Create/Edit required fields plus save/cancel/return controls more visible and less document-like. Preserve Dashboard 5.9B behavior, 5.9A1 return context, 5.9A2 AppShell compression, 5.9C Personal/Projects density behavior, HashRouter, /personal, local-first boundaries, and system-label semantics. Do not implement mobile survival pass, backend/auth/notifications/workflow engine, comments, permissions expansion, Jira-style workflow expansion, route removal, or Phase 6 work. Do not commit or push.
+Implement Phase 5.9E only. Test and repair mobile/tablet survival after the 5.9A1 through 5.9D desktop/layout changes: reduce endless stacked scrolling, keep current route/source context and primary actions visible, and ensure Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Teams, and AppShell remain usable at mobile/tablet widths. Preserve Dashboard 5.9B behavior, 5.9A1 return context, 5.9A2 AppShell compression, 5.9C Personal/Projects density behavior, 5.9D Issue/Form compression behavior, HashRouter, /personal, local-first boundaries, and system-label semantics. Do not implement deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, Jira-style workflow expansion, route removal, or Phase 6 work. Do not commit or push.
 ```
 
-Suggested commit for completed 5.9C after audit/checkpoint approval:
+Suggested commit for completed 5.9D after audit/checkpoint approval:
 
 ```text
-feat: compact personal and project work surfaces
+feat: compact issue work and edit flows
 ```

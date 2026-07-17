@@ -1877,7 +1877,7 @@ Execution note:
 
 Phase 5.8 completed the first app-experience sequence through selected-user orientation, source-aware return flow, inline previews, and responsive working-layout repair.
 
-After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, and `Phase 5.9C — Project and Personal Density Pass` are complete. The next implementation slice is `Phase 5.9D — Issue Detail and Form Compression`.
+After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, and `Phase 5.9D — Issue Detail and Form Compression` are complete. The next implementation slice is `Phase 5.9E — Mobile Survival Pass`.
 
 The older Phase 5.8 micro-phase entries below are retained as historical roadmap context. They are no longer the source for the next task.
 
@@ -2329,7 +2329,7 @@ Suggested commit message:
 
 ### Phase 5.9D — Issue Detail and Form Compression
 
-Status: `Next`
+Status: `Complete`
 
 Goal:
 
@@ -2355,7 +2355,7 @@ Suggested commit message:
 
 ### Phase 5.9E — Mobile Survival Pass
 
-Status: `Later`
+Status: `Next`
 
 Goal:
 

@@ -119,6 +119,7 @@ function IssueCreatePageReady({
     dependencyTargetOptionCount: dependencyTargetOptions.length,
     currentProjectAvailable: currentProject !== null,
   })
+  const formId = 'issue-create-form'
 
   function toggleArrayValue(value: string, selectedValues: string[], setter: (values: string[]) => void) {
     setter(
@@ -202,8 +203,8 @@ function IssueCreatePageReady({
   }
 
   return (
-    <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+    <section className="grid gap-4">
+      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
         <ContextBreadcrumbs
           items={[
             { label: 'Projects', to: '/projects' },
@@ -222,41 +223,38 @@ function IssueCreatePageReady({
           {currentProject ? `Back to ${currentProject.name}` : 'Back to Projects'}
         </Link>
 
-        <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue create
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-slate-950">Create Issue</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Structured issue creation for the local demo. This slice wires the existing create
-              service without expanding into edit mode or Issue Detail behavior. Create and cancel
-              return to {returnDestinationLabel}.
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+              Create a project-scoped issue with required fields first. Create and cancel return to{' '}
+              {returnDestinationLabel}.
             </p>
           </div>
 
-          <div className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 lg:w-auto">
+          <div className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 lg:max-w-sm">
             <p className="font-medium text-slate-950">{data.currentUserName}</p>
-            <p className="mt-1">
-              Default owner and curator choices follow the current demo context where sensible.
-            </p>
+            <p className="mt-1">Default owner and curator choices follow the demo context.</p>
           </div>
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-4">
         <div className="flex items-start gap-3">
           <CirclePlus className="mt-1 h-5 w-5 text-accent" />
           <div>
             <p className="text-sm font-medium text-slate-950">Create issue</p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Creates a new issue in local demo data through the existing domain service with
-              controlled validation and structured defaults.
+              Uses the existing local domain service with controlled validation and structured
+              defaults.
             </p>
           </div>
         </div>
 
-        <form className="mt-6 grid gap-6" onSubmit={handleSubmit}>
+        <form id={formId} className="mt-4 grid gap-4" onSubmit={handleSubmit}>
           {submitError ? (
             <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
               {submitError}
@@ -268,6 +266,37 @@ function IssueCreatePageReady({
               {blockingMessage}
             </div>
           ) : null}
+
+          <div className="sticky top-3 z-10 rounded-xl border border-slate-200 bg-white/95 p-3 shadow-panel backdrop-blur">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div className="grid gap-1 text-sm text-slate-600">
+                <p>
+                  <span className="font-medium text-slate-950">Project:</span>{' '}
+                  {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
+                </p>
+                <p>
+                  <span className="font-medium text-slate-950">After create:</span> return to{' '}
+                  {returnDestinationLabel}
+                </p>
+              </div>
+              <div className="grid w-full gap-2 sm:grid-cols-2 lg:w-auto">
+                <Link
+                  to={backLinkTarget}
+                  aria-label={`Cancel issue creation and return to ${returnDestinationLabel}.`}
+                  className="inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+                >
+                  Cancel to {returnDestinationLabel}
+                </Link>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || Boolean(blockingMessage)}
+                  className="min-h-10 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+                >
+                  {isSubmitting ? 'Creating issue...' : 'Create issue'}
+                </button>
+              </div>
+            </div>
+          </div>
 
           <IssueFormFields
             data={data}
@@ -312,41 +341,10 @@ function IssueCreatePageReady({
             }
           />
 
-          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
-            <div className="grid gap-2 text-sm text-slate-600 md:grid-cols-2">
-              <p>
-                <span className="font-medium text-slate-950">Current project:</span>{' '}
-                {currentProject ? `${currentProject.name} · ${currentProject.teamName}` : 'None'}
-              </p>
-              <p>
-                <span className="font-medium text-slate-950">Submit behavior:</span> Creates the
-                issue and returns to {returnDestinationLabel}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 md:flex-row md:items-center md:justify-between">
-            <p className="text-sm leading-6 text-slate-500 md:max-w-2xl">
-              The create flow stays inside repository and domain-service boundaries. Only title and
-              description remain open text.
-            </p>
-            <div className="grid w-full gap-3 sm:grid-cols-2 md:w-auto">
-              <Link
-                to={backLinkTarget}
-                aria-label={`Cancel issue creation and return to ${returnDestinationLabel}.`}
-                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
-              >
-                Cancel to {returnDestinationLabel}
-              </Link>
-              <button
-                type="submit"
-                disabled={isSubmitting || Boolean(blockingMessage)}
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
-              >
-                {isSubmitting ? 'Creating issue...' : 'Create issue'}
-              </button>
-            </div>
-          </div>
+          <p className="text-xs leading-5 text-slate-500">
+            The create flow stays inside repository and domain-service boundaries. Only title and
+            description remain open text.
+          </p>
         </form>
       </section>
     </section>
