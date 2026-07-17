@@ -1,9 +1,9 @@
 # App Experience Plan - Phase 5.9 Corrective UX Roadmap
 
-Status: active planning document  
+Status: completed corrective UX plan  
 Source diagnosis: `design_review_V2.md`  
-Execution state: `5.9E3 - Live Demo Dataset Expansion` complete; `5.9F - Final Compact UX Audit` is next
-Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
+Execution state: `5.9F - Final Compact UX Audit and Portfolio Demo Gate` passed with notes
+Phase 6 status: unblocked; `Phase 6.1 - Build and Static Deployment Readiness Audit` is next
 
 ## 1. Purpose
 
@@ -23,15 +23,14 @@ This plan is not a product-scope expansion. It is a controlled correction pass f
 
 Accepted Phase 5.9 verdict:
 
-- Phase 6 must not begin yet.
-- The current app is functionally useful but still too heavy and navigation-heavy.
-- The primary weakness is route-hopping and wayfinding, not only visual density.
-- Dashboard still behaves too much like a reporting surface instead of an assistant home.
-- First viewport utility is weak on the main work screens.
-- Mobile risk is high because desktop layouts already stack too much content.
+- Phase 6 may begin.
+- The app is ready for a credible portfolio live-demo path, not a final commercial SaaS release.
+- Phase 5.9 corrected the major route wayfinding, AppShell density, Dashboard actionability, work-surface density, Issue/Form composition, mobile survival, Project Manager project management, and seed-data gaps.
+- Remaining non-critical UX imperfections are accepted as portfolio-level known limitations and future polish.
+- Build, typecheck, and lint pass for the final Phase 5.9F gate.
 - `/personal` remains in scope and must not be removed or deprecated without separate explicit approval.
 
-The next target is **5.9F - Final Compact UX Audit**.
+The next target is **6.1 - Build and Static Deployment Readiness Audit**.
 
 ## 3. Phase 5.9 Operating Principles
 
@@ -151,7 +150,7 @@ AppShell compression is a support slice. It must not distract from the first pri
 | 5.9E | Mobile Survival Pass | Complete | Endless stacked mobile scrolling | Implementation and self-audit passed |
 | 5.9E2 | Project Manager Project Management and Project Status Sync | Complete | Frozen PM scope conflicted with live project-list-only UI | Bounded capability repair; no delete/archive/workflow engine |
 | 5.9E3 | Live Demo Dataset Expansion | Complete | Portfolio visitor may not see full functionality | Expanded seed data for roles, teams, projects, issues, relationships, statuses, labels, and history |
-| 5.9F | Final Compact UX Audit | Next | Phase 6 readiness uncertainty | Audit-only |
+| 5.9F | Final Compact UX Audit and Portfolio Demo Gate | Complete | Phase 6 readiness uncertainty | Passed with notes; Phase 6 unblocked |
 
 ## 9. Phase Dependency Map
 
@@ -162,7 +161,8 @@ AppShell compression is a support slice. It must not distract from the first pri
 - 5.9E must happen after the major desktop/layout changes.
 - 5.9E2 must happen before final audit because Project Manager workflows cannot be honestly audited while project management is absent.
 - 5.9E3 must happen before final audit and deployment because the live demo needs enough seed data to expose the completed functionality.
-- 5.9F must remain audit-only.
+- 5.9F remained audit-only and passed with notes.
+- Phase 6 begins after 5.9F, starting with build/static deployment readiness rather than additional UX redesign.
 
 Recommended order:
 
@@ -174,7 +174,8 @@ Recommended order:
 6. 5.9E - Mobile Survival Pass
 7. 5.9E2 - Project Manager Project Management and Project Status Sync
 8. 5.9E3 - Live Demo Dataset Expansion
-9. 5.9F - Final Compact UX Audit
+9. 5.9F - Final Compact UX Audit and Portfolio Demo Gate
+10. 6.1 - Build and Static Deployment Readiness Audit
 
 ## 10. Micro-phase Execution Plan
 
@@ -641,11 +642,13 @@ Suggested commit:
 
 Risk level: Low-medium. This changes demo state breadth, not application architecture.
 
-### 5.9F - Final Compact UX Audit
+### 5.9F - Final Compact UX Audit and Portfolio Demo Gate
+
+Status: Complete. Passed with notes.
 
 Goal:
 
-Verify the corrected MVP before Phase 6.
+Verify the corrected MVP is ready to move from corrective UX work into portfolio live-demo readiness.
 
 Scope:
 
@@ -670,13 +673,22 @@ Likely files:
 
 Acceptance criteria:
 
+- No live-demo blockers remain.
 - No P0 findings remain.
-- P1 findings are fixed or explicitly accepted as MVP debt.
+- P1 and lower UX imperfections are either fixed or explicitly accepted as portfolio-level known limitations / future polish.
 - Dashboard is action-first.
 - Route return context is clear.
 - First viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail.
 - Mobile survival pass is complete.
-- Final compact UX audit passes.
+- Project Manager project create/edit and issue-derived project status sync are working.
+- Expanded seed data demonstrates roles, teams, projects, issues, statuses, labels, dependencies, and history.
+- Final compact UX audit passes with build / typecheck / lint green.
+
+Gate result:
+
+- Phase 6 is unblocked.
+- Remaining non-critical UX polish is accepted as portfolio-level known limitation, not a Phase 6 blocker.
+- The project is treated as a credible portfolio demo, not a finished commercial SaaS product.
 
 Manual test:
 
@@ -693,7 +705,7 @@ Verification:
 
 Suggested commit:
 
-- `docs: verify compact ux readiness`
+- `docs: open live demo release phase`
 
 Risk level: Low. This phase is audit-only.
 
@@ -726,10 +738,12 @@ Viewport checks:
 
 ## 12. Phase 6 Gate Checklist
 
-Phase 6 may begin only when:
+Phase 6 gate result: passed with notes.
+
+Phase 6 may begin because:
 
 - No P0 findings remain.
-- P1 findings are fixed or explicitly accepted as MVP debt.
+- P1 findings are fixed or explicitly accepted as portfolio-level known limitations / future polish.
 - Dashboard is action-first.
 - Route return context is clear on Issue Detail/Edit and other deep routes.
 - First viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail.
@@ -742,15 +756,17 @@ Phase 6 may begin only when:
 - `npm run build`, `npm run typecheck`, and `npm run lint` pass after implementation slices.
 - `APP_EXPERIENCE_PLAN.md`, `changelog_checkpoint.md`, and `DEVELOPMENT_NOTES.md` reflect the final Phase 5.9 state where applicable.
 
-If any P0 remains, Phase 6 is blocked. If any P1 remains, it must be explicitly accepted as MVP debt before Phase 6.
+If a real live-demo blocker appears during Phase 6, fix the smallest blocker slice. Do not reopen broad Phase 5.9 redesign work for non-critical polish.
 
-## 13. Documentation Rules During Phase 5.9
+## 13. Documentation Rules After Phase 5.9
 
-- Update this file when a micro-phase status changes.
-- Update `changelog_checkpoint.md` after implementation/audit handoff work.
+- Treat this file as the completed Phase 5.9 execution record.
+- Use `changelog_checkpoint.md` and `BUILD_PLAN.md` for Phase 6 live handoff.
+- Update this file only if a Phase 5.9 status entry is found stale or materially inaccurate.
+- Update `changelog_checkpoint.md` after Phase 6 implementation/audit handoff work.
 - Update `DEVELOPMENT_NOTES.md` only for meaningful implementation decisions or architecture/product constraints.
 - Do not edit frozen docs in `docs/` unless separately approved.
-- Do not edit README for Phase 5.9 unless separately approved.
+- Edit README only for public portfolio/deployment accuracy.
 - Do not commit or push without explicit approval.
 
 ## 14. Prompt Workflow Templates
@@ -777,16 +793,16 @@ Approved. Commit and push with the approved message. Report commit hash, branch,
 
 ## 15. Next Concrete Step
 
-Next phase: **5.9F - Final Compact UX Audit**
+Next phase: **6.1 - Build and Static Deployment Readiness Audit**
 
 Recommended implementation prompt:
 
 ```text
-Audit Phase 5.9F only. Perform the final compact UX audit after completed 5.9A1 through 5.9E3: verify route recovery, first-viewport usefulness, Dashboard action-first behavior, Project Manager project create/edit, issue-derived project status sync, expanded live demo seed coverage, Personal/Projects/Issue/Teams compactness, desktop/tablet/mobile survival, keyboard accessibility, and strict MVP scope control. Do not implement product changes, deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, project delete/archive, route removal, /personal removal, or Phase 6 work. Run npm run build, npm run typecheck, and npm run lint. Update active handoff docs only if needed. Do not commit or push.
+Audit Phase 6.1 only. Verify build and static deployment readiness before GitHub Pages deployment setup: run npm run build, npm run typecheck, and npm run lint; inspect Vite production base, generated dist asset paths, HashRouter/static SPA routing, absence of backend/auth/integration runtime dependencies, absence of direct UI-to-Dexie access, and README public deployment context. Do not deploy, add workflows, implement UI changes, add packages, edit frozen docs, or reopen Phase 5.9 redesign work. Update active handoff docs only if needed. Do not commit or push.
 ```
 
-Suggested commit for completed 5.9E3 after checkpoint approval:
+Suggested commit after checkpoint approval:
 
 ```text
-chore: expand live demo seed data
+docs: open live demo release phase
 ```

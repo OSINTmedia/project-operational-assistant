@@ -1877,7 +1877,7 @@ Execution note:
 
 Phase 5.8 completed the first app-experience sequence through selected-user orientation, source-aware return flow, inline previews, and responsive working-layout repair.
 
-After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, `Phase 5.9E — Mobile Survival Pass`, `Phase 5.9E2 — Project Manager Project Management and Project Status Sync`, and `Phase 5.9E3 — Live Demo Dataset Expansion` are complete. The next micro-phase is `Phase 5.9F — Final Compact UX Audit`.
+After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the completed Phase 5.9 execution record. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, `Phase 5.9E — Mobile Survival Pass`, `Phase 5.9E2 — Project Manager Project Management and Project Status Sync`, `Phase 5.9E3 — Live Demo Dataset Expansion`, and `Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate` are complete. The next micro-phase is `Phase 6.1 — Build and Static Deployment Readiness Audit`.
 
 The older Phase 5.8 micro-phase entries below are retained as historical roadmap context. They are no longer the source for the next task.
 
@@ -2151,7 +2151,7 @@ Suggested commit message:
 
 ### Phase 5.9 — Compact Assistant UX and Actionability Refinement
 
-Status: `In progress`
+Status: `Complete for portfolio live-demo gate`
 
 Goal:
 
@@ -2464,9 +2464,9 @@ Suggested commit message:
 
 - `chore: expand live demo seed data`
 
-### Phase 5.9F — Final Compact UX Audit
+### Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate
 
-Status: `Next`
+Status: `Complete`
 
 Goal:
 
@@ -2483,12 +2483,18 @@ Scope:
 Acceptance criteria:
 
 - no P0 findings remain
-- P1 findings are fixed or explicitly accepted as MVP debt
+- P1 findings are fixed or explicitly accepted as portfolio-level known limitations / future polish
 - Dashboard is action-first
 - route return context is clear
 - first viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail
 - mobile survival pass is complete
 - build / typecheck / lint pass
+
+Gate decision:
+
+- Phase 6 may begin.
+- Remaining non-critical UX imperfections are accepted as portfolio-level known limitations.
+- The project is not treated as a finished commercial SaaS product.
 
 Suggested commit message:
 
@@ -2496,154 +2502,175 @@ Suggested commit message:
 
 ---
 
-## Phase 6 — Quality and Final Review
+## Phase 6 — Live Demo / Final QA / Portfolio Release
 
-Status: `Later`
-
-Goal:
-
-Close the MVP with verification, deployment readiness, and final public-facing documentation.
-
-### Phase 6.1 — Validation and Edge-case Review
-
-Status: `Later`
+Status: `In progress`
 
 Goal:
 
-Review domain and data integrity before adding or broadening tests.
+Move from corrective UX work into public live-demo readiness, deployment setup, hosted smoke testing, final README polish, and release checkpoint.
+
+Decision:
+
+Phase 5.9F passed with notes. This is a portfolio project, not a final commercial SaaS product. Remaining non-critical UX imperfections are accepted as documented future polish if they do not break the live demo or core role workflows.
+
+### Phase 6.1 — Build and Static Deployment Readiness Audit
+
+Status: `Next`
+
+Goal:
+
+Verify the app is technically ready for GitHub Pages deployment setup.
 
 Scope:
 
-- validation gaps
-- domain edge cases
-- demo data consistency
+- verify `npm run build`, `npm run typecheck`, and `npm run lint`
+- inspect Vite production base and generated `dist/` asset paths
+- confirm `HashRouter` and static SPA routing are preserved
+- confirm no backend/auth/integration/runtime server dependency exists
+- confirm no direct UI-to-Dexie access slipped into feature screens
+- confirm README deployment target and public context are not misleading
 
 Explicit exclusions:
 
-- new feature work
-- deployment configuration
+- no deployment workflow implementation yet
+- no UI changes
+- no new features
+- no package installation
 
 Acceptance criteria:
 
-- major validation and data consistency gaps are known and addressed or recorded
+- static build output is compatible with the GitHub Pages target path
+- route strategy remains GitHub Pages-safe
+- no technical blocker exists before deployment setup
 
 Verification requirements:
 
-- build / typecheck / lint if implementation files change during fixes
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
 
 Suggested commit message:
 
-- `chore: review validation and edge cases`
+- `chore: audit static deployment readiness`
 
-### Phase 6.2 — Focused Tests
+### Phase 6.2 — GitHub Pages Deployment Setup
 
 Status: `Later`
 
 Goal:
 
-Add tests where they materially reduce risk, not for checklist inflation.
+Add the deployment configuration for the static GitHub Pages live demo.
 
 Scope:
 
-- add focused tests only where useful
-- issue creation logic
-- ownership transfer
-- needs update
-- dashboard metrics
-- reset demo data
-
-Explicit exclusions:
-
-- exhaustive UI snapshot testing
-- low-signal test bloat
-
-Acceptance criteria:
-
-- key domain risks have focused automated coverage
-
-Verification requirements:
-
-- relevant test suite passes
-- build / typecheck / lint pass
-
-Suggested commit message:
-
-- `test: add focused domain tests`
-
-### Phase 6.3 — GitHub Pages Deployment Setup
-
-Status: `Later`
-
-Goal:
-
-Prepare automated static deployment without changing runtime architecture.
-
-Scope:
-
-- GitHub Actions workflow
-- Pages build settings
-- Vite base verification
-- HashRouter deployment check
+- GitHub Actions workflow or approved Pages deployment path
+- repository Pages settings guidance if needed
+- production build command verification
+- static artifact path verification
 
 Explicit exclusions:
 
 - backend hosting
 - BrowserRouter migration
 - server rewrites
+- feature implementation
 
 Acceptance criteria:
 
-- deployment configuration is ready for GitHub Pages use
+- deployment configuration is ready for GitHub Pages
+- deployment path preserves `/project-operational-assistant/`
+- local verification still passes
 
 Verification requirements:
 
-- build passes in CI-oriented configuration
-- deployment workflow is syntactically valid
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
 
 Suggested commit message:
 
 - `ci: add github pages deployment`
 
-### Phase 6.4 — Live Demo Verification
+### Phase 6.3 — Live Demo Smoke Test
 
 Status: `Later`
 
 Goal:
 
-Verify the real hosted demo behaves as expected after deployment setup.
+Verify the hosted GitHub Pages demo behaves well enough for public portfolio review.
 
 Scope:
 
-- verify GitHub Pages demo loads
-- verify routes work
-- verify reset data works
-- verify role switch works
+- hosted app loads
+- Dashboard, Demo, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Project Create/Edit, and Teams open
+- reset demo data works
+- role switching works
+- source-aware return behavior works on key issue routes
+- expanded seed data is visible after reset
 
 Explicit exclusions:
 
 - new feature work
 - redesigns
+- broad QA matrix beyond live-demo smoke testing
 
 Acceptance criteria:
 
-- hosted demo is stable enough for public portfolio use
+- hosted demo is stable enough to share publicly
+- any residual issue is documented as known limitation or fixed before release
 
 Verification requirements:
 
-- live demo checked after deployment
-- local build / typecheck / lint still pass
+- hosted smoke test after deployment
+- local build / typecheck / lint remain green
 
 Suggested commit message:
 
-- `chore: verify live demo`
+- `chore: verify live demo smoke test`
 
-### Phase 6.5 — Final Scope Audit
+### Phase 6.4 — README Portfolio Polish
 
 Status: `Later`
 
 Goal:
 
-Confirm the implementation stayed inside the frozen MVP boundaries.
+Make the public README accurately describe the deployed portfolio demo.
+
+Scope:
+
+- live demo URL/status
+- updated demo account list
+- current feature list
+- known limitations
+- setup and verification commands
+
+Explicit exclusions:
+
+- internal work log details
+- frozen-doc rewrites
+- exaggerated product claims
+
+Acceptance criteria:
+
+- README is accurate for public visitors
+- README does not imply backend/auth/production SaaS behavior
+
+Verification requirements:
+
+- docs-only unless code changes are made
+
+Suggested commit message:
+
+- `docs: polish portfolio readme`
+
+### Phase 6.5 — Final Scope and Known Limitations Audit
+
+Status: `Later`
+
+Goal:
+
+Confirm the implementation stayed inside the frozen MVP boundaries and record acceptable portfolio limitations.
 
 Scope:
 
@@ -2651,18 +2678,21 @@ Scope:
 - verify exclusions:
   - no backend
   - no real auth
-  - no attachments
   - no notification hub
   - no organization workspace
   - no employee scoring
+  - no workflow engine
+- record non-blocking UX/product limitations as future polish
 
 Explicit exclusions:
 
-- new corrective feature work unless explicitly approved
+- new corrective feature work unless a real live-demo blocker appears
+- broad Phase 5.9 redesign reopening
 
 Acceptance criteria:
 
 - final scope alignment is documented and defensible
+- known limitations are honest and portfolio-appropriate
 
 Verification requirements:
 
@@ -2670,52 +2700,21 @@ Verification requirements:
 
 Suggested commit message:
 
-- `chore: complete final scope audit`
+- `docs: record final scope limitations`
 
-### Phase 6.6 — Final Documentation Cleanup
-
-Status: `Later`
-
-Goal:
-
-Make the public and internal docs consistent for final handoff.
-
-Scope:
-
-- README final polish
-- changelog checkpoint final state
-- DEVELOPMENT_NOTES final lessons / trade-offs
-- ensure docs are consistent
-
-Explicit exclusions:
-
-- frozen docs changes unless explicit scope change is approved
-- internal work-log clutter in README
-
-Acceptance criteria:
-
-- public and internal docs are coherent and appropriately scoped
-
-Verification requirements:
-
-- docs-only task unless code / docs fixes require build / typecheck / lint
-
-Suggested commit message:
-
-- `docs: finalize project documentation`
-
-### Phase 6.7 — Portfolio Release Tag
+### Phase 6.6 — Release Tag / Final Checkpoint
 
 Status: `Later`
 
 Goal:
 
-Prepare the project for final portfolio release and handoff.
+Prepare the final portfolio release checkpoint.
 
 Scope:
 
 - final build / typecheck / lint
-- optional release tag plan
+- final git status check
+- release tag plan if approved
 - final handoff summary
 
 Explicit exclusions:
@@ -2735,7 +2734,7 @@ Verification requirements:
 
 Suggested commit message:
 
-- `chore: prepare portfolio mvp release`
+- `chore: prepare portfolio release checkpoint`
 
 ---
 

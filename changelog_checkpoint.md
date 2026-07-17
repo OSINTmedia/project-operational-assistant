@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 5.9 — Compact Assistant UX and Actionability Refinement: `In progress`
+Phase 6 — Live Demo / Final QA / Portfolio Release: `In progress`
 
 Completed micro-phase:
 
@@ -16,10 +16,11 @@ Completed micro-phase:
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete
 - `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete
 - `Phase 5.9E3 — Live Demo Dataset Expansion` implementation is complete
+- `Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate` passed with notes
 
 Next concrete micro-phase:
 
-- `Phase 5.9F — Final Compact UX Audit`
+- `Phase 6.1 — Build and Static Deployment Readiness Audit`
 
 ## Documentation Trust Order
 
@@ -44,6 +45,8 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 5.9` is a controlled compact UX and actionability refinement phase, not scope creep and not a new product-feature phase.
 - `Phase 5.9E2` is the bounded exception that resolves the documented Project Manager project-management gap from frozen docs without adding delete/archive, workflow-engine, backend, auth, or a new data model.
 - `Phase 5.9E3` expands local seed data for portfolio/live-demo readiness. Existing local browsers with old IndexedDB data should use Demo reset to load the expanded dataset.
+- `Phase 5.9F` closed corrective UX work for portfolio demo purposes. Remaining non-critical UX polish is accepted as known portfolio debt, not a blocker to Phase 6.
+- `Phase 6` is live-demo readiness work: static deployment audit, GitHub Pages setup, hosted smoke test, README polish, final scope/limitations audit, and release checkpoint.
 
 ## Completed Work
 
@@ -337,23 +340,13 @@ Use the project docs in this order when deciding what is current and what should
 
 Latest implementation/audit slice:
 
-- `src/app/layout/AppShell.tsx`
-- `src/features/demo/DemoRoleSwitcher.tsx`
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/personal/PersonalPage.tsx`
-- `src/features/projects/ProjectsPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/issues/IssueCreatePage.tsx`
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueEditPage.tsx`
-- `src/features/issues/IssueFormFields.tsx`
-- `src/features/teams/TeamsPage.tsx`
 - `BUILD_PLAN.md`
 - `APP_EXPERIENCE_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
+- `README.md`
 
-Current Phase 5.9 planning context:
+Completed Phase 5.9 planning context:
 
 - `design_review_V2.md`
 - `APP_EXPERIENCE_PLAN.md`
@@ -602,6 +595,9 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9E3 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9F final compact UX audit and portfolio demo gate verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+  The production build still emits Vite's large chunk warning for the single bundled app chunk; this is accepted as non-blocking portfolio optimization debt, not a live-demo blocker.
 
 ## Roadmap Update
 
@@ -663,7 +659,7 @@ Full implementation history:
 - `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping` is now complete.
 - `Phase 5.8E — Responsive Interaction and Working-layout Pass` is now complete.
 - `Phase 5.8F — Final App Experience Audit` has been superseded by the deeper Phase 5.9 corrective UX roadmap.
-- `Phase 5.9 — Compact Assistant UX and Actionability Refinement` is now active.
+- `Phase 5.9 — Compact Assistant UX and Actionability Refinement` is now complete for portfolio live-demo readiness.
 - `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete.
 - `Phase 5.9A2 — Compact AppShell and Header Compression` implementation and self-audit are complete.
 - `Phase 5.9B — Dashboard Action-first Recomposition` implementation and self-audit are complete.
@@ -672,37 +668,37 @@ Full implementation history:
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete.
 - `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete.
 - `Phase 5.9E3 — Live Demo Dataset Expansion` implementation is complete.
-- The next allowed micro-phase is `Phase 5.9F — Final Compact UX Audit`, not Phase 6.
+- `Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate` passed with notes.
+- Remaining UX imperfections are accepted as portfolio-level known limitations and future polish, not Phase 6 blockers.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- `Phase 6 — Quality and Final Review` remains later, after Phase 5.9 gate criteria are met.
+- `Phase 6 — Live Demo / Final QA / Portfolio Release` is now active.
 
 ## Next Recommended Task
 
-`Phase 5.9` is the current active umbrella phase.
+`Phase 6` is the current active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 5.9F — Final Compact UX Audit`
+- `Phase 6.1 — Build and Static Deployment Readiness Audit`
 
 Scope for the next task only:
 
-- audit the completed Phase 5.9 corrective UX sequence end to end
-- repeat Manager, Project Manager, and User workflow traces
-- verify first-viewport usefulness on Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Teams, and AppShell
-- verify desktop/tablet/mobile compactness, route recovery, filters, previews, save/cancel behavior, and keyboard accessibility
+- verify build output and static SPA readiness before deployment setup
+- confirm Vite base targets `/project-operational-assistant/`
+- confirm `HashRouter` and GitHub Pages route compatibility are preserved
+- inspect generated `dist/` assets after build
+- confirm no backend/auth/integration/runtime server dependency exists
+- confirm no direct UI-to-Dexie access slipped into feature screens
+- confirm README deployment target and public context are not misleading
+- identify any deployment blockers before GitHub Pages setup
 - preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
-- preserve 5.9A1 return behavior and 5.9A2 AppShell compression
-- preserve 5.9B Dashboard action-first behavior
-- preserve 5.9C Personal/Projects/Project Detail density behavior
-- preserve 5.9D Issue Detail/Form compression behavior
-- preserve 5.9E mobile survival behavior
 - preserve 5.9E2 bounded Project Manager project create/edit behavior and issue-derived project status sync
 - preserve 5.9E3 expanded live demo seed coverage and Demo reset behavior
 - verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
 - verify no project delete/archive or new project data model is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
-- update handoff docs only as needed after the audit
+- do not deploy yet unless the user explicitly approves Phase 6.2
 
-Do not implement deployment work, Phase 6 validation, or final release documentation during `Phase 5.9F`.
+Do not implement deployment workflow changes during `Phase 6.1`; this is the final static readiness audit before `Phase 6.2`.

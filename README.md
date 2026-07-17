@@ -6,17 +6,17 @@ Portfolio MVP for project-based operational clarity.
 
 ## Build Progress
 
-`[##################--] 90%`
+`[###################-] 95%`
 
-Current public-demo status: the core MVP is built and portfolio-polished. Phase 5.9 compact assistant UX refinement is active before Phase 6 final quality, deployment setup, live-demo verification, and release readiness.
+Current public-demo status: the core MVP and corrective compact UX work are complete for portfolio readiness. Phase 6 live-demo preparation is active before GitHub Pages deployment, hosted smoke testing, README final polish, and release checkpoint.
 
 - Complete: Phase 0 and 1 - Product scope, planning, and frontend foundation
 - Complete: Phase 2A and 2B - Local-first data model, persistence, seed data, and issue-domain logic
 - Complete: Phase 3 - Main app screens and screen audit
 - Complete: Phase 4 - Dashboard metrics, charts, filters, click-throughs, and audit
 - Complete: Phase 5 - Portfolio polish, public README, and polish audit
-- In progress: Phase 5.9 - Compact assistant UX and actionability refinement
-- Upcoming: Phase 6 - Validation, deployment setup, live demo verification, and final release audit
+- Complete: Phase 5.9 - Compact assistant UX, route wayfinding, mobile survival, bounded Project Manager project management, and live-demo dataset expansion
+- In progress: Phase 6 - Live demo, final QA, portfolio release readiness
 
 For exact implementation handoff state, use `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. This README is public-facing portfolio context, not the internal work log.
 
@@ -73,12 +73,14 @@ Open text is intentionally limited to title and description. Operational meaning
 - Local dashboard filters and issue search
 - Project list and project detail surfaces
 - Readable project issue lists with structured filters
+- Bounded project create and edit flows for Manager and Project Manager demo roles
+- Issue-derived project status sync, including all-Done projects becoming Done
 - Issue create and edit flows
 - Issue detail with metadata, dependency context, labels, tags, participants, and activity history
 - Quick status and confirmation actions from Issue Detail
 - Personal work surface grouped by assigned, created, curated, and attention-related Issues
 - Team workspace visibility for members, team Issues, group Issues, and status summary
-- Demo users and role switching
+- Expanded demo users, role switching, teams, projects, issues, dependencies, labels, tags, and activity history
 - Local browser persistence with reset demo data behavior
 - Needs Update and Ready for Confirmation as system labels / attention signals
 
@@ -86,9 +88,9 @@ Open text is intentionally limited to title and description. Operational meaning
 
 The demo uses predefined local users instead of real authentication.
 
-- Manager: Mariam Kapanadze
-- Project Managers: Nino Beridze, Luka Tsereteli
-- Users: Ana Japaridze, Gio Lomidze, Maya Chikovani, Dato Khatiashvili
+- Managers: Mariam Kapanadze, Irakli Svanidze
+- Project Managers: Nino Beridze, Luka Tsereteli, Salome Maisuradze
+- Users: Ana Japaridze, Gio Lomidze, Elene Kvirikashvili, Maya Chikovani, Dato Khatiashvili, Saba Nozadze, Tamar Abashidze, Levan Kldiashvili
 
 Role switching is local app state only. It is designed to let visitors compare perspectives without sign-in, sessions, or a backend.
 
@@ -173,7 +175,7 @@ Planning and handoff documents:
 
 - `BUILD_PLAN.md` - implementation roadmap and micro-phase definitions
 - `changelog_checkpoint.md` - live handoff state and next concrete task
-- `APP_EXPERIENCE_PLAN.md` - active Phase 5.9 compact UX execution plan
+- `APP_EXPERIENCE_PLAN.md` - completed Phase 5.9 compact UX execution record
 - `design_review_V2.md` - current UX/navigation/actionability diagnosis
 - `DEVELOPMENT_NOTES.md` - decisions, trade-offs, and lessons learned
 - `docs/Portfolio_MVP_V1.md` - frozen product scope
@@ -191,12 +193,19 @@ Completed:
 - Main screens for Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, and Demo
 - Dashboard metrics, charts, filters, and click-throughs
 - Portfolio polish through helper text, search/filter polish, quick actions, responsive layout, and visual consistency
+- Compact assistant UX work through route recovery, AppShell compression, Dashboard action-first ordering, Personal/Projects density, Issue/Form compression, and mobile survival
+- Bounded Project Manager project create/edit and issue-derived project status sync
+- Expanded live-demo seed data for role, project, issue, status, label, dependency, and history coverage
 - Public README presentation and Phase 5 polish audit
 
 Remaining:
 
-- Phase 5.9 - compact assistant UX and actionability refinement
-- Phase 6 - validation, focused tests, GitHub Pages deployment setup, live-demo verification, final scope audit, documentation cleanup, and release tag
+- Phase 6.1 - build and static deployment readiness audit
+- Phase 6.2 - GitHub Pages deployment setup
+- Phase 6.3 - live demo smoke test
+- Phase 6.4 - README portfolio polish
+- Phase 6.5 - final scope and known limitations audit
+- Phase 6.6 - release tag / final checkpoint
 
 ## Lessons Captured
 

@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Stop open-ended UX correction and proceed to portfolio live demo
+
+**Context:**
+Phase 5.9 corrected the major issues found in the compact assistant UX audit: navigation and return context, AppShell/header density, Dashboard actionability, Personal/Projects density, Issue/Form composition, mobile survival, Project Manager project management, project status sync, and expanded demo data.
+
+**Decision:**
+Close open-ended corrective UX work for portfolio purposes and move into `Phase 6 — Live Demo / Final QA / Portfolio Release`, starting with `Phase 6.1 — Build and Static Deployment Readiness Audit`.
+
+**Reasoning:**
+This is a portfolio project, not a final commercial SaaS product. The app now demonstrates React + TypeScript implementation discipline, local-first architecture, structured domain modeling, routing/state management, product thinking, phased delivery, and QA workflow. Remaining non-critical UX imperfections are accepted as documented future polish if they do not break the live demo or core role workflows.
+
+**Alternatives considered:**
+Continuing broad Phase 5.9 redesign work, delaying deployment until every density issue is polished, or treating the MVP as a commercial release candidate.
+
+**Impact:**
+Phase 6 focuses on live demo readiness, GitHub Pages deployment setup, hosted smoke testing, README accuracy, final scope/known-limitations audit, and release checkpoint. Future work should distinguish real live-demo blockers from acceptable portfolio UX debt.
+
 ### 2026-07-17 — Expand seed data for live demo readiness
 
 **Context:**
