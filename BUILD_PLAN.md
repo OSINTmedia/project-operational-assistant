@@ -1877,7 +1877,7 @@ Execution note:
 
 Phase 5.8 completed the first app-experience sequence through selected-user orientation, source-aware return flow, inline previews, and responsive working-layout repair.
 
-After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, and `Phase 5.9E — Mobile Survival Pass` are complete. The next micro-phase is `Phase 5.9F — Final Compact UX Audit`.
+After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context`, `Phase 5.9A2 — Compact AppShell and Header Compression`, `Phase 5.9B — Dashboard Action-first Recomposition`, `Phase 5.9C — Project and Personal Density Pass`, `Phase 5.9D — Issue Detail and Form Compression`, `Phase 5.9E — Mobile Survival Pass`, and `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` are complete. The next micro-phase is `Phase 5.9F — Final Compact UX Audit`.
 
 The older Phase 5.8 micro-phase entries below are retained as historical roadmap context. They are no longer the source for the next task.
 
@@ -2159,7 +2159,7 @@ Make the existing MVP feel like a compact operational assistant by correcting ro
 
 Purpose:
 
-The primary product is already built. Phase 5.9 is a controlled UX/UI/flow correction pass based on `design_review_V2.md` and `APP_EXPERIENCE_PLAN.md`. It does not add backend behavior, real auth, notification infrastructure, workflow engines, employee scoring, a new data model, or a broad route redesign.
+The primary product is already built. Phase 5.9 is a controlled UX/UI/flow correction pass based on `design_review_V2.md` and `APP_EXPERIENCE_PLAN.md`. It does not add backend behavior, real auth, notification infrastructure, workflow engines, employee scoring, a new data model, or a broad route redesign. A narrow `5.9E2` corrective capability slice resolves the documented gap between frozen Project Manager intent and the earlier Phase 3 project-list-only implementation.
 
 Execution note:
 
@@ -2175,6 +2175,8 @@ Scope:
 - improve Personal and Project work-surface density
 - improve Issue Detail/Edit/Create compactness and visible save/cancel/return behavior
 - complete a mobile survival pass after desktop/layout order changes
+- add bounded Project Manager project create/edit capability required by frozen scope docs
+- keep project status synchronized with issue status where project issues determine the state
 - preserve existing route model, `HashRouter`, GitHub Pages compatibility, local-first architecture, and system-label semantics
 
 Explicit exclusions:
@@ -2187,6 +2189,7 @@ Explicit exclusions:
 - no enterprise permissions
 - no workflow engine
 - no new project/issue data model
+- no project delete/archive/workflow administration
 - no broad product-scope expansion
 - no full AppShell redesign
 - no full design-system rewrite
@@ -2378,6 +2381,51 @@ Explicit exclusions:
 Suggested commit message:
 
 - `feat: improve compact mobile work flows`
+
+### Phase 5.9E2 — Project Manager Project Management and Project Status Sync
+
+Status: `Complete`
+
+Goal:
+
+Resolve the conflict where frozen docs describe Project Manager project management, but the live app only allowed project viewing and issue creation.
+
+Scope:
+
+- add bounded project create and edit routes for Manager and Project Manager demo roles
+- expose Create project from Projects and Edit project from Project Detail for allowed roles
+- save project fields through domain/repository rules, not UI-to-persistence shortcuts
+- keep project status derived from project issues when issue state changes
+- ensure all issues `Done` makes the project status `Done`
+
+Explicit exclusions:
+
+- no project delete/archive
+- no project permissions engine
+- no organization workspace
+- no workflow engine
+- no backend/auth behavior
+- no new project data model
+- no `/personal` removal or route replacement
+
+Acceptance criteria:
+
+- Project Manager can create a project from Projects
+- Project Manager can edit project name, description, status, owner, and team from Project Detail
+- non-manager roles do not get project-management entry points and receive clear blocked-state copy on direct route access
+- project status is recalculated after issue create/edit/status/confirmation changes
+- if every issue in a project is `Done`, the project status becomes `Done`
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: add project management for project managers`
 
 ### Phase 5.9F — Final Compact UX Audit
 

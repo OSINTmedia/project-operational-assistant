@@ -14,6 +14,7 @@ Completed micro-phase:
 - `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete
+- `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete
 
 Next concrete micro-phase:
 
@@ -40,6 +41,7 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 5.8` completed the first app-experience refinement sequence through responsive interaction repair.
 - `Phase 5.8F` is no longer the next task. The deeper `design_review_V2.md` audit found remaining P0/P1 navigation, first-viewport, density, and mobile risks, so the project moved into corrective `Phase 5.9` before Phase 6.
 - `Phase 5.9` is a controlled compact UX and actionability refinement phase, not scope creep and not a new product-feature phase.
+- `Phase 5.9E2` is the bounded exception that resolves the documented Project Manager project-management gap from frozen docs without adding delete/archive, workflow-engine, backend, auth, or a new data model.
 
 ## Completed Work
 
@@ -218,6 +220,12 @@ Use the project docs in this order when deciding what is current and what should
 - Tightened Dashboard card, chart, filter, and queue layouts for smaller viewport widths.
 - Improved mobile and tablet stacking for Projects, Project Detail, Personal, Issue Detail, Team Workspace, Create Issue, and Edit Issue surfaces.
 - Made dense form controls and action rows full-width where needed on mobile while preserving existing structured form behavior.
+- Added bounded Project Manager project management:
+  project create from Projects and project edit from Project Detail for Manager / Project Manager demo roles.
+- Added repository/domain-backed project save rules without direct UI-to-Dexie writes.
+- Added project status synchronization after issue create, issue edit, issue status change, and confirmation-related status changes.
+- Ensured project status derives to `Done` when every issue in the project is `Done`.
+- Kept the Project Manager capability repair free of project delete/archive, workflow engine, backend/auth behavior, broad permissions, new project data model, route replacement, or `/personal` changes.
 - Kept the responsive pass free of information-architecture redesign, new workflow behavior, domain logic changes, and persistence changes.
 - Added a shared `Badge` presentation component for consistent badge/chip rendering across existing demo screens.
 - Replaced repeated ad hoc badge markup across Dashboard, Demo, Projects, Project Detail, Personal, Issue Detail, and Team Workspace surfaces.
@@ -584,6 +592,8 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9E self-audit verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9E2 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -652,6 +662,7 @@ Full implementation history:
 - `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete.
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete.
 - `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete.
+- `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete.
 - The next allowed micro-phase is `Phase 5.9F — Final Compact UX Audit`, not Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
@@ -677,7 +688,9 @@ Scope for the next task only:
 - preserve 5.9C Personal/Projects/Project Detail density behavior
 - preserve 5.9D Issue Detail/Form compression behavior
 - preserve 5.9E mobile survival behavior
+- preserve 5.9E2 bounded Project Manager project create/edit behavior and issue-derived project status sync
 - verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
+- verify no project delete/archive or new project data model is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
 - update handoff docs only as needed after the audit

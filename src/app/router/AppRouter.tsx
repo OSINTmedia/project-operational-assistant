@@ -5,7 +5,9 @@ import { IssueCreatePage } from '../../features/issues/IssueCreatePage'
 import { IssueDetailPage } from '../../features/issues/IssueDetailPage'
 import { IssueEditPage } from '../../features/issues/IssueEditPage'
 import { PersonalPage } from '../../features/personal/PersonalPage'
+import { ProjectCreatePage } from '../../features/projects/ProjectCreatePage'
 import { ProjectDetailPage } from '../../features/projects/ProjectDetailPage'
+import { ProjectEditPage } from '../../features/projects/ProjectEditPage'
 import { ProjectsPage } from '../../features/projects/ProjectsPage'
 import { TeamsPage } from '../../features/teams/TeamsPage'
 import { AppShell } from '../layout/AppShell'
@@ -19,6 +21,8 @@ export function AppRouter() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/personal" element={<PersonalPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/new" element={<ProjectCreatePage />} />
+          <Route path="/projects/:projectId/edit" element={<ProjectEditPage />} />
           <Route path="/projects/:projectId/issues/new" element={<IssueCreatePage />} />
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
           <Route path="/teams" element={<TeamsPage />} />

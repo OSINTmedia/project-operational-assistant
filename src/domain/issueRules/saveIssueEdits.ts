@@ -14,6 +14,7 @@ import type {
   StatusId,
 } from '../../shared/types'
 import type { IssueId, LabelId, TagId, UserId } from '../../entities'
+import { syncProjectStatusFromIssues } from '../projectRules'
 import { createActivityEntry, createActivityValue } from './activityHistory'
 import {
   addIssueLabel,
@@ -306,5 +307,21 @@ export async function saveIssueEdits(
     }
   }
 
-  return getExistingIssue(nextIssue.id, issueRepo)
+  const finalIssue = await getExistingIssue(nextIssue.id, issueRepo)
+
+  await syncProjectStatusFromIssues(existingIssue.projectId, {
+    issueRepository: issueRepo,
+    projectRepository: projectsRepo,
+    now: dependencies.now,
+  })
+
+  if (finalIssue.projectId !== existingIssue.projectId) {
+    await syncProjectStatusFromIssues(finalIssue.projectId, {
+      issueRepository: issueRepo,
+      projectRepository: projectsRepo,
+      now: dependencies.now,
+    })
+  }
+
+  return finalIssue
 }

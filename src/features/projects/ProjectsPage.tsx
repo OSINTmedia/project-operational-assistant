@@ -2,12 +2,14 @@ import {
   AlertCircle,
   ArrowRight,
   FolderKanban,
+  Plus,
   RefreshCcw,
   ShieldAlert,
   Users,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
+import { canManageProjects } from '../../domain/projectRules'
 import { Badge } from '../../shared/components/Badge'
 import { useProjectsListView } from './useProjectsListView'
 
@@ -27,6 +29,7 @@ export function ProjectsPage() {
     currentUserName: currentUser?.name ?? null,
     currentUserRole: currentUser?.role ?? null,
   })
+  const canManageProjectRecords = canManageProjects(currentUser?.role ?? null)
 
   if (projectsView.status === 'loading') {
     return (
@@ -102,7 +105,16 @@ export function ProjectsPage() {
               opening detail.
             </p>
           </div>
-          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
+          <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap lg:justify-end">
+            {canManageProjectRecords ? (
+              <Link
+                to="/projects/new"
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 sm:col-span-2 lg:order-last"
+              >
+                <Plus className="h-4 w-4" />
+                Create project
+              </Link>
+            ) : null}
             <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
               <span className="font-medium text-slate-950">{data.currentUserName}</span>
               <span className="mx-2 text-slate-400">·</span>

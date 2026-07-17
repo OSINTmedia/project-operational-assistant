@@ -6,6 +6,7 @@ import { projectRepository } from '../../repositories/projectRepository'
 import { tagRepository } from '../../repositories/tagRepository'
 import { teamRepository } from '../../repositories/teamRepository'
 import { userRepository } from '../../repositories/userRepository'
+import { deriveProjectStatusFromIssues } from '../../domain/projectRules'
 import {
   DEPENDENCY_TYPE_LABELS,
   ISSUE_TYPE_LABELS,
@@ -103,6 +104,7 @@ async function loadProjectDetailData(projectId: ProjectId): Promise<ProjectDetai
     [...projectIssues]
       .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt))[0]
       ?.updatedAt ?? null
+  const derivedStatus = deriveProjectStatusFromIssues(projectIssues, project.status)
   const issueSummaries = [...projectIssues]
     .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt))
     .map((issue) => ({
@@ -139,7 +141,7 @@ async function loadProjectDetailData(projectId: ProjectId): Promise<ProjectDetai
     id: project.id,
     name: project.name,
     description: project.description,
-    statusLabel: STATUS_LABELS[project.status],
+    statusLabel: STATUS_LABELS[derivedStatus],
     ownerName: userNames.get(project.ownerId) ?? 'Unknown owner',
     teamName: teamNames.get(project.teamId) ?? 'Unknown team',
     updatedAt: project.updatedAt,

@@ -2,8 +2,10 @@ import type { IssueRecord } from '../../persistence/records'
 import {
   activityHistoryRepository,
   issueRepository,
+  projectRepository,
   type ActivityHistoryRepository,
   type IssueRepository,
+  type ProjectRepository,
 } from '../../repositories'
 import type {
   DependencyTypeId,
@@ -12,6 +14,7 @@ import type {
   StatusId,
 } from '../../shared/types'
 import type { LabelId, ProjectId, TagId, TeamId, UserId } from '../../entities'
+import { syncProjectStatusFromIssues } from '../projectRules'
 import { createActivityEntry, createActivityValue } from './activityHistory'
 
 export interface CreateIssueInput {
@@ -37,6 +40,7 @@ export interface CreateIssueDependencies {
   createId?: () => string
   now?: () => string
   repository?: IssueRepository
+  projectRepository?: ProjectRepository
   activityHistoryRepository?: ActivityHistoryRepository
 }
 
@@ -118,6 +122,7 @@ export async function createIssue(
   dependencies: CreateIssueDependencies = {},
 ): Promise<IssueRecord> {
   const repository = dependencies.repository ?? issueRepository
+  const projectsRepository = dependencies.projectRepository ?? projectRepository
   const historyRepository =
     dependencies.activityHistoryRepository ?? activityHistoryRepository
   const issueRecord = buildIssueRecord(input, dependencies)
@@ -134,6 +139,12 @@ export async function createIssue(
       createdAt: issueRecord.createdAt,
     }),
   )
+
+  await syncProjectStatusFromIssues(issueRecord.projectId, {
+    issueRepository: repository,
+    projectRepository: projectsRepository,
+    now: dependencies.now,
+  })
 
   return issueRecord
 }

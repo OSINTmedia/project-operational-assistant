@@ -5,6 +5,7 @@ import { labelRepository } from '../../repositories/labelRepository'
 import { projectRepository } from '../../repositories/projectRepository'
 import { teamRepository } from '../../repositories/teamRepository'
 import { userRepository } from '../../repositories/userRepository'
+import { deriveProjectStatusFromIssues } from '../../domain/projectRules'
 import { STATUS_LABELS, USER_ROLE_LABELS, type UserRoleId } from '../../shared/types'
 
 const NEEDS_UPDATE_LABEL_NAME = 'Needs Update'
@@ -86,12 +87,13 @@ async function loadProjectsListViewData(params: {
         [...projectIssues]
           .sort((left, right) => Date.parse(right.updatedAt) - Date.parse(left.updatedAt))[0]
           ?.updatedAt ?? project.updatedAt
+      const derivedStatus = deriveProjectStatusFromIssues(projectIssues, project.status)
 
       return {
         id: project.id,
         name: project.name,
         description: project.description,
-        statusLabel: STATUS_LABELS[project.status],
+        statusLabel: STATUS_LABELS[derivedStatus],
         teamName: teamNames.get(project.teamId) ?? 'Unknown team',
         ownerName: userNames.get(project.ownerId) ?? 'Unknown owner',
         totalIssueCount,

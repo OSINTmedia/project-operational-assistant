@@ -13,6 +13,7 @@ import {
 } from '../../shared/types'
 import type { ActivityActionTypeId } from '../../shared/types'
 import type { IssueId, UserId } from '../../entities'
+import { syncProjectStatusFromIssues } from '../projectRules'
 import { createActivityEntry, createActivityValue } from './activityHistory'
 
 interface UpdateIssueStateDependencies {
@@ -110,6 +111,8 @@ export async function updateIssueStatus(
       createdAt: now,
     }),
   )
+
+  await syncProjectStatusFromIssues(existingIssue.projectId, dependencies)
 
   return {
     ...existingIssue,

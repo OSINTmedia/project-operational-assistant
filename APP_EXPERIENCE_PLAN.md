@@ -2,7 +2,7 @@
 
 Status: active planning document  
 Source diagnosis: `design_review_V2.md`  
-Execution state: `5.9E - Mobile Survival Pass` complete; `5.9F - Final Compact UX Audit` is next
+Execution state: `5.9E2 - Project Manager Project Management and Project Status Sync` complete; `5.9F - Final Compact UX Audit` is next
 Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
 
 ## 1. Purpose
@@ -48,6 +48,7 @@ The next target is **5.9F - Final Compact UX Audit**.
 - Preserve local-first architecture and repository/state/domain boundaries.
 - Keep UI out of persistence internals.
 - Keep `Needs Update` and `Ready for Confirmation` as system labels, not statuses or tags.
+- Keep Project Manager project management bounded to create/edit project context and issue-derived project status sync.
 
 Not allowed:
 
@@ -58,6 +59,7 @@ Not allowed:
 - workflow engine
 - organization workspace
 - new data model
+- project delete/archive/workflow administration
 - broad AppShell redesign
 - full product redesign
 - brand redesign
@@ -146,6 +148,7 @@ AppShell compression is a support slice. It must not distract from the first pri
 | 5.9C | Project and Personal Density Pass | Complete | Work lists appear too low | Implementation and self-audit passed |
 | 5.9D | Issue Detail and Form Compression | Complete | Issue/work forms feel like long documents | Implementation and self-audit passed |
 | 5.9E | Mobile Survival Pass | Complete | Endless stacked mobile scrolling | Implementation and self-audit passed |
+| 5.9E2 | Project Manager Project Management and Project Status Sync | Complete | Frozen PM scope conflicted with live project-list-only UI | Bounded capability repair; no delete/archive/workflow engine |
 | 5.9F | Final Compact UX Audit | Next | Phase 6 readiness uncertainty | Audit-only |
 
 ## 9. Phase Dependency Map
@@ -155,6 +158,7 @@ AppShell compression is a support slice. It must not distract from the first pri
 - 5.9B must happen before mobile survival because Dashboard order determines mobile stacking.
 - 5.9C and 5.9D should happen after Dashboard because compact work-surface patterns should be proven on the primary assistant home first.
 - 5.9E must happen after the major desktop/layout changes.
+- 5.9E2 must happen before final audit because Project Manager workflows cannot be honestly audited while project management is absent.
 - 5.9F must remain audit-only.
 
 Recommended order:
@@ -165,7 +169,8 @@ Recommended order:
 4. 5.9C - Project and Personal Density Pass
 5. 5.9D - Issue Detail and Form Compression
 6. 5.9E - Mobile Survival Pass
-7. 5.9F - Final Compact UX Audit
+7. 5.9E2 - Project Manager Project Management and Project Status Sync
+8. 5.9F - Final Compact UX Audit
 
 ## 10. Micro-phase Execution Plan
 
@@ -510,6 +515,71 @@ Suggested commit:
 
 Risk level: Medium-high.
 
+### 5.9E2 - Project Manager Project Management and Project Status Sync
+
+Goal:
+
+Resolve the gap where frozen docs describe Project Manager project management, but the live app only allowed project viewing and issue creation.
+
+Scope:
+
+- Add bounded project create/edit routes for Manager and Project Manager demo roles.
+- Expose Create project from Projects and Edit project from Project Detail for allowed roles.
+- Save project fields through domain/repository rules.
+- Keep project status synchronized with issue status changes.
+- Ensure all issues Done makes the project status Done.
+
+Exclusions:
+
+- no project delete/archive
+- no project permissions engine
+- no organization workspace
+- no workflow engine
+- no backend/auth behavior
+- no new project data model
+- no route replacement or `/personal` change
+
+Likely files:
+
+- `src/app/router/AppRouter.tsx`
+- `src/domain/projectRules/*`
+- `src/domain/issueRules/*`
+- `src/features/projects/*`
+- `BUILD_PLAN.md`
+- `APP_EXPERIENCE_PLAN.md`
+- `changelog_checkpoint.md`
+- `DEVELOPMENT_NOTES.md`
+
+Acceptance criteria:
+
+- Project Manager can create a project from Projects.
+- Project Manager can edit project name, description, status, owner, and team from Project Detail.
+- Non-manager roles do not see project-management entry points.
+- Direct project-management route access by unsupported roles shows clear blocked-state copy.
+- Project status recalculates after issue create/edit/status/confirmation changes.
+- If every issue in a project is Done, the project status becomes Done.
+- `npm run build`, `npm run typecheck`, and `npm run lint` pass.
+
+Manual test:
+
+- Select Project Manager role.
+- Open Projects, create a project, and verify it opens in Project Detail.
+- Open an existing project, edit project context, save, and verify return to Project Detail.
+- Mark or edit all issues in a project to Done and verify the project status shows Done in Projects and Project Detail.
+- Switch to a User role and verify project create/edit entry points are not shown.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `feat: add project management for project managers`
+
+Risk level: Medium. This is a bounded capability repair, not a workflow-system expansion.
+
 ### 5.9F - Final Compact UX Audit
 
 Goal:
@@ -573,7 +643,7 @@ Use this matrix after each implementation slice, scaled to the slice risk.
 | Role | Dashboard | Personal | Projects | Project Detail | Issue Detail | Edit/Create | Teams | Demo role switch |
 |---|---|---|---|---|---|---|---|---|
 | Manager | Can I identify blocked/delayed/Needs Update work and act? | Is Personal clearly secondary to workspace triage? | Can I scan project risk compactly? | Can I recover project context? | Can I inspect without losing source? | Does save/cancel return predictably? | Is team context secondary and clear? | Does switching Manager perspective update work context? |
-| Project Manager | Can I identify project-specific issues quickly? | Do curated/created/assigned groupings help? | Can I find the right project? | Are project issues visible before heavy scroll? | Can I understand owner/curator/status quickly? | Can I return to project context? | Can I see team context without route confusion? | Does selected PM context remain visible? |
+| Project Manager | Can I identify project-specific issues quickly? | Do curated/created/assigned groupings help? | Can I find/create the right project? | Are project issues visible before heavy scroll, and can I edit project context? | Can I understand owner/curator/status quickly? | Can I return to project context? | Can I see team context without route confusion? | Does selected PM context remain visible? |
 | User | Can I see what belongs to me? | Can I find assigned, Needs Update, and Ready for Confirmation work? | Are Projects understandable but not required for my next action? | Can I understand issue context if I land here? | Can I act or confirm without guessing? | Does edit stay structured and recoverable? | Can I understand team work without getting lost? | Does role switching clearly change my work? |
 
 Questions for every walkthrough:
@@ -603,6 +673,8 @@ Phase 6 may begin only when:
 - Route return context is clear on Issue Detail/Edit and other deep routes.
 - First viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail.
 - Mobile survival pass is complete.
+- Project Manager project create/edit works within bounded MVP scope.
+- Project status sync reflects all issues Done as project Done.
 - Summary cards filter, preview, or route to precise work surfaces.
 - Charts do not appear above the main action queue.
 - Final compact UX audit passes.
@@ -649,11 +721,11 @@ Next phase: **5.9F - Final Compact UX Audit**
 Recommended implementation prompt:
 
 ```text
-Audit Phase 5.9F only. Perform the final compact UX audit after completed 5.9A1 through 5.9E: verify route recovery, first-viewport usefulness, Dashboard action-first behavior, Personal/Projects/Issue/Teams compactness, desktop/tablet/mobile survival, keyboard accessibility, and strict MVP scope control. Do not implement product changes, deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, route removal, /personal removal, or Phase 6 work. Run npm run build, npm run typecheck, and npm run lint. Update active handoff docs only if needed. Do not commit or push.
+Audit Phase 5.9F only. Perform the final compact UX audit after completed 5.9A1 through 5.9E2: verify route recovery, first-viewport usefulness, Dashboard action-first behavior, Project Manager project create/edit, issue-derived project status sync, Personal/Projects/Issue/Teams compactness, desktop/tablet/mobile survival, keyboard accessibility, and strict MVP scope control. Do not implement product changes, deployment work, backend/auth/notifications/workflow engine, comments, permissions expansion, project delete/archive, route removal, /personal removal, or Phase 6 work. Run npm run build, npm run typecheck, and npm run lint. Update active handoff docs only if needed. Do not commit or push.
 ```
 
-Suggested commit for completed 5.9E after checkpoint approval:
+Suggested commit for completed 5.9E2 after checkpoint approval:
 
 ```text
-feat: improve compact mobile work flows
+feat: add project management for project managers
 ```

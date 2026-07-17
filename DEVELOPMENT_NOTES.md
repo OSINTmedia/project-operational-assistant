@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Add bounded Project Manager project management before final UX audit
+
+**Context:**
+Frozen product and technical docs describe Project Manager project management, including creating and editing projects, but the live app still only exposed project list/detail navigation and project-scoped issue creation. `BUILD_PLAN.md` correctly deferred project create/edit during Phase 3 unless separately scoped, which left a visible capability gap before the final compact UX audit.
+
+**Decision:**
+Add a narrow corrective `Phase 5.9E2` slice: Manager and Project Manager demo roles can create projects from Projects and edit project context from Project Detail. Project save behavior goes through domain/repository rules, and project status is synchronized from issue state changes so all issues `Done` makes the project status `Done`.
+
+**Reasoning:**
+The Project Manager workflow cannot be credibly audited if the user cannot manage project records at all. This repair satisfies the frozen MVP intent without introducing a project administration suite. Keeping create/edit bounded avoids turning the app into a permissions engine or project-workflow product.
+
+**Alternatives considered:**
+Leaving the gap for Phase 6, documenting it as MVP debt, adding delete/archive/project permissions, adding workflow-state administration, or changing the project data model.
+
+**Impact:**
+Project Manager project create/edit now exists without backend/auth behavior, organization workspace, notification hub, employee scoring, workflow engine, project delete/archive, new project data model, direct UI-to-Dexie access, route replacement, or `/personal` changes. `Needs Update` and `Ready for Confirmation` remain system labels.
+
 ### 2026-07-17 — Keep Phase 5.9E as mobile survival only
 
 **Context:**

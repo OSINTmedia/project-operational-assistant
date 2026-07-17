@@ -5,11 +5,14 @@ import {
   ChevronDown,
   Eye,
   Filter,
+  FilePenLine,
   Plus,
   Search,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
+import { canManageProjects } from '../../domain/projectRules'
 import { Badge, type BadgeVariant } from '../../shared/components/Badge'
 import { ContextBreadcrumbs } from '../../shared/components/ContextBreadcrumbs'
 import { createIssueNavigationState } from '../issues/issueNavigationState'
@@ -229,6 +232,10 @@ function ProjectIssueCard({
 
 export function ProjectDetailPage() {
   const { projectId } = useParams()
+  const demoUsers = useDemoAppState((state) => state.demoUsers)
+  const currentUserId = useDemoAppState((state) => state.currentUserId)
+  const currentUser = getCurrentDemoUser(demoUsers, currentUserId)
+  const canManageProjectRecords = canManageProjects(currentUser?.role ?? null)
   const projectView = useProjectDetailView(projectId ?? null)
   const [statusFilter, setStatusFilter] = useState('all')
   const [priorityFilter, setPriorityFilter] = useState('all')
@@ -424,10 +431,20 @@ export function ProjectDetailPage() {
           </div>
 
           <div className="grid w-full gap-2 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
+            {canManageProjectRecords ? (
+              <Link
+                to={`/projects/${data.id}/edit`}
+                aria-label={`Edit ${data.name}`}
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
+              >
+                <FilePenLine className="h-4 w-4" />
+                Edit project
+              </Link>
+            ) : null}
             <Link
               to={`/projects/${data.id}/issues/new`}
               aria-label={`Create issue in ${data.name}`}
-              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <Plus className="h-4 w-4" />
               Create issue

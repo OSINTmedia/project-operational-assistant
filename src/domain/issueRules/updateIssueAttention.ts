@@ -9,6 +9,7 @@ import {
 } from '../../repositories'
 import type { IssueId, LabelId, UserId } from '../../entities'
 import { STATUS_LABELS } from '../../shared/types'
+import { syncProjectStatusFromIssues } from '../projectRules'
 import { createActivityEntry, createActivityValue } from './activityHistory'
 
 const SYSTEM_LABEL_NAMES = {
@@ -201,6 +202,8 @@ export async function markIssueReadyForConfirmation(
     }),
   )
 
+  await syncProjectStatusFromIssues(existingIssue.projectId, dependencies)
+
   return {
     ...existingIssue,
     statusId: 'done',
@@ -252,6 +255,8 @@ export async function confirmIssue(
       createdAt: now,
     }),
   )
+
+  await syncProjectStatusFromIssues(existingIssue.projectId, dependencies)
 
   return {
     ...existingIssue,
@@ -306,6 +311,8 @@ export async function reopenIssueFromConfirmation(
       createdAt: now,
     }),
   )
+
+  await syncProjectStatusFromIssues(existingIssue.projectId, dependencies)
 
   return {
     ...existingIssue,
