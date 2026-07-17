@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9E as mobile survival only
+
+**Context:**
+`Phase 5.9E` needed to repair mobile and tablet usability after the 5.9A1 through 5.9D route, shell, Dashboard, Personal/Projects, and Issue/Form compaction work.
+
+**Decision:**
+Use responsive presentation changes only. AppShell mobile chrome is tighter, Dashboard and Project Detail keep search visible while structured filters move into native mobile disclosures, page headers and repeated cards are smaller on mobile, Team Workspace is less vertically heavy, and Issue Create/Edit sticky action areas are more compact.
+
+**Reasoning:**
+The problem was mobile survival after existing layout work, not a need for a new mobile product or navigation framework. Native disclosures keep secondary filters accessible without making the first viewport entirely filter chrome, and responsive class changes preserve the existing route/data architecture.
+
+**Alternatives considered:**
+Adding a bottom navigation redesign, creating a mobile-only app shell, moving work lists into drawers, changing routes, adding a command palette, or starting Phase 6 validation.
+
+**Impact:**
+5.9E improves small-screen usability while preserving `HashRouter`, existing routes, `/personal`, 5.9A1 return behavior, 5.9A2 shell behavior, 5.9B Dashboard action-first behavior, 5.9C Personal/Projects density behavior, 5.9D Issue/Form compression behavior, local-first architecture, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, comments, permissions expansion, data model, persistence, repository, or route-tree changes were introduced.
+
 ### 2026-07-17 — Keep Phase 5.9D as issue/form composition only
 
 **Context:**

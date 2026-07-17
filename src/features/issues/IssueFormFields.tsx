@@ -80,7 +80,7 @@ export function IssueFormFields({
           </span>
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
           <label className="grid gap-2 text-sm text-slate-600 md:col-span-2">
             <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Title
@@ -243,7 +243,7 @@ export function IssueFormFields({
           </span>
         </summary>
 
-        <div className="mt-4 grid gap-4">
+        <div className="mt-3 grid gap-3 sm:gap-4">
           <div className="grid gap-3 md:grid-cols-2">
             <label className="grid gap-2 text-sm text-slate-600">
               <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">

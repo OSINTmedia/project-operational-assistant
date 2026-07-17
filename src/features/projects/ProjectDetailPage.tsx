@@ -391,7 +391,7 @@ export function ProjectDetailPage() {
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <ContextBreadcrumbs
           items={[
             { label: 'Projects', to: '/projects' },
@@ -407,7 +407,7 @@ export function ProjectDetailPage() {
           Back to Projects
         </Link>
 
-        <div className="mt-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Project detail
@@ -417,8 +417,10 @@ export function ProjectDetailPage() {
               <span className="text-slate-300">•</span>
               <span>{data.statusLabel}</span>
             </div>
-            <h2 className="mt-3 text-2xl font-semibold text-slate-950">{data.name}</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{data.description}</p>
+            <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">{data.name}</h2>
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
+              {data.description}
+            </p>
           </div>
 
           <div className="grid w-full gap-2 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
@@ -433,7 +435,7 @@ export function ProjectDetailPage() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
           {projectContextChips.map((chip) => (
             <div
               key={chip.label}
@@ -448,14 +450,14 @@ export function ProjectDetailPage() {
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-slate-950">
               <Filter className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Project issues</p>
             </div>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Filter this project queue, preview for quick context, or open the full issue for deep
               work.
             </p>
@@ -477,8 +479,8 @@ export function ProjectDetailPage() {
         </div>
 
         {data.issues.length > 0 ? (
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-            <label className="grid gap-2 text-sm text-slate-600 sm:col-span-2 xl:col-span-2">
+          <div className="mt-3 grid gap-3">
+            <label className="grid gap-2 text-sm text-slate-600">
               <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Search
               </span>
@@ -494,77 +496,158 @@ export function ProjectDetailPage() {
               </div>
             </label>
 
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Status
-              </span>
-              <select
-                value={statusFilter}
-                onChange={(event) => setStatusFilter(event.target.value)}
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {statusOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option === 'all'
-                      ? 'All statuses'
-                      : `${option} (${statusCounts.get(option) ?? 0})`}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <details className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 sm:hidden">
+              <summary className="cursor-pointer text-sm font-medium text-slate-950">
+                Structured filters
+              </summary>
+              <div className="mt-3 grid gap-3">
+                <label className="grid gap-2 text-sm text-slate-600">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Status
+                  </span>
+                  <select
+                    value={statusFilter}
+                    onChange={(event) => setStatusFilter(event.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  >
+                    {statusOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option === 'all'
+                          ? 'All statuses'
+                          : `${option} (${statusCounts.get(option) ?? 0})`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Priority
-              </span>
-              <select
-                value={priorityFilter}
-                onChange={(event) => setPriorityFilter(event.target.value)}
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {priorityOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option === 'all'
-                      ? 'All priorities'
-                      : `${option} (${priorityCounts.get(option) ?? 0})`}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <label className="grid gap-2 text-sm text-slate-600">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Priority
+                  </span>
+                  <select
+                    value={priorityFilter}
+                    onChange={(event) => setPriorityFilter(event.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  >
+                    {priorityOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option === 'all'
+                          ? 'All priorities'
+                          : `${option} (${priorityCounts.get(option) ?? 0})`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Type
-              </span>
-              <select
-                value={typeFilter}
-                onChange={(event) => setTypeFilter(event.target.value)}
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {typeOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option === 'all' ? 'All types' : `${option} (${typeCounts.get(option) ?? 0})`}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <label className="grid gap-2 text-sm text-slate-600">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Type
+                  </span>
+                  <select
+                    value={typeFilter}
+                    onChange={(event) => setTypeFilter(event.target.value)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  >
+                    {typeOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option === 'all' ? 'All types' : `${option} (${typeCounts.get(option) ?? 0})`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-            <label className="grid gap-2 text-sm text-slate-600">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Attention
-              </span>
-              <select
-                value={attentionFilter}
-                onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-              >
-                {ATTENTION_FILTER_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <label className="grid gap-2 text-sm text-slate-600">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Attention
+                  </span>
+                  <select
+                    value={attentionFilter}
+                    onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                  >
+                    {ATTENTION_FILTER_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </details>
+
+            <div className="hidden gap-3 sm:grid sm:grid-cols-2 xl:grid-cols-4">
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Status
+                </span>
+                <select
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {statusOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all'
+                        ? 'All statuses'
+                        : `${option} (${statusCounts.get(option) ?? 0})`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Priority
+                </span>
+                <select
+                  value={priorityFilter}
+                  onChange={(event) => setPriorityFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {priorityOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all'
+                        ? 'All priorities'
+                        : `${option} (${priorityCounts.get(option) ?? 0})`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Type
+                </span>
+                <select
+                  value={typeFilter}
+                  onChange={(event) => setTypeFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {typeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'all' ? 'All types' : `${option} (${typeCounts.get(option) ?? 0})`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  Attention
+                </span>
+                <select
+                  value={attentionFilter}
+                  onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+                >
+                  {ATTENTION_FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           </div>
         ) : null}
 

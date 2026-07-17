@@ -114,8 +114,8 @@ export function PersonalPage() {
 
   if (personalView.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             My work surface
           </p>
@@ -130,8 +130,8 @@ export function PersonalPage() {
 
   if (personalView.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -169,14 +169,14 @@ export function PersonalPage() {
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           My work surface
         </p>
         <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-950">Personal</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+            <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">Personal</h2>
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Focused work for the selected user: update stale context, confirm completed work, or
               continue assigned and curated issues.
             </p>
@@ -191,7 +191,7 @@ export function PersonalPage() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {summaryChips.map((chip) => (
             <div
               key={chip.label}
@@ -204,7 +204,7 @@ export function PersonalPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         {prioritySections.map((section) => (
           <PersonalSectionCard key={section.id} section={section} />
         ))}
@@ -214,7 +214,7 @@ export function PersonalPage() {
         <section className="grid gap-3">
           <div>
             <p className="text-sm font-semibold text-slate-950">Monitoring</p>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
+            <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
               Created work remains available after the immediate action queues.
             </p>
           </div>

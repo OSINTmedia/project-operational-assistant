@@ -30,8 +30,8 @@ export function ProjectsPage() {
 
   if (projectsView.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Project navigation
           </p>
@@ -46,8 +46,8 @@ export function ProjectsPage() {
 
   if (projectsView.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -90,14 +90,14 @@ export function ProjectsPage() {
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Project navigation
         </p>
         <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-950">Projects</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+            <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">Projects</h2>
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Choose the active project frame, with risk and action counts visible inline before
               opening detail.
             </p>
@@ -114,7 +114,7 @@ export function ProjectsPage() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
           {portfolioChips.map((chip) => {
             const Icon = chip.icon
             return (
@@ -144,11 +144,11 @@ export function ProjectsPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 xl:hidden">
+      <div className="grid gap-3 xl:hidden">
         {data.projects.map((project) => (
           <article
             key={project.id}
-            className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel"
+            className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-4"
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -157,8 +157,12 @@ export function ProjectsPage() {
                   <span className="text-slate-300">•</span>
                   <Badge>{project.statusLabel}</Badge>
                 </div>
-                <h3 className="mt-2 text-lg font-semibold text-slate-950">{project.name}</h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">{project.description}</p>
+                <h3 className="mt-2 text-base font-semibold text-slate-950 sm:text-lg">
+                  {project.name}
+                </h3>
+                <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
+                  {project.description}
+                </p>
               </div>
 
               <Link

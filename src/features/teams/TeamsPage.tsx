@@ -44,8 +44,8 @@ export function TeamsPage() {
 
   if (workspaceView.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Team workspace
           </p>
@@ -60,8 +60,8 @@ export function TeamsPage() {
 
   if (workspaceView.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -81,8 +81,8 @@ export function TeamsPage() {
   const totalGroupIssues = data.teams.reduce((sum, team) => sum + team.groupIssueCount, 0)
 
   return (
-    <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+    <section className="grid gap-4">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <ContextBreadcrumbs
           items={[
             { label: 'Dashboard', to: '/dashboard' },
@@ -95,8 +95,8 @@ export function TeamsPage() {
         </p>
         <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-950">Teams</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+            <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">Teams</h2>
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Lightweight team-level visibility for members, active issue ownership, group issue
               coordination, and structured status balance without drifting into org-management
               behavior.
@@ -115,43 +115,47 @@ export function TeamsPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <Users className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Teams</p>
           </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{totalTeams}</p>
-          <p className="mt-1 text-sm text-slate-500">{totalMembers} visible members</p>
+          <p className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">{totalTeams}</p>
+          <p className="mt-1 text-xs text-slate-500 sm:text-sm">{totalMembers} visible members</p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <FolderKanban className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Active issues</p>
           </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{totalActiveIssues}</p>
-          <p className="mt-1 text-sm text-slate-500">Open work across visible teams</p>
+          <p className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">{totalActiveIssues}</p>
+          <p className="mt-1 text-xs text-slate-500 sm:text-sm">Open work across visible teams</p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <Layers3 className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Group issues</p>
           </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{totalGroupIssues}</p>
-          <p className="mt-1 text-sm text-slate-500">Cross-member coordination currently visible</p>
+          <p className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
+            {totalGroupIssues}
+          </p>
+          <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+            Cross-member coordination currently visible
+          </p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
           <div className="flex items-center gap-2 text-slate-950">
             <ShieldAlert className="h-4 w-4 text-accent" />
             <p className="text-sm font-medium">Attention load</p>
           </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">
+          <p className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">
             {data.teams.reduce((sum, team) => sum + team.blockedIssueCount + team.delayedIssueCount, 0)}
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-xs text-slate-500 sm:text-sm">
             Blocked/delayed items across team workspaces
           </p>
         </div>
@@ -163,13 +167,13 @@ export function TeamsPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-6">
+      <div className="grid gap-4">
         {data.teams.map((team) => (
           <article
             key={team.id}
-            className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6"
+            className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5"
           >
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                   <span>{team.isCurrentUserTeam ? 'Current team' : 'Team workspace'}</span>
@@ -178,8 +182,8 @@ export function TeamsPage() {
                   <span className="text-slate-300">•</span>
                   <span>{team.totalIssueCount} issues</span>
                 </div>
-                <h3 className="mt-2 text-xl font-semibold text-slate-950">{team.name}</h3>
-                <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+                <h3 className="mt-2 text-lg font-semibold text-slate-950 sm:text-xl">{team.name}</h3>
+                <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
                   {team.description}
                 </p>
               </div>
@@ -195,20 +199,20 @@ export function TeamsPage() {
               </div>
             </div>
 
-            <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
-              <div className="grid gap-6">
-                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+            <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+              <div className="grid gap-4">
+                <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Team issue visibility</p>
-                  <p className="mt-1 text-sm text-slate-600">
+                  <p className="mt-1 hidden text-sm text-slate-600 sm:block">
                     Recent team-scoped issues, including the next responsible owner and attention context.
                   </p>
 
-                  <div className="mt-4 grid gap-3">
+                  <div className="mt-3 grid gap-3">
                     {team.teamIssues.length > 0 ? (
                       team.teamIssues.map((issue) => (
                         <div
                           key={issue.id}
-                          className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                          className="rounded-xl border border-slate-200 bg-slate-50 p-3 sm:p-4"
                         >
                           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                             <div className="min-w-0">
@@ -268,23 +272,23 @@ export function TeamsPage() {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+                <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Group issues</p>
-                  <p className="mt-1 text-sm text-slate-600">
+                  <p className="mt-1 hidden text-sm text-slate-600 sm:block">
                     Team work that depends on coordinated ownership rather than one isolated assignee.
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                  <p className="mt-2 hidden text-sm leading-6 text-slate-500 sm:block">
                     On group issues, the <span className="font-medium text-slate-700">Curator</span>{' '}
                     is the person holding operational context together. The curator is not
                     automatically the owner or executor.
                   </p>
 
-                  <div className="mt-4 grid gap-3">
+                  <div className="mt-3 grid gap-3">
                     {team.groupIssues.length > 0 ? (
                       team.groupIssues.map((issue) => (
                         <div
                           key={`${team.id}-group-${issue.id}`}
-                          className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                          className="rounded-xl border border-slate-200 bg-slate-50 p-3 sm:p-4"
                         >
                           <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                             <div className="min-w-0">
@@ -318,8 +322,8 @@ export function TeamsPage() {
                 </section>
               </div>
 
-              <aside className="grid gap-6">
-                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+              <aside className="grid gap-4">
+                <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Team members</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {team.memberNames.map((memberName) => (
@@ -330,7 +334,7 @@ export function TeamsPage() {
                   </div>
                 </section>
 
-                <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
+                <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
                   <p className="text-sm font-medium text-slate-950">Status summary</p>
                   <div className="mt-4 grid gap-2">
                     {team.statusSummary.length > 0 ? (

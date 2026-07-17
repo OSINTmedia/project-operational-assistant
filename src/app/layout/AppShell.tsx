@@ -36,20 +36,20 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto grid min-h-screen max-w-[1600px] lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="border-b border-slate-200 bg-slate-950 px-4 py-4 text-slate-100 sm:px-5 lg:border-b-0 lg:border-r lg:border-slate-800 lg:py-5">
-          <div className="grid gap-3 lg:block">
+        <aside className="border-b border-slate-200 bg-slate-950 px-3 py-3 text-slate-100 sm:px-4 lg:border-b-0 lg:border-r lg:border-slate-800 lg:py-5">
+          <div className="grid gap-2.5 lg:block">
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                 Portfolio MVP
               </p>
-              <h1 className="mt-1.5 text-lg font-semibold leading-7 text-white">
+              <h1 className="mt-1 text-base font-semibold leading-6 text-white sm:text-lg sm:leading-7">
                 Project Operational Assistant
               </h1>
-              <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-400 lg:max-w-none">
+              <p className="mt-1 hidden max-w-2xl text-sm leading-6 text-slate-400 sm:block lg:max-w-none">
                 Local-first workspace for project issue clarity.
               </p>
             </div>
-            <div className="max-w-full lg:mt-5">
+            <div className="max-w-full lg:mt-4">
               <DemoRoleSwitcher
                 demoUsers={demoUsers}
                 currentUserId={currentUserId}
@@ -63,7 +63,7 @@ export function AppShell() {
 
           <nav
             aria-label="Primary"
-            className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:mt-5 lg:grid lg:gap-1 lg:overflow-visible lg:pb-0"
+            className="mt-3 flex gap-2 overflow-x-auto pb-1 lg:mt-5 lg:grid lg:gap-1 lg:overflow-visible lg:pb-0"
           >
             {appNavigation.map((item) => {
               const Icon = iconMap[item.icon]
@@ -74,7 +74,7 @@ export function AppShell() {
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      'flex shrink-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition-colors lg:shrink',
+                      'flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors lg:shrink lg:py-2.5',
                       isActive ? 'bg-slate-800 text-white' : 'hover:bg-slate-900 hover:text-white',
                     )
                   }
@@ -88,7 +88,7 @@ export function AppShell() {
         </aside>
 
         <main className="flex min-w-0 flex-col">
-          <header className="border-b border-slate-200 bg-white/90 px-4 py-2.5 backdrop-blur sm:px-6">
+          <header className="border-b border-slate-200 bg-white/90 px-3 py-2 backdrop-blur sm:px-6 sm:py-2.5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accentSoft text-xs font-semibold text-accent">
@@ -118,7 +118,7 @@ export function AppShell() {
             </div>
           </header>
 
-          <div className="min-w-0 flex-1 px-3 py-3 sm:px-6 sm:py-4">
+          <div className="min-w-0 flex-1 px-2.5 py-2.5 sm:px-6 sm:py-4">
             <Outlet />
           </div>
         </main>

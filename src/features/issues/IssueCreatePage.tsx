@@ -29,8 +29,8 @@ export function IssueCreatePage() {
 
   if (formShell.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Issue create
           </p>
@@ -45,8 +45,8 @@ export function IssueCreatePage() {
 
   if (formShell.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -204,7 +204,7 @@ function IssueCreatePageReady({
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <ContextBreadcrumbs
           items={[
             { label: 'Projects', to: '/projects' },
@@ -228,7 +228,7 @@ function IssueCreatePageReady({
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue create
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-950">Create Issue</h2>
+            <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">Create Issue</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
               Create a project-scoped issue with required fields first. Create and cancel return to{' '}
               {returnDestinationLabel}.
@@ -237,7 +237,7 @@ function IssueCreatePageReady({
 
           <div className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 lg:max-w-sm">
             <p className="font-medium text-slate-950">{data.currentUserName}</p>
-            <p className="mt-1">Default owner and curator choices follow the demo context.</p>
+            <p className="mt-1 hidden sm:block">Default owner and curator choices follow the demo context.</p>
           </div>
         </div>
       </div>
@@ -247,7 +247,7 @@ function IssueCreatePageReady({
           <CirclePlus className="mt-1 h-5 w-5 text-accent" />
           <div>
             <p className="text-sm font-medium text-slate-950">Create issue</p>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
+            <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
               Uses the existing local domain service with controlled validation and structured
               defaults.
             </p>
@@ -267,7 +267,7 @@ function IssueCreatePageReady({
             </div>
           ) : null}
 
-          <div className="sticky top-3 z-10 rounded-xl border border-slate-200 bg-white/95 p-3 shadow-panel backdrop-blur">
+          <div className="sticky top-2 z-10 rounded-xl border border-slate-200 bg-white/95 p-2.5 shadow-panel backdrop-blur sm:top-3 sm:p-3">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="grid gap-1 text-sm text-slate-600">
                 <p>

@@ -137,7 +137,7 @@ function QuickActionButton({
       onClick={onClick}
       disabled={isDisabled}
       className={cn(
-        'grid min-h-[76px] min-w-0 gap-1.5 rounded-lg border p-3 text-left transition-colors',
+        'grid min-h-[68px] min-w-0 gap-1.5 rounded-lg border p-2.5 text-left transition-colors sm:min-h-[76px] sm:p-3',
         isDisabled
           ? 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950',
@@ -166,8 +166,8 @@ export function IssueDetailPage() {
 
   if (issueView.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Issue detail
           </p>
@@ -182,8 +182,8 @@ export function IssueDetailPage() {
 
   if (issueView.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -198,8 +198,8 @@ export function IssueDetailPage() {
 
   if (issueView.status === 'missing') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <Link
             to="/projects"
             className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
@@ -384,7 +384,7 @@ export function IssueDetailPage() {
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <ContextBreadcrumbs items={breadcrumbItems} />
 
         <div className="mt-3 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
@@ -414,7 +414,7 @@ export function IssueDetailPage() {
             <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue detail
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-950">{data.title}</h2>
+            <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">{data.title}</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
               {data.description || 'No description was added for this issue.'}
             </p>
@@ -459,7 +459,7 @@ export function IssueDetailPage() {
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-sm font-medium text-slate-950">Quick actions</p>
-            <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-600">
+            <p className="mt-1 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Apply status or confirmation updates without leaving this issue. Responsibility
               changes remain in the structured edit flow.
             </p>

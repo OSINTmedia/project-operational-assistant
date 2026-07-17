@@ -30,7 +30,7 @@ export function DemoRoleSwitcher({
       className={cn(
         'rounded-lg border p-3 sm:p-4',
         isSidebar
-          ? 'border-slate-800 bg-slate-900 text-slate-300'
+          ? 'border-slate-800 bg-slate-900 p-2.5 text-slate-300 sm:p-3'
           : 'border-slate-200 bg-white text-slate-600 shadow-panel',
       )}
     >
@@ -49,7 +49,7 @@ export function DemoRoleSwitcher({
         </p>
       ) : null}
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-2.5 flex flex-wrap gap-1.5 sm:gap-2">
         {USER_ROLE_IDS.map((role) => (
           <button
             key={role}

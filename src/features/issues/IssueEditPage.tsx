@@ -30,8 +30,8 @@ export function IssueEditPage() {
 
   if (editPrefill.status === 'loading') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             Issue edit
           </p>
@@ -46,8 +46,8 @@ export function IssueEditPage() {
 
   if (editPrefill.status === 'error') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-rose-200 bg-white p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-rose-200 bg-white p-3 shadow-panel sm:p-5">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 text-rose-600" />
             <div>
@@ -62,8 +62,8 @@ export function IssueEditPage() {
 
   if (editPrefill.status === 'missing') {
     return (
-      <section className="grid gap-6">
-        <div className="rounded-xl border border-slate-200 bg-panel p-6 shadow-panel">
+      <section className="grid gap-4">
+        <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
           <Link
             to="/projects"
             className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
@@ -271,7 +271,7 @@ function IssueEditPageReady({
 
   return (
     <section className="grid gap-4">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-5">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <ContextBreadcrumbs items={breadcrumbItems} />
 
         <Link
@@ -288,7 +288,7 @@ function IssueEditPageReady({
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue edit
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-950">Edit Issue</h2>
+            <h2 className="mt-2 text-xl font-semibold text-slate-950 sm:text-2xl">Edit Issue</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
               Update required issue fields first while preserving system labels and return context.
             </p>
@@ -300,7 +300,9 @@ function IssueEditPageReady({
 
           <div className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 lg:max-w-sm">
             <p className="font-medium text-slate-950">{data.currentUserName}</p>
-            <p className="mt-1">Existing values are prefilled through repository-backed reads.</p>
+            <p className="mt-1 hidden sm:block">
+              Existing values are prefilled through repository-backed reads.
+            </p>
           </div>
         </div>
       </div>
@@ -310,7 +312,7 @@ function IssueEditPageReady({
           <FilePenLine className="mt-1 h-5 w-5 text-accent" />
           <div>
             <p className="text-sm font-medium text-slate-950">Save structured issue changes</p>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
+            <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
               Save updates stay inside domain and repository boundaries.
             </p>
           </div>
@@ -329,7 +331,7 @@ function IssueEditPageReady({
             </div>
           ) : null}
 
-          <div className="sticky top-3 z-10 rounded-xl border border-slate-200 bg-white/95 p-3 shadow-panel backdrop-blur">
+          <div className="sticky top-2 z-10 rounded-xl border border-slate-200 bg-white/95 p-2.5 shadow-panel backdrop-blur sm:top-3 sm:p-3">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="grid gap-1 text-sm text-slate-600">
                 <p>

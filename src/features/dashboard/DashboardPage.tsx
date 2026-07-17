@@ -597,15 +597,15 @@ export function DashboardPage() {
   }
 
   return (
-    <section className="grid gap-6">
-      <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
+    <section className="grid gap-4">
+      <div className="rounded-xl border border-slate-200 bg-panel p-3 shadow-panel sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Operational entry point
         </p>
         <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-950">Dashboard</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+            <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">Dashboard</h2>
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Start from the operational queue, use focused cards to narrow work, then read charts
               and metrics as secondary context.
             </p>
@@ -621,14 +621,14 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-slate-950">
               <SlidersHorizontal className="h-4 w-4 text-accent" />
               <p className="text-sm font-medium">Operational queue</p>
             </div>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            <p className="mt-2 hidden max-w-3xl text-sm leading-6 text-slate-600 sm:block">
               Use focused action cards and filters to narrow work before opening full issue or
               project routes. Preview is for lightweight inspection; Open issue is for deeper work.
             </p>
@@ -652,7 +652,7 @@ export function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)]">
+        <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)]">
           <div className="grid gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-sm font-semibold text-slate-950">My action focus</p>
@@ -693,8 +693,8 @@ export function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <label className="grid gap-2 text-sm text-slate-600 lg:col-span-4">
+        <div className="mt-4 grid gap-3">
+          <label className="grid gap-2 text-sm text-slate-600">
             <span className="font-medium text-slate-950">Search</span>
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -706,73 +706,145 @@ export function DashboardPage() {
                 className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
               />
             </div>
-            <span className="text-xs leading-5 text-slate-500">
+            <span className="hidden text-xs leading-5 text-slate-500 sm:block">
               Search is local to this queue and works with the structured filters below.
             </span>
           </label>
 
-          <label className="grid gap-2 text-sm text-slate-600">
-            <span className="font-medium text-slate-950">Status</span>
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
-            >
-              <option value="all">All statuses</option>
-              {data.filterOptions.statuses.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
-          </label>
+          <details className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 sm:hidden">
+            <summary className="cursor-pointer text-sm font-medium text-slate-950">
+              Structured filters
+            </summary>
+            <div className="mt-3 grid gap-3">
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="font-medium text-slate-950">Status</span>
+                <select
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+                >
+                  <option value="all">All statuses</option>
+                  {data.filterOptions.statuses.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label} ({option.count})
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-          <label className="grid gap-2 text-sm text-slate-600">
-            <span className="font-medium text-slate-950">Priority</span>
-            <select
-              value={priorityFilter}
-              onChange={(event) => setPriorityFilter(event.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
-            >
-              <option value="all">All priorities</option>
-              {data.filterOptions.priorities.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
-          </label>
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="font-medium text-slate-950">Priority</span>
+                <select
+                  value={priorityFilter}
+                  onChange={(event) => setPriorityFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+                >
+                  <option value="all">All priorities</option>
+                  {data.filterOptions.priorities.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label} ({option.count})
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-          <label className="grid gap-2 text-sm text-slate-600">
-            <span className="font-medium text-slate-950">Project</span>
-            <select
-              value={projectFilter}
-              onChange={(event) => setProjectFilter(event.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
-            >
-              <option value="all">All projects</option>
-              {data.filterOptions.projects.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label} ({option.count})
-                </option>
-              ))}
-            </select>
-          </label>
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="font-medium text-slate-950">Project</span>
+                <select
+                  value={projectFilter}
+                  onChange={(event) => setProjectFilter(event.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+                >
+                  <option value="all">All projects</option>
+                  {data.filterOptions.projects.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label} ({option.count})
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-          <label className="grid gap-2 text-sm text-slate-600">
-            <span className="font-medium text-slate-950">Attention</span>
-            <select
-              value={attentionFilter}
-              onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
-            >
-              {ATTENTION_FILTER_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
+              <label className="grid gap-2 text-sm text-slate-600">
+                <span className="font-medium text-slate-950">Attention</span>
+                <select
+                  value={attentionFilter}
+                  onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+                >
+                  {ATTENTION_FILTER_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </details>
+
+          <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="font-medium text-slate-950">Status</span>
+              <select
+                value={statusFilter}
+                onChange={(event) => setStatusFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              >
+                <option value="all">All statuses</option>
+                {data.filterOptions.statuses.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="font-medium text-slate-950">Priority</span>
+              <select
+                value={priorityFilter}
+                onChange={(event) => setPriorityFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              >
+                <option value="all">All priorities</option>
+                {data.filterOptions.priorities.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="font-medium text-slate-950">Project</span>
+              <select
+                value={projectFilter}
+                onChange={(event) => setProjectFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              >
+                <option value="all">All projects</option>
+                {data.filterOptions.projects.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} ({option.count})
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="font-medium text-slate-950">Attention</span>
+              <select
+                value={attentionFilter}
+                onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950"
+              >
+                {ATTENTION_FILTER_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </div>
 
         {hasActiveFilters ? (
@@ -787,7 +859,7 @@ export function DashboardPage() {
           </div>
         ) : null}
 
-        <div className="mt-5 grid gap-4">
+        <div className="mt-4 grid gap-3">
           {filteredIssues.length > 0 ? (
             filteredIssues.map((issue) => (
               <DashboardQueueIssueCard
@@ -811,11 +883,11 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+      <section className="grid gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-panel sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold text-slate-950">Workspace snapshot</h3>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
+            <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
               Secondary counts stay available after the queue, without taking over the work start.
             </p>
           </div>
@@ -835,7 +907,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <div className="rounded-xl border border-teal-200 bg-teal-50/60 p-4 shadow-panel">
+      <div className="rounded-xl border border-teal-200 bg-teal-50/60 p-3 shadow-panel sm:p-4">
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-sm font-medium text-slate-950">Needs Update meaning</p>
           <Badge variant="accent">System label</Badge>
@@ -850,7 +922,7 @@ export function DashboardPage() {
       <section className="grid gap-3">
         <div>
           <h3 className="text-sm font-semibold text-slate-950">Insights after action</h3>
-          <p className="mt-1 text-sm leading-6 text-slate-600">
+          <p className="mt-1 hidden text-sm leading-6 text-slate-600 sm:block">
             Charts remain available for context after the queue has already exposed actionable work.
           </p>
         </div>

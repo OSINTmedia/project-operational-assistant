@@ -13,10 +13,11 @@ Completed micro-phase:
 - `Phase 5.9B — Dashboard Action-first Recomposition` implementation and self-audit are complete
 - `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete
+- `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete
 
 Next concrete micro-phase:
 
-- `Phase 5.9E — Mobile Survival Pass`
+- `Phase 5.9F — Final Compact UX Audit`
 
 ## Documentation Trust Order
 
@@ -308,15 +309,32 @@ Use the project docs in this order when deciding what is current and what should
 - Converted Issue Detail history into an accessible native disclosure and compressed metadata, labels, tags, timeline, participant, and confirmation context blocks.
 - Reworked Issue Create/Edit forms so required fields appear first, secondary dependency/tag/label controls are grouped behind native disclosure, and save/cancel/return behavior is visible near the top of the form.
 - Kept 5.9D scoped to Issue Detail/Create/Edit/Form presentation only: no route removal, `/personal` removal, AppShell redesign, Dashboard/Personal/Projects work, mobile survival pass, backend/auth behavior, comments, notifications, workflow engine, permissions expansion, repository changes, persistence changes, or new data model was introduced.
+- Implemented `Phase 5.9E — Mobile Survival Pass`.
+- Tightened mobile and tablet shell spacing while keeping primary navigation, selected demo user/role, and local demo state visible.
+- Reduced mobile header, card, metric, issue-card, team-card, and form action spacing across Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Team Workspace, and AppShell.
+- Kept Dashboard and Project Detail search visible while moving structured filters into native mobile disclosures and preserving full filter grids on larger screens.
+- Kept Issue Detail return/source context and form save/cancel controls visible on mobile while trimming only secondary helper copy and excess padding.
+- Kept 5.9E scoped to responsive/mobile survival only: no route removal, `/personal` removal, bottom navigation redesign, AppShell redesign beyond mobile compaction, Dashboard recomposition, backend/auth behavior, comments, notifications, workflow engine, permissions expansion, repository changes, persistence changes, or new data model was introduced.
+- Self-audited `Phase 5.9E — Mobile Survival Pass`.
+- Verified the 5.9E slice stayed inside responsive/mobile compaction, preserved `HashRouter`, `/personal`, existing routes, GitHub Pages SPA behavior, local-first boundaries, repository/domain separation, system-label semantics, and accessible native controls.
+- Confirmed no backend/auth behavior, notification hub, employee scoring, workflow engine, new data model, bottom navigation redesign, direct UI-to-Dexie access, route replacement, or Phase 6 work slipped into 5.9E.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/issues/IssueDetailPage.tsx`
+- `src/app/layout/AppShell.tsx`
+- `src/features/demo/DemoRoleSwitcher.tsx`
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/projects/ProjectsPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/issues/IssueCreatePage.tsx`
+- `src/features/issues/IssueDetailPage.tsx`
 - `src/features/issues/IssueEditPage.tsx`
 - `src/features/issues/IssueFormFields.tsx`
+- `src/features/teams/TeamsPage.tsx`
+- `BUILD_PLAN.md`
 - `APP_EXPERIENCE_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
@@ -562,6 +580,10 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9D self-audit verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9E implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9E self-audit verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -629,7 +651,8 @@ Full implementation history:
 - `Phase 5.9B — Dashboard Action-first Recomposition` implementation and self-audit are complete.
 - `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete.
 - `Phase 5.9D — Issue Detail and Form Compression` implementation and self-audit are complete.
-- The next allowed implementation task is `Phase 5.9E — Mobile Survival Pass`, not Phase 6.
+- `Phase 5.9E — Mobile Survival Pass` implementation and self-audit are complete.
+- The next allowed micro-phase is `Phase 5.9F — Final Compact UX Audit`, not Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after Phase 5.9 gate criteria are met.
@@ -640,21 +663,23 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.9E — Mobile Survival Pass`
+- `Phase 5.9F — Final Compact UX Audit`
 
 Scope for the next task only:
 
-- test and repair mobile/tablet survival after the 5.9A1 through 5.9D desktop/layout changes
-- reduce endless stacked scrolling and hidden actions on Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Teams, and AppShell only where needed for mobile survival
-- keep critical context and primary actions visible; use responsive compaction, dense lists, native disclosures, and sticky/persistent actions only where appropriate
+- audit the completed Phase 5.9 corrective UX sequence end to end
+- repeat Manager, Project Manager, and User workflow traces
+- verify first-viewport usefulness on Dashboard, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Teams, and AppShell
+- verify desktop/tablet/mobile compactness, route recovery, filters, previews, save/cancel behavior, and keyboard accessibility
 - preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
 - preserve 5.9A1 return behavior and 5.9A2 AppShell compression
 - preserve 5.9B Dashboard action-first behavior
 - preserve 5.9C Personal/Projects/Project Detail density behavior
 - preserve 5.9D Issue Detail/Form compression behavior
+- preserve 5.9E mobile survival behavior
 - verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
-- update handoff docs only as needed after implementation
+- update handoff docs only as needed after the audit
 
-Do not implement deployment work, Phase 6 validation, or final release documentation during `Phase 5.9E`.
+Do not implement deployment work, Phase 6 validation, or final release documentation during `Phase 5.9F`.
