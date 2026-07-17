@@ -17,10 +17,12 @@ Completed micro-phase:
 - `Phase 5.9E2 — Project Manager Project Management and Project Status Sync` implementation is complete
 - `Phase 5.9E3 — Live Demo Dataset Expansion` implementation is complete
 - `Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate` passed with notes
+- `Phase 6.1 — Build and Static Deployment Readiness Audit` passed with notes
+- `Phase 6.2 — GitHub Pages Deployment Setup` implementation is complete
 
 Next concrete micro-phase:
 
-- `Phase 6.1 — Build and Static Deployment Readiness Audit`
+- `Phase 6.3 — Live Demo Smoke Test`
 
 ## Documentation Trust Order
 
@@ -47,6 +49,7 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 5.9E3` expands local seed data for portfolio/live-demo readiness. Existing local browsers with old IndexedDB data should use Demo reset to load the expanded dataset.
 - `Phase 5.9F` closed corrective UX work for portfolio demo purposes. Remaining non-critical UX polish is accepted as known portfolio debt, not a blocker to Phase 6.
 - `Phase 6` is live-demo readiness work: static deployment audit, GitHub Pages setup, hosted smoke test, README polish, final scope/limitations audit, and release checkpoint.
+- `Phase 6.2` adds a minimal official GitHub Actions Pages workflow that builds `dist/` and deploys it through the GitHub Pages artifact actions. The repository may still need Pages source set to GitHub Actions in GitHub settings.
 
 ## Completed Work
 
@@ -340,11 +343,10 @@ Use the project docs in this order when deciding what is current and what should
 
 Latest implementation/audit slice:
 
+- `.github/workflows/deploy.yml`
 - `BUILD_PLAN.md`
-- `APP_EXPERIENCE_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
-- `README.md`
 
 Completed Phase 5.9 planning context:
 
@@ -598,6 +600,10 @@ Full implementation history:
 - Phase 5.9F final compact UX audit and portfolio demo gate verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
   The production build still emits Vite's large chunk warning for the single bundled app chunk; this is accepted as non-blocking portfolio optimization debt, not a live-demo blocker.
+- Phase 6.1 build and static deployment readiness audit passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 6.2 GitHub Pages deployment setup verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -673,6 +679,8 @@ Full implementation history:
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Live Demo / Final QA / Portfolio Release` is now active.
+- `Phase 6.1 — Build and Static Deployment Readiness Audit` passed with notes.
+- `Phase 6.2 — GitHub Pages Deployment Setup` implementation is complete.
 
 ## Next Recommended Task
 
@@ -680,18 +688,15 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 6.1 — Build and Static Deployment Readiness Audit`
+- `Phase 6.3 — Live Demo Smoke Test`
 
 Scope for the next task only:
 
-- verify build output and static SPA readiness before deployment setup
-- confirm Vite base targets `/project-operational-assistant/`
-- confirm `HashRouter` and GitHub Pages route compatibility are preserved
-- inspect generated `dist/` assets after build
-- confirm no backend/auth/integration/runtime server dependency exists
-- confirm no direct UI-to-Dexie access slipped into feature screens
-- confirm README deployment target and public context are not misleading
-- identify any deployment blockers before GitHub Pages setup
+- verify the hosted GitHub Pages app loads at `https://osintmedia.github.io/project-operational-assistant/`
+- confirm Dashboard, Demo, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Project Create/Edit, and Teams open
+- confirm Demo reset and role switching work on the hosted build
+- confirm source-aware return behavior works on key issue routes
+- confirm expanded seed data is visible after reset
 - preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
 - preserve 5.9E2 bounded Project Manager project create/edit behavior and issue-derived project status sync
 - preserve 5.9E3 expanded live demo seed coverage and Demo reset behavior
@@ -699,6 +704,6 @@ Scope for the next task only:
 - verify no project delete/archive or new project data model is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
-- do not deploy yet unless the user explicitly approves Phase 6.2
+- update README live-demo status only after hosted smoke test confirms the public URL works
 
-Do not implement deployment workflow changes during `Phase 6.1`; this is the final static readiness audit before `Phase 6.2`.
+Do not add new features, redesigns, package changes, backend/auth behavior, or broad QA scope during `Phase 6.3`.

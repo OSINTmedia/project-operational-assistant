@@ -8,6 +8,20 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Use official GitHub Pages artifact deployment
+
+**Context:**
+Phase 6.2 needed the smallest safe deployment setup for the Vite static SPA. Phase 6.1 confirmed the production base path, `HashRouter`, `dist/` output, and static asset paths are compatible with the project Pages URL.
+
+**Decision:**
+Use GitHub's official Pages deployment actions: `actions/configure-pages`, `actions/upload-pages-artifact`, and `actions/deploy-pages`. The workflow runs on pushes to `main` and manual dispatch, builds with `npm ci` and `npm run build`, uploads `./dist`, and deploys to the `github-pages` environment.
+
+**Reasoning:**
+The artifact-based GitHub Pages workflow keeps deployment in GitHub Actions without a `gh-pages` branch, third-party deploy action, separate deploy script, backend host, server rewrites, or router changes. It matches the existing `HashRouter` and Vite project-site base path.
+
+**Impact:**
+Deployment setup is now limited to `.github/workflows/deploy.yml`. The user may still need to enable GitHub Pages source as GitHub Actions in repository settings before the workflow can publish the site.
+
 ### 2026-07-17 — Stop open-ended UX correction and proceed to portfolio live demo
 
 **Context:**

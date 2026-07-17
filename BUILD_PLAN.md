@@ -2516,7 +2516,7 @@ Phase 5.9F passed with notes. This is a portfolio project, not a final commercia
 
 ### Phase 6.1 — Build and Static Deployment Readiness Audit
 
-Status: `Next`
+Status: `Complete`
 
 Goal:
 
@@ -2556,7 +2556,7 @@ Suggested commit message:
 
 ### Phase 6.2 — GitHub Pages Deployment Setup
 
-Status: `Later`
+Status: `Complete`
 
 Goal:
 
@@ -2594,7 +2594,7 @@ Suggested commit message:
 
 ### Phase 6.3 — Live Demo Smoke Test
 
-Status: `Later`
+Status: `Next`
 
 Goal:
 
