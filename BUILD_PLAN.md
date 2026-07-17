@@ -2504,7 +2504,7 @@ Suggested commit message:
 
 ## Phase 6 — Live Demo / Final QA / Portfolio Release
 
-Status: `In progress`
+Status: `Complete`
 
 Goal:
 
@@ -2513,6 +2513,10 @@ Move from corrective UX work into public live-demo readiness, deployment setup, 
 Decision:
 
 Phase 5.9F passed with notes. This is a portfolio project, not a final commercial SaaS product. Remaining non-critical UX imperfections are accepted as documented future polish if they do not break the live demo or core role workflows.
+
+Final decision:
+
+The GitHub Pages demo is published and the project is closed as a 95% portfolio demo. The remaining gap is intentional future polish, not an active blocker.
 
 ### Phase 6.1 — Build and Static Deployment Readiness Audit
 
@@ -2594,7 +2598,7 @@ Suggested commit message:
 
 ### Phase 6.3 — Live Demo Smoke Test
 
-Status: `Next`
+Status: `Complete`
 
 Goal:
 
@@ -2631,7 +2635,7 @@ Suggested commit message:
 
 ### Phase 6.4 — README Portfolio Polish
 
-Status: `Later`
+Status: `Complete`
 
 Goal:
 
@@ -2666,7 +2670,7 @@ Suggested commit message:
 
 ### Phase 6.5 — Final Scope and Known Limitations Audit
 
-Status: `Later`
+Status: `Complete`
 
 Goal:
 
@@ -2704,7 +2708,7 @@ Suggested commit message:
 
 ### Phase 6.6 — Release Tag / Final Checkpoint
 
-Status: `Later`
+Status: `Complete`
 
 Goal:
 

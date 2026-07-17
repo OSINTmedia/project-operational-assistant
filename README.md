@@ -8,7 +8,7 @@ Portfolio MVP for project-based operational clarity.
 
 `[###################-] 95%`
 
-Current public-demo status: the core MVP and corrective compact UX work are complete for portfolio readiness. Phase 6 live-demo preparation is active before GitHub Pages deployment, hosted smoke testing, README final polish, and release checkpoint.
+Current public-demo status: published and closed as a portfolio demo. The progress bar intentionally remains at 95% because this is a focused portfolio project, not a claim of maximum product completeness or a final commercial SaaS release.
 
 - Complete: Phase 0 and 1 - Product scope, planning, and frontend foundation
 - Complete: Phase 2A and 2B - Local-first data model, persistence, seed data, and issue-domain logic
@@ -16,7 +16,7 @@ Current public-demo status: the core MVP and corrective compact UX work are comp
 - Complete: Phase 4 - Dashboard metrics, charts, filters, click-throughs, and audit
 - Complete: Phase 5 - Portfolio polish, public README, and polish audit
 - Complete: Phase 5.9 - Compact assistant UX, route wayfinding, mobile survival, bounded Project Manager project management, and live-demo dataset expansion
-- In progress: Phase 6 - Live demo, final QA, portfolio release readiness
+- Complete: Phase 6 - Live demo, final QA, portfolio release readiness
 
 For exact implementation handoff state, use `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. This README is public-facing portfolio context, not the internal work log.
 
@@ -26,13 +26,15 @@ Project Operational Assistant is a frontend-only portfolio application for small
 
 The product goal is operational clarity: what is open, what is blocked, what is delayed, who owns the next action, and what needs an update. It is intentionally not a heavyweight project management platform.
 
+This project was built to demonstrate product thinking, frontend architecture, local-first state, and delivery discipline to potential employers. It is not presented as the limit of what I can build, and it intentionally stops at a bounded portfolio-demo scope.
+
 ## Live Demo
 
-GitHub Pages target:
+Published GitHub Pages demo:
 
-`https://osintmedia.github.io/project-operational-assistant/`
+`https://osintmedia.github.io/project-operational-assistant/#/dashboard`
 
-Final GitHub Pages deployment and live-demo verification are planned for Phase 6. The app is already designed as a static SPA with GitHub Pages-safe routing.
+The app is a static SPA with GitHub Pages-safe `HashRouter` routing. Demo data is stored locally in the browser through IndexedDB and can be reset from the Demo page.
 
 ## What It Demonstrates
 
@@ -107,6 +109,14 @@ This MVP is intentionally not:
 - a backend/API integration project
 
 The goal is a clear operational assistant, not a broad enterprise suite.
+
+## Known Limitations
+
+- The app is a local-first portfolio demo, not a production multi-user system.
+- Role switching is local demo state, not authentication or authorization.
+- Data is stored in the visitor's browser; there is no backend sync.
+- The UI is intentionally compact and functional, but not a final commercial design system.
+- Some workflows could be further optimized with more time, tests, and production feedback.
 
 ## Architecture
 
@@ -196,16 +206,12 @@ Completed:
 - Compact assistant UX work through route recovery, AppShell compression, Dashboard action-first ordering, Personal/Projects density, Issue/Form compression, and mobile survival
 - Bounded Project Manager project create/edit and issue-derived project status sync
 - Expanded live-demo seed data for role, project, issue, status, label, dependency, and history coverage
+- GitHub Pages deployment and hosted smoke-test readiness
 - Public README presentation and Phase 5 polish audit
 
 Remaining:
 
-- Phase 6.1 - build and static deployment readiness audit
-- Phase 6.2 - GitHub Pages deployment setup
-- Phase 6.3 - live demo smoke test
-- Phase 6.4 - README portfolio polish
-- Phase 6.5 - final scope and known limitations audit
-- Phase 6.6 - release tag / final checkpoint
+- No active implementation roadmap. Future work would be optional polish, testing expansion, or production-grade features outside this portfolio MVP.
 
 ## Lessons Captured
 

@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Phase 6 — Live Demo / Final QA / Portfolio Release: `In progress`
+Portfolio demo release: `Closed`
 
 Completed micro-phase:
 
@@ -19,10 +19,14 @@ Completed micro-phase:
 - `Phase 5.9F — Final Compact UX Audit and Portfolio Demo Gate` passed with notes
 - `Phase 6.1 — Build and Static Deployment Readiness Audit` passed with notes
 - `Phase 6.2 — GitHub Pages Deployment Setup` implementation is complete
+- `Phase 6.3 — Live Demo Smoke Test` passed with notes
+- `Phase 6.4 — README Portfolio Polish` is complete
+- `Phase 6.5 — Final Scope and Known Limitations Audit` is complete
+- `Phase 6.6 — Release Tag / Final Checkpoint` is complete
 
 Next concrete micro-phase:
 
-- `Phase 6.3 — Live Demo Smoke Test`
+- none; project is closed as a published portfolio demo
 
 ## Documentation Trust Order
 
@@ -50,6 +54,8 @@ Use the project docs in this order when deciding what is current and what should
 - `Phase 5.9F` closed corrective UX work for portfolio demo purposes. Remaining non-critical UX polish is accepted as known portfolio debt, not a blocker to Phase 6.
 - `Phase 6` is live-demo readiness work: static deployment audit, GitHub Pages setup, hosted smoke test, README polish, final scope/limitations audit, and release checkpoint.
 - `Phase 6.2` adds a minimal official GitHub Actions Pages workflow that builds `dist/` and deploys it through the GitHub Pages artifact actions. The repository may still need Pages source set to GitHub Actions in GitHub settings.
+- The published portfolio demo is available at `https://osintmedia.github.io/project-operational-assistant/#/dashboard`.
+- The README intentionally keeps the progress bar at 95% because this is a bounded portfolio demo, not a final commercial SaaS product or a claim of maximum capability.
 
 ## Completed Work
 
@@ -343,7 +349,7 @@ Use the project docs in this order when deciding what is current and what should
 
 Latest implementation/audit slice:
 
-- `.github/workflows/deploy.yml`
+- `README.md`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
@@ -604,6 +610,8 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 6.2 GitHub Pages deployment setup verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 6 final portfolio closure verification passed:
+  live GitHub Pages HTML and static assets returned HTTP 200; `npm run build`, `npm run typecheck`, and `npm run lint` passed.
 
 ## Roadmap Update
 
@@ -681,29 +689,26 @@ Full implementation history:
 - `Phase 6 — Live Demo / Final QA / Portfolio Release` is now active.
 - `Phase 6.1 — Build and Static Deployment Readiness Audit` passed with notes.
 - `Phase 6.2 — GitHub Pages Deployment Setup` implementation is complete.
+- `Phase 6.3 — Live Demo Smoke Test` passed with notes using the published GitHub Pages URL.
+- `Phase 6.4 — README Portfolio Polish` is complete.
+- `Phase 6.5 — Final Scope and Known Limitations Audit` is complete.
+- `Phase 6.6 — Release Tag / Final Checkpoint` is complete.
+- The project is closed as a published 95% portfolio demo.
 
 ## Next Recommended Task
 
-`Phase 6` is the current active umbrella phase.
+No active implementation task remains.
 
 Next concrete Codex task:
 
-- `Phase 6.3 — Live Demo Smoke Test`
+- none
 
-Scope for the next task only:
+Final state:
 
-- verify the hosted GitHub Pages app loads at `https://osintmedia.github.io/project-operational-assistant/`
-- confirm Dashboard, Demo, Personal, Projects, Project Detail, Issue Detail, Issue Create/Edit, Project Create/Edit, and Teams open
-- confirm Demo reset and role switching work on the hosted build
-- confirm source-aware return behavior works on key issue routes
-- confirm expanded seed data is visible after reset
-- preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
-- preserve 5.9E2 bounded Project Manager project create/edit behavior and issue-derived project status sync
-- preserve 5.9E3 expanded live demo seed coverage and Demo reset behavior
-- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
-- verify no project delete/archive or new project data model is introduced
-- preserve `Needs Update` and `Ready for Confirmation` as system labels
-- review `npm run build`, `npm run typecheck`, and `npm run lint` results
-- update README live-demo status only after hosted smoke test confirms the public URL works
+- GitHub Pages demo is published.
+- README is public-facing and avoids overstated production claims.
+- Remaining limitations are documented as portfolio-demo boundaries and optional future polish.
+- No backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, heavy permissions, project delete/archive, new data model, or Jira-style scope expansion was introduced.
+- `Needs Update` and `Ready for Confirmation` remain system labels.
 
-Do not add new features, redesigns, package changes, backend/auth behavior, or broad QA scope during `Phase 6.3`.
+Future work should only begin if a new explicit goal is opened.

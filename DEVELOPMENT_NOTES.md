@@ -8,6 +8,20 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Close as a published 95% portfolio demo
+
+**Context:**
+The GitHub Pages deployment is live at `https://osintmedia.github.io/project-operational-assistant/#/dashboard`, and the final README review found that the public page needed to shift from deployment-planning language to final portfolio-demo language.
+
+**Decision:**
+Close the project as a published portfolio demo and keep the progress indicator at 95%. The README now frames the app as a focused portfolio project for potential employers, not as a commercial SaaS product, a complete project-management platform, or the maximum of what can be built.
+
+**Reasoning:**
+The project has already demonstrated the intended signals: React + TypeScript implementation, Vite/GitHub Pages deployment, local-first architecture, structured domain modeling, routing and state management, phased delivery, documentation workflow, and scope control. The remaining work belongs to optional future polish rather than active MVP delivery.
+
+**Impact:**
+No source code, routing, dependencies, Vite base path, frozen docs, backend/auth behavior, workflow engine, notification hub, employee scoring, or data model changed during final closure.
+
 ### 2026-07-17 — Use official GitHub Pages artifact deployment
 
 **Context:**
