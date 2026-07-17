@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9B as Dashboard-local action filtering
+
+**Context:**
+`Phase 5.9B` needed to make Dashboard start with actionable work instead of static reporting, while preserving the route model, local-first boundaries, and the already completed 5.9A1/5.9A2 navigation and shell corrections.
+
+**Decision:**
+Move the Operational Queue above metrics, charts, and explainer content, and convert selected-user action cards plus workspace risk cards into Dashboard-local queue preset buttons. The queue presets filter existing Dashboard issue summaries in place for assigned, curated, needs-update, confirmation, blocked, delayed, and workspace Needs Update views.
+
+**Reasoning:**
+The problem was Dashboard composition and actionability, not missing product scope. Local queue presets reduce route-hopping and make summary cards useful without adding saved reports, notification behavior, workflow rules, new routes, or backend state. Extending the Dashboard read model with existing issue fields keeps filtering inside the existing hook/view boundary instead of reaching into persistence from the UI.
+
+**Alternatives considered:**
+Adding saved dashboard filters, adding a new report/dashboard model, routing each card to a separate page, adding a drawer/modal framework, or delaying actionability until the Project/Personal density pass.
+
+**Impact:**
+5.9B makes Dashboard more action-first while preserving `HashRouter`, existing routes, `/personal`, 5.9A1 return behavior, 5.9A2 AppShell compression, local-first architecture, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, data model, persistence, repository, or route-tree changes were introduced.
+
 ### 2026-07-17 — Keep Phase 5.9A2 as AppShell compression only
 
 **Context:**

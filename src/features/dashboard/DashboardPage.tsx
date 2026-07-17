@@ -17,6 +17,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getCurrentDemoUser, useDemoAppState } from '../../app/state/useDemoAppState'
 import { Badge } from '../../shared/components/Badge'
+import { cn } from '../../shared/utils/cn'
 import { createIssueNavigationState } from '../issues/issueNavigationState'
 import { DashboardCharts } from './DashboardCharts'
 import { useDashboardMetrics, type DashboardIssueSummary } from './useDashboardMetrics'
@@ -34,19 +35,21 @@ interface AssistantSummaryCardProps {
   description: string
   icon: React.ComponentType<{ className?: string }>
   tone?: 'default' | 'warning' | 'danger' | 'success'
+  isActive: boolean
+  onSelect: () => void
 }
 
 function MetricCard({ title, value, description, icon: Icon }: MetricCardProps) {
   return (
-    <article className="min-w-0 rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
+    <article className="min-w-0 rounded-lg border border-slate-200 bg-white p-3">
       <div className="flex items-center gap-2 text-slate-950">
-        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accentSoft text-accent">
-          <Icon className="h-4 w-4" />
+        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accentSoft text-accent">
+          <Icon className="h-3.5 w-3.5" />
         </span>
         <p className="min-w-0 text-sm font-medium">{title}</p>
       </div>
-      <p className="mt-4 text-3xl font-semibold leading-none text-slate-950">{value}</p>
-      <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p>
+      <p className="mt-3 text-2xl font-semibold leading-none text-slate-950">{value}</p>
+      <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
     </article>
   )
 }
@@ -57,27 +60,38 @@ function AssistantSummaryCard({
   description,
   icon: Icon,
   tone = 'default',
+  isActive,
+  onSelect,
 }: AssistantSummaryCardProps) {
   const toneStyles = {
-    default: 'border-slate-200 bg-white text-accent',
-    warning: 'border-orange-200 bg-orange-50/40 text-orange-600',
-    danger: 'border-rose-200 bg-rose-50/40 text-rose-600',
-    success: 'border-emerald-200 bg-emerald-50/40 text-emerald-600',
+    default: 'border-slate-200 bg-white text-accent hover:border-slate-300',
+    warning: 'border-orange-200 bg-orange-50/40 text-orange-600 hover:border-orange-300',
+    danger: 'border-rose-200 bg-rose-50/40 text-rose-600 hover:border-rose-300',
+    success: 'border-emerald-200 bg-emerald-50/40 text-emerald-600 hover:border-emerald-300',
   }[tone]
 
   return (
-    <article className={`min-w-0 rounded-xl border p-4 ${toneStyles}`}>
-      <div className="flex items-start justify-between gap-3">
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={isActive}
+      className={cn(
+        'min-w-0 rounded-lg border p-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400',
+        toneStyles,
+        isActive ? 'ring-2 ring-slate-900 ring-offset-2' : '',
+      )}
+    >
+      <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="text-sm font-medium text-slate-950">{title}</p>
-          <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
+          <p className="mt-1 text-xs leading-5 text-slate-600">{description}</p>
         </div>
-        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/80">
-          <Icon className="h-4 w-4" />
+        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/80">
+          <Icon className="h-3.5 w-3.5" />
         </span>
       </div>
-      <p className="mt-4 text-3xl font-semibold leading-none text-slate-950">{value}</p>
-    </article>
+      <p className="mt-3 text-2xl font-semibold leading-none text-slate-950">{value}</p>
+    </button>
   )
 }
 
@@ -87,6 +101,26 @@ const ATTENTION_FILTER_OPTIONS = [
 ] as const
 
 type AttentionFilter = (typeof ATTENTION_FILTER_OPTIONS)[number]['value']
+type QueuePreset =
+  | 'all'
+  | 'assigned-to-me'
+  | 'curated-by-me'
+  | 'needs-my-update'
+  | 'needs-my-confirmation'
+  | 'blocked'
+  | 'delayed'
+  | 'workspace-needs-update'
+
+const QUEUE_PRESET_LABELS: Record<QueuePreset, string> = {
+  all: 'All current work',
+  'assigned-to-me': 'Assigned to me',
+  'curated-by-me': 'Curated by me',
+  'needs-my-update': 'Needs my update',
+  'needs-my-confirmation': 'Needs my confirmation',
+  blocked: 'Blocked',
+  delayed: 'Delayed',
+  'workspace-needs-update': 'Needs Update',
+}
 
 function normalizeSearchText(value: string): string {
   return value.trim().toLocaleLowerCase()
@@ -97,6 +131,69 @@ function formatUpdatedAt(value: string): string {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(new Date(value))
+}
+
+function isOpenDashboardIssue(issue: DashboardIssueSummary): boolean {
+  return issue.statusId !== 'done' && issue.statusId !== 'canceled'
+}
+
+function isIssueRelatedToSelectedUser(
+  issue: DashboardIssueSummary,
+  currentUserId: string,
+): boolean {
+  return (
+    issue.ownerId === currentUserId ||
+    issue.createdBy === currentUserId ||
+    issue.curatorId === currentUserId ||
+    issue.participantIds.includes(currentUserId) ||
+    issue.dependencyTargetId === currentUserId
+  )
+}
+
+function matchesQueuePreset(
+  issue: DashboardIssueSummary,
+  preset: QueuePreset,
+  currentUserId: string | null,
+): boolean {
+  if (preset === 'all') {
+    return true
+  }
+
+  if (!currentUserId) {
+    return false
+  }
+
+  if (preset === 'assigned-to-me') {
+    return isOpenDashboardIssue(issue) && issue.ownerId === currentUserId
+  }
+
+  if (preset === 'curated-by-me') {
+    return isOpenDashboardIssue(issue) && issue.curatorId === currentUserId
+  }
+
+  if (preset === 'needs-my-update') {
+    return issue.hasNeedsUpdateLabel && isIssueRelatedToSelectedUser(issue, currentUserId)
+  }
+
+  if (preset === 'needs-my-confirmation') {
+    return (
+      issue.confirmationRequired &&
+      issue.confirmedAt === null &&
+      issue.dependencyType === 'user' &&
+      issue.dependencyTargetId === currentUserId &&
+      issue.hasReadyForConfirmationLabel
+    )
+  }
+
+  if (preset === 'blocked') {
+    return issue.statusId === 'blocked'
+  }
+
+  if (preset === 'delayed') {
+    return issue.statusId === 'delayed'
+  }
+
+  return issue.hasNeedsUpdateLabel
 }
 
 function QueuePreviewFact({
@@ -253,6 +350,7 @@ export function DashboardPage() {
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [projectFilter, setProjectFilter] = useState('all')
   const [attentionFilter, setAttentionFilter] = useState<AttentionFilter>('all')
+  const [queuePreset, setQueuePreset] = useState<QueuePreset>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [previewIssueId, setPreviewIssueId] = useState<string | null>(null)
   const dashboardMetrics = useDashboardMetrics({
@@ -268,6 +366,10 @@ export function DashboardPage() {
     }
 
     return data.issues.filter((issue) => {
+      if (!matchesQueuePreset(issue, queuePreset, currentUserId)) {
+        return false
+      }
+
       if (statusFilter !== 'all' && issue.statusId !== statusFilter) {
         return false
       }
@@ -308,7 +410,16 @@ export function DashboardPage() {
 
       return true
     })
-  }, [attentionFilter, data, normalizedSearchQuery, priorityFilter, projectFilter, statusFilter])
+  }, [
+    attentionFilter,
+    currentUserId,
+    data,
+    normalizedSearchQuery,
+    priorityFilter,
+    projectFilter,
+    queuePreset,
+    statusFilter,
+  ])
 
   if (dashboardMetrics.status === 'loading') {
     return (
@@ -347,6 +458,7 @@ export function DashboardPage() {
   }
 
   const hasActiveFilters =
+    queuePreset !== 'all' ||
     statusFilter !== 'all' ||
     priorityFilter !== 'all' ||
     projectFilter !== 'all' ||
@@ -356,43 +468,43 @@ export function DashboardPage() {
     {
       title: 'Total issues',
       value: data.metrics.totalIssues,
-      description: 'All seeded and locally created issues currently in the demo workspace.',
+      description: 'All current demo issues.',
       icon: FolderKanban,
     },
     {
       title: 'Open issues',
       value: data.metrics.openIssues,
-      description: 'Work that is not done and not canceled, across all project surfaces.',
+      description: 'Not done or canceled.',
       icon: CircleDotDashed,
     },
     {
       title: 'Done issues',
       value: data.metrics.doneIssues,
-      description: 'Issues already marked done without turning the dashboard into a scorecard.',
+      description: 'Completed without scoring.',
       icon: CheckCircle2,
     },
     {
       title: 'Waiting issues',
       value: data.metrics.waitingIssues,
-      description: 'Operational items currently paused while another dependency is awaited.',
+      description: 'Paused on dependency.',
       icon: Clock3,
     },
     {
       title: 'Blocked issues',
       value: data.metrics.blockedIssues,
-      description: 'Items that currently cannot move without explicit intervention or resolution.',
+      description: 'Needs intervention.',
       icon: OctagonAlert,
     },
     {
       title: 'Delayed issues',
       value: data.metrics.delayedIssues,
-      description: 'Work that is behind expectation and should stay visible early in the day.',
+      description: 'Behind expectation.',
       icon: TimerReset,
     },
     {
       title: 'Needs update',
       value: data.metrics.needsUpdateIssues,
-      description: 'Issues carrying the persisted Needs Update attention label right now.',
+      description: 'Stale context label.',
       icon: AlertCircle,
     },
   ] as const
@@ -400,57 +512,83 @@ export function DashboardPage() {
     {
       title: 'Assigned to me',
       value: data.selectedUserActions.assignedIssues,
-      description: 'Open issues where this selected user owns the next operational action.',
+      description: 'Filter owned open work.',
       icon: UserCircle2,
       tone: 'default',
+      preset: 'assigned-to-me',
     },
     {
       title: 'Curated by me',
       value: data.selectedUserActions.curatedIssues,
-      description: 'Open group work where this user keeps context and continuity visible.',
+      description: 'Filter curated group work.',
       icon: FolderKanban,
       tone: 'default',
+      preset: 'curated-by-me',
     },
     {
       title: 'Needs my update',
       value: data.selectedUserActions.needsUpdateIssues,
-      description: 'Related issues carrying the Needs Update system attention label.',
+      description: 'Filter related stale context.',
       icon: AlertCircle,
       tone: 'warning',
+      preset: 'needs-my-update',
     },
     {
       title: 'Needs my confirmation',
       value: data.selectedUserActions.confirmationNeededIssues,
-      description: 'Ready for Confirmation items currently waiting on this selected user.',
+      description: 'Filter confirmation requests.',
       icon: CheckCircle2,
       tone: 'success',
+      preset: 'needs-my-confirmation',
     },
-  ] as const
+  ] satisfies Array<
+    Omit<AssistantSummaryCardProps, 'isActive' | 'onSelect'> & {
+      preset: QueuePreset
+    }
+  >
   const workspaceRiskCards = [
     {
       title: 'Blocked',
       value: data.workspaceRisks.blockedIssues,
-      description: 'Workspace issues that cannot move without intervention or resolution.',
+      description: 'Filter blocked issues.',
       icon: OctagonAlert,
       tone: 'danger',
+      preset: 'blocked',
     },
     {
       title: 'Delayed',
       value: data.workspaceRisks.delayedIssues,
-      description: 'Workspace issues behind expectation and worth checking early.',
+      description: 'Filter delayed issues.',
       icon: TimerReset,
       tone: 'warning',
+      preset: 'delayed',
     },
     {
       title: 'Needs Update',
       value: data.workspaceRisks.needsUpdateIssues,
-      description: 'Workspace issues with stale operational context, not a performance score.',
+      description: 'Filter stale context.',
       icon: AlertCircle,
       tone: 'warning',
+      preset: 'workspace-needs-update',
     },
-  ] as const
+  ] satisfies Array<
+    Omit<AssistantSummaryCardProps, 'isActive' | 'onSelect'> & {
+      preset: QueuePreset
+    }
+  >
+
+  function applyQueuePreset(nextPreset: QueuePreset) {
+    setQueuePreset(nextPreset)
+    setStatusFilter('all')
+    setPriorityFilter('all')
+    setProjectFilter('all')
+    setAttentionFilter('all')
+    setSearchQuery('')
+    setPreviewIssueId(null)
+  }
 
   function resetFilters() {
+    setQueuePreset('all')
     setStatusFilter('all')
     setPriorityFilter('all')
     setProjectFilter('all')
@@ -468,9 +606,8 @@ export function DashboardPage() {
           <div>
             <h2 className="text-2xl font-semibold text-slate-950">Dashboard</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Top-level operational counts, compact charts, and a filtered work queue for the
-              local-first portfolio demo: enough to start the day with clarity, without slipping
-              into employee scoring.
+              Start from the operational queue, use focused cards to narrow work, then read charts
+              and metrics as secondary context.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm text-slate-600">
@@ -484,99 +621,6 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-semibold text-slate-950">Assistant home</h3>
-              <Badge variant="accent">Selected user</Badge>
-            </div>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              Start with what matters for {data.currentUserName}, then separate personal action
-              cues from workspace-level operational risks. These counts are local demo signals,
-              not permissions, notifications, or performance scoring.
-            </p>
-          </div>
-          <Link
-            to="/personal"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
-          >
-            Open Personal
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)]">
-          <div className="grid gap-3">
-            <div>
-              <p className="text-sm font-semibold text-slate-950">My next actions</p>
-              <p className="mt-1 text-sm leading-6 text-slate-600">
-                Role-aware cues for work related to the selected demo user.
-              </p>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {selectedUserActionCards.map((card) => (
-                <AssistantSummaryCard
-                  key={card.title}
-                  title={card.title}
-                  value={card.value}
-                  description={card.description}
-                  icon={card.icon}
-                  tone={card.tone}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-3">
-            <div>
-              <p className="text-sm font-semibold text-slate-950">Workspace risks</p>
-              <p className="mt-1 text-sm leading-6 text-slate-600">
-                Shared operational signals to inspect without reading them as employee scores.
-              </p>
-            </div>
-            <div className="grid gap-3">
-              {workspaceRiskCards.map((card) => (
-                <AssistantSummaryCard
-                  key={card.title}
-                  title={card.title}
-                  value={card.value}
-                  description={card.description}
-                  icon={card.icon}
-                  tone={card.tone}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {cards.map((card) => (
-          <MetricCard
-            key={card.title}
-            title={card.title}
-            value={card.value}
-            description={card.description}
-            icon={card.icon}
-          />
-        ))}
-      </div>
-
-      <div className="rounded-xl border border-teal-200 bg-teal-50/60 p-4 shadow-panel">
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-medium text-slate-950">How to read this dashboard</p>
-          <Badge variant="accent">System label</Badge>
-        </div>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          <span className="font-medium text-slate-950">Needs Update</span> is a system attention
-          label, not a status. It marks issues whose latest information is no longer reliable
-          enough for confident operational decisions.
-        </p>
-      </div>
-
-      <DashboardCharts distributions={data.distributions} />
-
       <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
@@ -585,15 +629,19 @@ export function DashboardPage() {
               <p className="text-sm font-medium">Operational queue</p>
             </div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              Narrow dashboard filters and direct links into issue and project work, without
-              widening into saved reports or notification behavior. Use Preview for lightweight
-              issue context and Open issue for activity history or deeper work.
+              Use focused action cards and filters to narrow work before opening full issue or
+              project routes. Preview is for lightweight inspection; Open issue is for deeper work.
             </p>
           </div>
           <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
             <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center sm:text-left">
               {filteredIssues.length} matching issue{filteredIssues.length === 1 ? '' : 's'}
             </div>
+            {queuePreset !== 'all' ? (
+              <div className="rounded-lg border border-accent/30 bg-accentSoft px-3 py-2 text-center font-medium text-accent sm:text-left">
+                {QUEUE_PRESET_LABELS[queuePreset]}
+              </div>
+            ) : null}
             <Link
               to="/projects"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
@@ -601,6 +649,47 @@ export function DashboardPage() {
               View all projects
               <ArrowRight className="h-4 w-4" />
             </Link>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.85fr)]">
+          <div className="grid gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-sm font-semibold text-slate-950">My action focus</p>
+              <Badge variant="accent">Selected user</Badge>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {selectedUserActionCards.map((card) => (
+                <AssistantSummaryCard
+                  key={card.title}
+                  title={card.title}
+                  value={card.value}
+                  description={card.description}
+                  icon={card.icon}
+                  tone={card.tone}
+                  isActive={queuePreset === card.preset}
+                  onSelect={() => applyQueuePreset(card.preset)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-3">
+            <p className="text-sm font-semibold text-slate-950">Workspace risk focus</p>
+            <div className="grid gap-2">
+              {workspaceRiskCards.map((card) => (
+                <AssistantSummaryCard
+                  key={card.title}
+                  title={card.title}
+                  value={card.value}
+                  description={card.description}
+                  icon={card.icon}
+                  tone={card.tone}
+                  isActive={queuePreset === card.preset}
+                  onSelect={() => applyQueuePreset(card.preset)}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -720,6 +809,52 @@ export function DashboardPage() {
             </div>
           )}
         </div>
+      </section>
+
+      <section className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-950">Workspace snapshot</h3>
+            <p className="mt-1 text-sm leading-6 text-slate-600">
+              Secondary counts stay available after the queue, without taking over the work start.
+            </p>
+          </div>
+          <Badge variant="accent">Secondary context</Badge>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card) => (
+            <MetricCard
+              key={card.title}
+              title={card.title}
+              value={card.value}
+              description={card.description}
+              icon={card.icon}
+            />
+          ))}
+        </div>
+      </section>
+
+      <div className="rounded-xl border border-teal-200 bg-teal-50/60 p-4 shadow-panel">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-sm font-medium text-slate-950">Needs Update meaning</p>
+          <Badge variant="accent">System label</Badge>
+        </div>
+        <p className="mt-2 text-sm leading-6 text-slate-600">
+          <span className="font-medium text-slate-950">Needs Update</span> is a system attention
+          label, not a status. It marks issues whose latest information is no longer reliable
+          enough for confident operational decisions.
+        </p>
+      </div>
+
+      <section className="grid gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-slate-950">Insights after action</h3>
+          <p className="mt-1 text-sm leading-6 text-slate-600">
+            Charts remain available for context after the queue has already exposed actionable work.
+          </p>
+        </div>
+        <DashboardCharts distributions={data.distributions} />
       </section>
     </section>
   )

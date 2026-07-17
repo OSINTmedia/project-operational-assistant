@@ -16,6 +16,7 @@ import { userRepository } from '../../repositories/userRepository'
 import {
   DEPENDENCY_TYPE_LABELS,
   PRIORITY_LABELS,
+  type DependencyTypeId,
   USER_ROLE_LABELS,
   type PriorityId,
   type UserRoleId,
@@ -34,13 +35,20 @@ export interface DashboardIssueSummary {
   statusLabel: string
   priorityId: PriorityId
   priorityLabel: string
+  ownerId: UserId
   ownerName: string
+  curatorId: UserId | null
   curatorName: string | null
+  participantIds: UserId[]
+  createdBy: UserId
   updatedByName: string
   updatedAt: string
+  dependencyType: DependencyTypeId
+  dependencyTargetId: string | null
   dependencyLabel: string
   dependencyTargetLabel: string | null
   confirmationRequired: boolean
+  confirmedAt: string | null
   hasNeedsUpdateLabel: boolean
   hasReadyForConfirmationLabel: boolean
   tagNames: string[]
@@ -137,10 +145,16 @@ async function loadDashboardMetricsViewData(params: {
       statusLabel: statusNames.get(issue.statusId) ?? 'Unknown status',
       priorityId: issue.priority,
       priorityLabel: PRIORITY_LABELS[issue.priority],
+      ownerId: issue.ownerId,
       ownerName: userNames.get(issue.ownerId) ?? 'Unknown owner',
+      curatorId: issue.curatorId,
       curatorName: issue.curatorId ? (userNames.get(issue.curatorId) ?? 'Unknown curator') : null,
+      participantIds: issue.participantIds,
+      createdBy: issue.createdBy,
       updatedByName: userNames.get(issue.updatedBy) ?? 'Unknown updater',
       updatedAt: issue.updatedAt,
+      dependencyType: issue.dependencyType,
+      dependencyTargetId: issue.dependencyTargetId,
       dependencyLabel: DEPENDENCY_TYPE_LABELS[issue.dependencyType],
       dependencyTargetLabel: resolveDependencyTargetLabel({
         dependencyTargetId: issue.dependencyTargetId,
@@ -149,6 +163,7 @@ async function loadDashboardMetricsViewData(params: {
         userNames,
       }),
       confirmationRequired: issue.confirmationRequired,
+      confirmedAt: issue.confirmedAt,
       hasNeedsUpdateLabel: issue.labelIds.some((labelId) => needsUpdateLabelIds.includes(labelId)),
       hasReadyForConfirmationLabel: issue.labelIds.some((labelId) =>
         readyForConfirmationLabelIds.includes(labelId),
