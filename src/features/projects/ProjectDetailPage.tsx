@@ -5,12 +5,8 @@ import {
   ChevronDown,
   Eye,
   Filter,
-  FolderKanban,
   Plus,
-  RefreshCcw,
   Search,
-  ShieldAlert,
-  Users,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -72,7 +68,7 @@ function PreviewFact({
   value: string
 }) {
   return (
-    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-4 py-3">
+    <div className="min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-2">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</p>
       <p className="mt-1 break-words text-sm font-medium text-slate-950">{value}</p>
     </div>
@@ -103,8 +99,8 @@ function ProjectIssueCard({
   const hasReadyForConfirmation = issue.labelNames.includes('Ready for Confirmation')
 
   return (
-    <article className="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+    <article className="grid gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-panel">
+      <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             <span>{issue.typeLabel}</span>
@@ -117,7 +113,7 @@ function ProjectIssueCard({
               </>
             ) : null}
           </div>
-          <h3 className="mt-2 break-words text-base font-semibold text-slate-950">
+          <h3 className="mt-1 break-words text-sm font-semibold text-slate-950">
             {issue.title}
           </h3>
         </div>
@@ -160,7 +156,7 @@ function ProjectIssueCard({
           onClick={onTogglePreview}
           aria-expanded={isPreviewOpen}
           aria-controls={previewId}
-          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
         >
           <Eye className="h-4 w-4" />
           {isPreviewOpen ? 'Hide preview' : 'Preview'}
@@ -171,7 +167,7 @@ function ProjectIssueCard({
         <Link
           to={`/issues/${issue.id}`}
           state={issueDetailState}
-          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-950 sm:w-auto"
+          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-950 sm:w-auto"
         >
           Open full issue
           <ArrowRight className="h-4 w-4" />
@@ -179,8 +175,8 @@ function ProjectIssueCard({
       </div>
 
       {isPreviewOpen ? (
-        <div id={previewId} className="grid gap-4 border-t border-slate-200 pt-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+        <div id={previewId} className="grid gap-3 border-t border-slate-200 pt-3">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Quick context
             </p>
@@ -189,7 +185,7 @@ function ProjectIssueCard({
             </p>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
             <PreviewFact label="Next action" value={issue.ownerName} />
             <PreviewFact label="Curator" value={issue.curatorName ?? 'No curator assigned'} />
             <PreviewFact
@@ -207,7 +203,7 @@ function ProjectIssueCard({
           </div>
 
           {issue.participantNames.length > 0 ? (
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
+            <div className="rounded-lg border border-slate-200 bg-white px-3 py-2">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Participants
               </p>
@@ -218,7 +214,7 @@ function ProjectIssueCard({
           ) : null}
 
           {hasNeedsUpdate || hasReadyForConfirmation ? (
-            <div className="flex flex-wrap gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3">
+            <div className="flex flex-wrap gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
               {hasNeedsUpdate ? <Badge variant="warning">Needs Update</Badge> : null}
               {hasReadyForConfirmation ? (
                 <Badge variant="violet">Ready for Confirmation</Badge>
@@ -374,6 +370,16 @@ export function ProjectDetailPage() {
   }
 
   const { data } = projectView
+  const projectContextChips = [
+    { label: 'Owner', value: data.ownerName },
+    { label: 'Active', value: `${data.activeIssueCount} open` },
+    { label: 'Blocked/delayed', value: `${data.blockedIssueCount}` },
+    { label: 'Needs Update', value: `${data.needsUpdateCount}` },
+    {
+      label: 'Latest issue',
+      value: data.latestIssueActivityAt ? formatUpdatedAt(data.latestIssueActivityAt) : 'No activity',
+    },
+  ] as const
 
   function resetFilters() {
     setStatusFilter('all')
@@ -384,7 +390,7 @@ export function ProjectDetailPage() {
   }
 
   return (
-    <section className="grid gap-6">
+    <section className="grid gap-4">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <ContextBreadcrumbs
           items={[
@@ -412,106 +418,46 @@ export function ProjectDetailPage() {
               <span>{data.statusLabel}</span>
             </div>
             <h2 className="mt-3 text-2xl font-semibold text-slate-950">{data.name}</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{data.description}</p>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{data.description}</p>
           </div>
 
-          <div className="grid w-full gap-3 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
+          <div className="grid w-full gap-2 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
             <Link
               to={`/projects/${data.id}/issues/new`}
               aria-label={`Create issue in ${data.name}`}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
             >
               <Plus className="h-4 w-4" />
               Create issue
             </Link>
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Owner
-              </p>
-              <p className="mt-1 font-medium text-slate-950">{data.ownerName}</p>
-            </div>
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Team
-              </p>
-              <p className="mt-1 font-medium text-slate-950">{data.teamName}</p>
-            </div>
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Project updated
-              </p>
-              <p className="mt-1 font-medium text-slate-950">{formatUpdatedAt(data.updatedAt)}</p>
-            </div>
-            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Latest issue activity
-              </p>
-              <p className="mt-1 font-medium text-slate-950">
-                {data.latestIssueActivityAt
-                  ? formatUpdatedAt(data.latestIssueActivityAt)
-                  : 'No issue activity yet'}
-              </p>
-            </div>
           </div>
+        </div>
+
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+          {projectContextChips.map((chip) => (
+            <div
+              key={chip.label}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                {chip.label}
+              </p>
+              <p className="mt-1 truncate text-sm font-medium text-slate-950">{chip.value}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <FolderKanban className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Issues</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.totalIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Total issues in this project</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <RefreshCcw className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Active</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.activeIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Open work still in motion</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <ShieldAlert className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Blocked or delayed</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.blockedIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Issues that need intervention</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <Users className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Needs update</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.needsUpdateCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Attention labels in this project</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <FolderKanban className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Done</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.doneIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Completed issue records</p>
-        </div>
-      </div>
-
-      <section className="rounded-xl border border-dashed border-slate-300 bg-white p-4 sm:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-slate-950">Project issues</p>
+            <div className="flex items-center gap-2 text-slate-950">
+              <Filter className="h-4 w-4 text-accent" />
+              <p className="text-sm font-medium">Project issues</p>
+            </div>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-              Read-only project issues for the selected project. Search and structured filters help
-              scan the list without introducing saved filters, inline actions, or broader query
-              behavior. Use Preview for lightweight context and Open full issue for activity
-              history or deep edits.
+              Filter this project queue, preview for quick context, or open the full issue for deep
+              work.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:justify-end">
@@ -531,110 +477,98 @@ export function ProjectDetailPage() {
         </div>
 
         {data.issues.length > 0 ? (
-          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-950">
-              <Filter className="h-4 w-4 text-accent" />
-              <span>Issue filters</span>
-            </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            <label className="grid gap-2 text-sm text-slate-600 sm:col-span-2 xl:col-span-2">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Search
+              </span>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search issue title, owner, curator, label, tag, status, or priority"
+                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
+                />
+              </div>
+            </label>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <label className="grid gap-2 text-sm text-slate-600 md:col-span-2 xl:col-span-4">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Search
-                </span>
-                <div className="relative">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="search"
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    placeholder="Search issue title, owner, curator, label, tag, status, or priority"
-                    className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-950 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400"
-                  />
-                </div>
-                <span className="text-xs leading-5 text-slate-500">
-                  Search stays local to this project list and combines with the structured filters.
-                </span>
-              </label>
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Status
+              </span>
+              <select
+                value={statusFilter}
+                onChange={(event) => setStatusFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+              >
+                {statusOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option === 'all'
+                      ? 'All statuses'
+                      : `${option} (${statusCounts.get(option) ?? 0})`}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-              <label className="grid gap-2 text-sm text-slate-600">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Status
-                </span>
-                <select
-                  value={statusFilter}
-                  onChange={(event) => setStatusFilter(event.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-                >
-                  {statusOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option === 'all'
-                        ? 'All statuses'
-                        : `${option} (${statusCounts.get(option) ?? 0})`}
-                    </option>
-                  ))}
-                </select>
-              </label>
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Priority
+              </span>
+              <select
+                value={priorityFilter}
+                onChange={(event) => setPriorityFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+              >
+                {priorityOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option === 'all'
+                      ? 'All priorities'
+                      : `${option} (${priorityCounts.get(option) ?? 0})`}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-              <label className="grid gap-2 text-sm text-slate-600">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Priority
-                </span>
-                <select
-                  value={priorityFilter}
-                  onChange={(event) => setPriorityFilter(event.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-                >
-                  {priorityOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option === 'all'
-                        ? 'All priorities'
-                        : `${option} (${priorityCounts.get(option) ?? 0})`}
-                    </option>
-                  ))}
-                </select>
-              </label>
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Type
+              </span>
+              <select
+                value={typeFilter}
+                onChange={(event) => setTypeFilter(event.target.value)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+              >
+                {typeOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option === 'all' ? 'All types' : `${option} (${typeCounts.get(option) ?? 0})`}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-              <label className="grid gap-2 text-sm text-slate-600">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Type
-                </span>
-                <select
-                  value={typeFilter}
-                  onChange={(event) => setTypeFilter(event.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-                >
-                  {typeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option === 'all'
-                        ? 'All types'
-                        : `${option} (${typeCounts.get(option) ?? 0})`}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="grid gap-2 text-sm text-slate-600">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Attention
-                </span>
-                <select
-                  value={attentionFilter}
-                  onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
-                >
-                  {ATTENTION_FILTER_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+            <label className="grid gap-2 text-sm text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Attention
+              </span>
+              <select
+                value={attentionFilter}
+                onChange={(event) => setAttentionFilter(event.target.value as AttentionFilter)}
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition-colors focus:border-slate-400"
+              >
+                {ATTENTION_FILTER_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
         ) : null}
 
-        <div className="mt-5 grid gap-3">
+        <div className="mt-4 grid gap-3">
           {data.issues.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm leading-6 text-slate-500">
               This demo project does not currently have any issue records to show.

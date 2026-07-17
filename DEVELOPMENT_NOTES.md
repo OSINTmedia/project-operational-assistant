@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9C as a work-surface density pass
+
+**Context:**
+`Phase 5.9C` needed to make Personal, Projects, and Project Detail show useful work earlier without starting Issue/Form compression, mobile survival work, or a broader navigation redesign.
+
+**Decision:**
+Reorder and compress existing presentation surfaces only. Personal now prioritizes Needs Update, Ready for Confirmation, assigned, and curated work before monitoring-only created work. Projects now behaves more like a compact chooser with inline risk/action counts. Project Detail now places the issue queue directly after a compressed project context header and compact filter toolbar.
+
+**Reasoning:**
+The problem was first-viewport usefulness and duplicated summary weight, not missing data or workflow capability. Existing hooks already expose enough counts and issue summaries, so the correction can stay in page composition and Tailwind density changes while keeping data access behind repositories/hooks.
+
+**Alternatives considered:**
+Adding project-level permissions, adding new project risk models, moving project context into AppShell, adding a drawer/table framework, or beginning Issue Detail/Form compression during the same slice.
+
+**Impact:**
+5.9C improves Personal and project work-surface density while preserving `HashRouter`, existing routes, `/personal`, 5.9A1 return behavior, 5.9A2 AppShell compression, 5.9B Dashboard behavior, local-first architecture, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, project permissions, team workflow engine, data model, persistence, repository, or route-tree changes were introduced.
+
 ### 2026-07-17 — Keep Phase 5.9B as Dashboard-local action filtering
 
 **Context:**

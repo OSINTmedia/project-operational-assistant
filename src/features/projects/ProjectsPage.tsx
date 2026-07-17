@@ -61,20 +61,45 @@ export function ProjectsPage() {
   }
 
   const { data } = projectsView
+  const portfolioChips = [
+    {
+      label: 'Projects',
+      value: data.projectCount,
+      detail: `${data.totalIssueCount} issues`,
+      icon: FolderKanban,
+    },
+    {
+      label: 'Active',
+      value: data.activeIssueCount,
+      detail: 'open work',
+      icon: RefreshCcw,
+    },
+    {
+      label: 'Blocked/delayed',
+      value: data.blockedIssueCount,
+      detail: 'needs attention',
+      icon: ShieldAlert,
+    },
+    {
+      label: 'Needs Update',
+      value: data.needsUpdateCount,
+      detail: 'stale context',
+      icon: Users,
+    },
+  ] as const
 
   return (
-    <section className="grid gap-6">
+    <section className="grid gap-4">
       <div className="rounded-xl border border-slate-200 bg-panel p-4 shadow-panel sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
           Project navigation
         </p>
-        <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-2 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-950">Projects</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Lightweight project-level visibility for the local demo: operational status, issue
-              volume, attention counts, and navigation into project detail without broadening into
-              filters or project administration yet.
+              Choose the active project frame, with risk and action counts visible inline before
+              opening detail.
             </p>
           </div>
           <div className="grid w-full gap-3 text-sm text-slate-600 sm:w-auto sm:grid-cols-2 lg:flex lg:flex-wrap">
@@ -88,43 +113,27 @@ export function ProjectsPage() {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <FolderKanban className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Projects</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.projectCount}</p>
-          <p className="mt-1 text-sm text-slate-500">{data.totalIssueCount} total issues</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <RefreshCcw className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Active issues</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.activeIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Open work across all project surfaces</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <ShieldAlert className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Blocked or delayed</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.blockedIssueCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Project issues that need intervention</p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 border-t-accent bg-white p-4 shadow-panel">
-          <div className="flex items-center gap-2 text-slate-950">
-            <Users className="h-4 w-4 text-accent" />
-            <p className="text-sm font-medium">Needs update</p>
-          </div>
-          <p className="mt-3 text-2xl font-semibold text-slate-950">{data.needsUpdateCount}</p>
-          <p className="mt-1 text-sm text-slate-500">Attention labels across current projects</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {portfolioChips.map((chip) => {
+            const Icon = chip.icon
+            return (
+              <div
+                key={chip.label}
+                className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2"
+              >
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accentSoft text-accent">
+                  <Icon className="h-3.5 w-3.5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-950">
+                    {chip.value} {chip.label}
+                  </p>
+                  <p className="text-xs text-slate-500">{chip.detail}</p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
@@ -139,7 +148,7 @@ export function ProjectsPage() {
         {data.projects.map((project) => (
           <article
             key={project.id}
-            className="rounded-xl border border-slate-200 bg-white p-5 shadow-panel"
+            className="rounded-xl border border-slate-200 bg-white p-4 shadow-panel"
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -149,7 +158,7 @@ export function ProjectsPage() {
                   <Badge>{project.statusLabel}</Badge>
                 </div>
                 <h3 className="mt-2 text-lg font-semibold text-slate-950">{project.name}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{project.description}</p>
+                <p className="mt-1 text-sm leading-6 text-slate-600">{project.description}</p>
               </div>
 
               <Link
@@ -161,34 +170,19 @@ export function ProjectsPage() {
               </Link>
             </div>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Owner
-                </p>
-                <p className="mt-1 text-sm text-slate-950">{project.ownerName}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Total issues
-                </p>
-                <p className="mt-1 text-sm text-slate-950">{project.totalIssueCount}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Active
-                </p>
-                <p className="mt-1 text-sm text-slate-950">{project.activeIssueCount}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Attention
-                </p>
-                <p className="mt-1 text-sm text-slate-950">
-                  {project.blockedIssueCount} blocked/delayed · {project.needsUpdateCount} needs
-                  update
-                </p>
-              </div>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                Owner: {project.ownerName}
+              </span>
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                {project.activeIssueCount} active
+              </span>
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                {project.blockedIssueCount} blocked/delayed
+              </span>
+              <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                {project.needsUpdateCount} Needs Update
+              </span>
             </div>
           </article>
         ))}
@@ -196,9 +190,9 @@ export function ProjectsPage() {
 
       <section className="hidden rounded-xl border border-slate-200 bg-white shadow-panel xl:block">
         <div className="border-b border-slate-200 px-5 py-4">
-          <p className="text-sm font-medium text-slate-950">Project list</p>
+          <p className="text-sm font-medium text-slate-950">Project chooser</p>
           <p className="mt-1 text-sm text-slate-600">
-            Summary navigation surface for project-level operational visibility.
+            Open a project with risk and action counts visible in the row.
           </p>
         </div>
 
@@ -218,34 +212,31 @@ export function ProjectsPage() {
             <tbody className="divide-y divide-slate-200 bg-white">
               {data.projects.map((project) => (
                 <tr key={project.id} className="align-top">
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-3">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-950">{project.name}</p>
                       <p className="mt-1 text-sm text-slate-500">{project.teamName}</p>
-                      <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                        {project.description}
-                      </p>
                     </div>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-3">
                     <Badge>{project.statusLabel}</Badge>
                   </td>
-                  <td className="px-5 py-4 text-sm text-slate-700">{project.ownerName}</td>
-                  <td className="px-5 py-4 text-sm text-slate-700">
+                  <td className="px-5 py-3 text-sm text-slate-700">{project.ownerName}</td>
+                  <td className="px-5 py-3 text-sm text-slate-700">
                     <div>{project.totalIssueCount} total</div>
                     <div className="mt-1 text-slate-500">{project.activeIssueCount} active</div>
                     <div className="mt-1 text-slate-500">{project.doneIssueCount} done</div>
                   </td>
-                  <td className="px-5 py-4 text-sm text-slate-700">
+                  <td className="px-5 py-3 text-sm text-slate-700">
                     <div>{project.blockedIssueCount} blocked/delayed</div>
                     <div className="mt-1 text-slate-500">
                       {project.needsUpdateCount} needs update
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-sm text-slate-700">
+                  <td className="px-5 py-3 text-sm text-slate-700">
                     {formatUpdatedAt(project.lastActivityAt)}
                   </td>
-                  <td className="px-5 py-4 text-right">
+                  <td className="px-5 py-3 text-right">
                     <Link
                       to={`/projects/${project.id}`}
                       className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"

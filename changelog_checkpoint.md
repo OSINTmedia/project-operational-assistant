@@ -11,10 +11,11 @@ Completed micro-phase:
 - `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete
 - `Phase 5.9A2 — Compact AppShell and Header Compression` implementation and self-audit are complete
 - `Phase 5.9B — Dashboard Action-first Recomposition` implementation and self-audit are complete
+- `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete
 
 Next concrete micro-phase:
 
-- `Phase 5.9C — Project and Personal Density Pass`
+- `Phase 5.9D — Issue Detail and Form Compression`
 
 ## Documentation Trust Order
 
@@ -295,13 +296,20 @@ Use the project docs in this order when deciding what is current and what should
 - Converted selected-user action cards and workspace risk cards into accessible queue preset buttons that filter the queue in place.
 - Added Dashboard-local queue preset filtering for Assigned to me, Curated by me, Needs my update, Needs my confirmation, Blocked, Delayed, and workspace Needs Update without adding saved reports, new routes, backend behavior, workflow behavior, or a new data model.
 - Kept Dashboard preview/open issue behavior, 5.9A1 route return context, 5.9A2 shell compression, `HashRouter`, `/personal`, local-first boundaries, and system-label semantics intact.
+- Implemented `Phase 5.9C — Project and Personal Density Pass`.
+- Reordered Personal so Needs Update, Ready for Confirmation, assigned, and curated work appear before monitoring-only created work and before any large metrics.
+- Converted Personal count cards into compact inline chips while preserving the `/personal` route and issue return state.
+- Reworked Projects into a compact chooser with portfolio pulse chips in the header and inline project risk/action counts on project cards and rows.
+- Reworked Project Detail so the issue queue and compact filters appear immediately after a compressed project context header instead of after a metric-card wall.
+- Kept 5.9C scoped to Personal/Projects/Project Detail density only: no route removal, `/personal` removal, AppShell redesign, Issue/Form compression, mobile survival pass, backend/auth behavior, workflow engine, project permissions, team workflow engine, repository changes, persistence changes, or new data model was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/dashboard/useDashboardMetrics.ts`
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/projects/ProjectsPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
 - `APP_EXPERIENCE_PLAN.md`
 - `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
@@ -540,6 +548,10 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9B self-audit verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9C implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9C self-audit verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -605,7 +617,8 @@ Full implementation history:
 - `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete.
 - `Phase 5.9A2 — Compact AppShell and Header Compression` implementation and self-audit are complete.
 - `Phase 5.9B — Dashboard Action-first Recomposition` implementation and self-audit are complete.
-- The next allowed implementation task is `Phase 5.9C — Project and Personal Density Pass`, not Issue/Form compression, mobile survival work, or Phase 6.
+- `Phase 5.9C — Project and Personal Density Pass` implementation and self-audit are complete.
+- The next allowed implementation task is `Phase 5.9D — Issue Detail and Form Compression`, not mobile survival work or Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after Phase 5.9 gate criteria are met.
@@ -616,19 +629,20 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.9C — Project and Personal Density Pass`
+- `Phase 5.9D — Issue Detail and Form Compression`
 
 Scope for the next task only:
 
-- make Personal prioritize Needs Update, Ready for Confirmation, and assigned/curated work over metric cards
-- make Projects a compact project chooser with risk/action counts inline
-- make Project Detail show the issue queue earlier and compact filters/project metadata
+- make Issue Detail feel like a focused work surface with title/status/source/action context first
+- compact or demote secondary metadata, dependency, and history blocks without hiding critical next actions
+- make Issue Create/Edit required fields and save/cancel/return controls more visible and less document-like
 - preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
 - preserve 5.9A1 return behavior and 5.9A2 AppShell compression
 - preserve 5.9B Dashboard action-first behavior
-- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, project permissions, team workflow engine, or new project model is introduced
+- preserve 5.9C Personal/Projects/Project Detail density behavior
+- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, drawer/modal framework, comments, notification behavior, permissions expansion, or Jira-style workflow expansion is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
 - update handoff docs only as needed after implementation
 
-Do not implement Issue/Form compression, mobile survival work, deployment work, Phase 6 validation, or final release documentation during `Phase 5.9C`.
+Do not implement mobile survival work, deployment work, Phase 6 validation, or final release documentation during `Phase 5.9D`.
