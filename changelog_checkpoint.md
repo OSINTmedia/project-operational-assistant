@@ -9,10 +9,11 @@ Completed micro-phase:
 - `Phase 5.8E — Responsive Interaction and Working-layout Pass`
 - `Phase 5.9 planning sync — design_review_V2.md and APP_EXPERIENCE_PLAN.md define the corrective UX roadmap`
 - `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete
+- `Phase 5.9A2 — Compact AppShell and Header Compression` implementation and self-audit are complete
 
 Next concrete micro-phase:
 
-- `Phase 5.9A2 — Compact AppShell and Header Compression`
+- `Phase 5.9B — Dashboard Action-first Recomposition`
 
 ## Documentation Trust Order
 
@@ -282,19 +283,20 @@ Use the project docs in this order when deciding what is current and what should
 - Strengthened Issue Edit return context with visible issue-detail return, source/project explanation, save behavior copy, and clearer cancel/save labels.
 - Clarified Issue Create return behavior so create and cancel target the selected/current project context consistently.
 - Kept 5.9A1 scoped to route/return context only: no AppShell compression, Dashboard recomposition, density pass, mobile survival pass, route removal, `/personal` removal, backend/auth behavior, workflow engine, notification hub, repository changes, persistence changes, or new data model was introduced.
+- Implemented `Phase 5.9A2 — Compact AppShell and Header Compression`.
+- Replaced the tall main topbar identity/action area with a compact selected-user/status row.
+- Removed the duplicated Dashboard/Personal quick-link block from the topbar because those destinations already live in primary navigation.
+- Shortened sidebar shell spacing and demo-perspective copy while keeping selected role/user and role-switch controls visible.
+- Reduced shell content padding slightly so the first work area starts higher without changing page order or Dashboard composition.
+- Kept 5.9A2 scoped to AppShell compression only: no Dashboard recomposition, Project/Personal density pass, Issue/Form compression, mobile survival pass, route change, `/personal` removal, backend/auth behavior, workflow engine, notification hub, repository changes, persistence changes, or new data model was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueEditPage.tsx`
-- `src/features/issues/IssueCreatePage.tsx`
-- `src/features/personal/PersonalPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
+- `src/app/layout/AppShell.tsx`
 - `APP_EXPERIENCE_PLAN.md`
+- `BUILD_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
@@ -523,6 +525,10 @@ Full implementation history:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.9A1 self-audit verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9A2 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9A2 self-audit verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
 
@@ -586,7 +592,8 @@ Full implementation history:
 - `Phase 5.8F — Final App Experience Audit` has been superseded by the deeper Phase 5.9 corrective UX roadmap.
 - `Phase 5.9 — Compact Assistant UX and Actionability Refinement` is now active.
 - `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete.
-- The next allowed task is `Phase 5.9A2 — Compact AppShell and Header Compression`, not Dashboard recomposition, density passes, mobile survival work, or Phase 6.
+- `Phase 5.9A2 — Compact AppShell and Header Compression` implementation and self-audit are complete.
+- The next allowed task is `Phase 5.9B — Dashboard Action-first Recomposition`, not Project/Personal density passes, Issue/Form compression, mobile survival work, or Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
 - `Phase 6 — Quality and Final Review` remains later, after Phase 5.9 gate criteria are met.
@@ -597,17 +604,18 @@ Full implementation history:
 
 Next concrete Codex task:
 
-- `Phase 5.9A2 — Compact AppShell and Header Compression`
+- `Phase 5.9B — Dashboard Action-first Recomposition`
 
 Scope for the next task only:
 
-- compress the existing AppShell/topbar/page-header chrome only enough to support wayfinding and first-viewport utility
-- clarify current route/context in the shell without introducing a new navigation framework
+- make Dashboard behave more like an assistant home instead of a reporting surface
+- move Operational Queue and action filters above charts/secondary reporting blocks
+- make Assistant Home and risk summary cards filter, preview, or route to precise work surfaces where already supported
 - preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
-- preserve Dashboard, Personal, Project Detail, Teams, Issue Detail/Edit/Create behavior from 5.9A1
-- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, or drawer/modal framework is introduced
+- preserve 5.9A1 return behavior and 5.9A2 AppShell compression
+- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, saved dashboard/report system, or drawer/modal framework is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
 - review `npm run build`, `npm run typecheck`, and `npm run lint` results
 - update handoff docs only as needed after the implementation
 
-Do not implement Dashboard recomposition, Project/Personal density passes, Issue/Form compression, mobile survival work, deployment work, Phase 6 validation, or final release documentation during `Phase 5.9A2`.
+Do not implement Project/Personal density passes, Issue/Form compression, mobile survival work, deployment work, Phase 6 validation, or final release documentation during `Phase 5.9B`.

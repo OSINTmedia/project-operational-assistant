@@ -8,6 +8,23 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9A2 as AppShell compression only
+
+**Context:**
+`Phase 5.9A2` needed to reduce repeated shell/topbar context and reclaim first-viewport space without starting Dashboard recomposition or a broader layout redesign.
+
+**Decision:**
+Compact the existing AppShell instead of redesigning navigation. The main topbar now uses a shorter selected-user/status row, the duplicated Dashboard/Personal quick-link block was removed from the topbar, sidebar shell spacing was tightened, and sidebar demo-perspective copy was shortened.
+
+**Reasoning:**
+Dashboard and Personal already exist in primary navigation, so repeating them as large topbar actions consumed vertical space without improving wayfinding. A smaller persistent current-user/status row keeps orientation visible while moving real work higher in the viewport. This stays inside the approved AppShell/header slice and avoids changing route behavior or page-level workflows.
+
+**Alternatives considered:**
+Adding sidebar counters, adding a global create issue action, moving more project/work state into the shell, creating a new mobile navigation pattern, or starting Dashboard action-first recomposition.
+
+**Impact:**
+5.9A2 improves shell density while preserving `HashRouter`, existing routes, `/personal`, 5.9A1 return behavior, local-first boundaries, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, data model, persistence, repository, or route-tree changes were introduced.
+
 ### 2026-07-17 — Keep Phase 5.9A1 as route-context clarification only
 
 **Context:**

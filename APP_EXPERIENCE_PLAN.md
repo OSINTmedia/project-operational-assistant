@@ -2,7 +2,7 @@
 
 Status: active planning document  
 Source diagnosis: `design_review_V2.md`  
-Execution state: `5.9A1 - Route Wayfinding and Return Context` complete; `5.9A2 - Compact AppShell and Header Compression` is next  
+Execution state: `5.9A2 - Compact AppShell and Header Compression` complete; `5.9B - Dashboard Action-first Recomposition` is next  
 Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
 
 ## 1. Purpose
@@ -31,7 +31,7 @@ Accepted Phase 5.9 verdict:
 - Mobile risk is high because desktop layouts already stack too much content.
 - `/personal` remains in scope and must not be removed or deprecated without separate explicit approval.
 
-The next target is **5.9A2 - Compact AppShell and Header Compression**.
+The next target is **5.9B - Dashboard Action-first Recomposition**.
 
 ## 3. Phase 5.9 Operating Principles
 
@@ -141,8 +141,8 @@ AppShell compression is a support slice. It must not distract from the first pri
 | Phase | Name | Status | Primary risk addressed | Notes |
 |---|---|---|---|---|
 | 5.9A1 | Route Wayfinding and Return Context | Complete | User gets lost across deep routes | Implementation and self-audit passed |
-| 5.9A2 | Compact AppShell and Header Compression | Next | Shell/header duplication pushes work down | Must stay narrow |
-| 5.9B | Dashboard Action-first Recomposition | Pending | Dashboard is report-first, not assistant-first | Depends on A1 route clarity |
+| 5.9A2 | Compact AppShell and Header Compression | Complete | Shell/header duplication pushes work down | Implementation and self-audit passed |
+| 5.9B | Dashboard Action-first Recomposition | Next | Dashboard is report-first, not assistant-first | Depends on A1 route clarity |
 | 5.9C | Project and Personal Density Pass | Pending | Work lists appear too low | Uses patterns proven in Dashboard |
 | 5.9D | Issue Detail and Form Compression | Pending | Issue/work forms feel like long documents | Depends on A1 return context |
 | 5.9E | Mobile Survival Pass | Pending | Endless stacked mobile scrolling | Must happen after main layout changes |
@@ -232,6 +232,8 @@ Suggested commit:
 Risk level: Medium.
 
 ### 5.9A2 - Compact AppShell and Header Compression
+
+Status: `Complete`
 
 Goal:
 
@@ -636,16 +638,16 @@ Approved. Commit and push with the approved message. Report commit hash, branch,
 
 ## 15. Next Concrete Step
 
-Next phase: **5.9A2 - Compact AppShell and Header Compression**
+Next phase: **5.9B - Dashboard Action-first Recomposition**
 
 Recommended implementation prompt:
 
 ```text
-Implement Phase 5.9A2 only. Compress AppShell/topbar/page-header chrome enough to support wayfinding and first-viewport utility. Preserve the route tree, HashRouter, /personal, 5.9A1 return behavior, local-first architecture, and MVP scope. Do not implement Dashboard recomposition, Project/Personal density pass, Issue/Form compression, mobile survival pass, backend/auth/notifications/workflow engine, or Phase 6 work. Do not commit or push.
+Implement Phase 5.9B only. Make Dashboard action-first by moving the Operational Queue and action filters above charts/secondary reporting blocks, and make summary cards filter, preview, or route to precise work surfaces where already supported. Preserve the route tree, HashRouter, /personal, 5.9A1 return behavior, 5.9A2 AppShell compression, local-first architecture, and MVP scope. Do not implement Project/Personal density pass, Issue/Form compression, mobile survival pass, backend/auth/notifications/workflow engine, saved dashboard/report system, or Phase 6 work. Do not commit or push.
 ```
 
-Suggested commit for completed 5.9A1 after checkpoint approval:
+Suggested commit for completed 5.9A2 after checkpoint approval:
 
 ```text
-feat: clarify route return context
+feat: compact app shell orientation
 ```
