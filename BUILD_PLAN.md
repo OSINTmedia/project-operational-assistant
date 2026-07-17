@@ -1861,7 +1861,7 @@ Suggested commit message:
 
 ### Phase 5.8 — App Experience Refinement Before Final QA
 
-Status: `In progress`
+Status: `Completed through 5.8E; superseded by Phase 5.9 corrective UX roadmap`
 
 Goal:
 
@@ -1875,7 +1875,11 @@ This phase should make the app feel like an operational assistant rather than a 
 
 Execution note:
 
-Detailed execution for this phase is tracked in `APP_EXPERIENCE_PLAN.md`. `design_review.md` is the accepted diagnostic source for `Phase 5.8A`; `APP_EXPERIENCE_PLAN.md` is the focused implementation roadmap for the remaining Phase 5.8 slices.
+Phase 5.8 completed the first app-experience sequence through selected-user orientation, source-aware return flow, inline previews, and responsive working-layout repair.
+
+After the deeper `design_review_V2.md` audit, the remaining UX risk was reclassified into `Phase 5.9 — Compact Assistant UX and Actionability Refinement`. `APP_EXPERIENCE_PLAN.md` is now the active Phase 5.9 execution plan. `Phase 5.9A1 — Route Wayfinding and Return Context` is complete; the next implementation slice is `Phase 5.9A2 — Compact AppShell and Header Compression`.
+
+The older Phase 5.8 micro-phase entries below are retained as historical roadmap context. They are no longer the source for the next task.
 
 Scope:
 
@@ -2142,6 +2146,268 @@ Verification requirements:
 Suggested commit message:
 
 - `chore: audit app experience refinement`
+
+---
+
+### Phase 5.9 — Compact Assistant UX and Actionability Refinement
+
+Status: `In progress`
+
+Goal:
+
+Make the existing MVP feel like a compact operational assistant by correcting route wayfinding, first-viewport usefulness, actionability, visual density, and mobile survival risk before Phase 6.
+
+Purpose:
+
+The primary product is already built. Phase 5.9 is a controlled UX/UI/flow correction pass based on `design_review_V2.md` and `APP_EXPERIENCE_PLAN.md`. It does not add backend behavior, real auth, notification infrastructure, workflow engines, employee scoring, a new data model, or a broad route redesign.
+
+Execution note:
+
+Detailed execution for Phase 5.9 is tracked in `APP_EXPERIENCE_PLAN.md`. `design_review_V2.md` is the current UX diagnosis. `changelog_checkpoint.md` remains the live handoff and next-task source.
+
+Scope:
+
+- improve route wayfinding and source-aware return context
+- clarify where the user is, where they came from, and how they return
+- compress AppShell/page header context only after return clarity is handled
+- make Dashboard action-first rather than report-first
+- reduce dead summary cards by turning them into filters, previews, or precise route targets
+- improve Personal and Project work-surface density
+- improve Issue Detail/Edit/Create compactness and visible save/cancel/return behavior
+- complete a mobile survival pass after desktop/layout order changes
+- preserve existing route model, `HashRouter`, GitHub Pages compatibility, local-first architecture, and system-label semantics
+
+Explicit exclusions:
+
+- no backend
+- no real auth
+- no notification hub
+- no organization workspace
+- no employee scoring
+- no enterprise permissions
+- no workflow engine
+- no new project/issue data model
+- no broad product-scope expansion
+- no full AppShell redesign
+- no full design-system rewrite
+- no brand redesign
+- no animation pass
+- no command palette unless separately approved
+- no removing `/personal` unless separately approved
+- no replacing the router architecture
+
+### Phase 5.9A1 — Route Wayfinding and Return Context
+
+Status: `Completed`
+
+Goal:
+
+Make every deep work route answer where the user is, where they came from, and how they return.
+
+Scope:
+
+- strengthen visible source-aware return labels on Issue Detail and Issue Edit
+- add or clarify direct Back/Return controls where browser back is currently doing too much work
+- clarify current-location context on Issue Detail, Issue Edit, Issue Create, Project Detail, and Teams
+- preserve the existing route tree and bounded route-state helper
+
+Explicit exclusions:
+
+- no AppShell compression
+- no Dashboard recomposition
+- no density pass
+- no mobile survival pass
+- no new route model
+- no global navigation-history framework
+
+Acceptance criteria:
+
+- Issue Detail/Edit always show a visible source-aware return destination
+- Dashboard -> Issue -> Edit -> return is predictable
+- Personal -> Issue -> Edit -> return is predictable
+- Project Detail -> Issue -> Edit -> return is predictable
+- Teams -> Issue -> return is predictable
+- no routes are added or removed
+- build / typecheck / lint pass
+
+Verification requirements:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit message:
+
+- `feat: clarify route return context`
+
+### Phase 5.9A2 — Compact AppShell and Header Compression
+
+Status: `Next`
+
+Goal:
+
+Reduce repeated shell/page context without turning the sidebar into a second dashboard.
+
+Scope:
+
+- compact AppShell topbar where it supports wayfinding
+- make selected user/role persistent but concise
+- reduce duplicate Dashboard/Personal/page-header context
+- keep sidebar navigation-first
+
+Explicit exclusions:
+
+- no full AppShell redesign
+- no full issue lists, complex filters, charts, or project metadata panels in sidebar
+- no global create issue unless separately approved
+
+Acceptance criteria:
+
+- selected user/role is visible without consuming the main work area
+- page headers and topbar do not repeat the same context
+- mobile shell remains usable
+
+Suggested commit message:
+
+- `feat: compact app shell orientation`
+
+### Phase 5.9B — Dashboard Action-first Recomposition
+
+Status: `Later`
+
+Goal:
+
+Make Dashboard behave like an assistant home rather than a reporting surface.
+
+Scope:
+
+- move Operational Queue and filters above charts
+- convert Assistant Home and risk cards into filters, previews, or precise work-surface routes
+- demote charts and metric cards
+- keep data behind existing hooks/repositories/state boundaries
+
+Explicit exclusions:
+
+- no new data model
+- no saved dashboard/report system
+- no notification behavior
+
+Acceptance criteria:
+
+- Operational Queue or first actionable rows are visible in the first desktop viewport
+- charts do not appear above the main action queue
+- summary cards filter, preview, or route to precise work surfaces
+
+Suggested commit message:
+
+- `feat: make dashboard action-first`
+
+### Phase 5.9C — Project and Personal Density Pass
+
+Status: `Later`
+
+Goal:
+
+Make work lists visible earlier and reduce duplicate summary blocks.
+
+Scope:
+
+- Personal prioritizes Needs Update, Ready for Confirmation, and assigned/curated work
+- Projects becomes a compact project chooser
+- Project Detail shows issue queue earlier and compacts filters/project metadata
+
+Explicit exclusions:
+
+- no project permissions
+- no team workflow engine
+- no new project model
+- no removal of `/personal`
+
+Suggested commit message:
+
+- `feat: compact personal and project work surfaces`
+
+### Phase 5.9D — Issue Detail and Form Compression
+
+Status: `Later`
+
+Goal:
+
+Turn Issue Detail/Edit/Create into focused work surfaces.
+
+Scope:
+
+- prioritize title/status/source/action strip
+- compact or collapse secondary metadata/history
+- keep save/cancel/return controls visible
+- make create/edit forms required-first and less document-like
+
+Explicit exclusions:
+
+- no comments
+- no notifications
+- no permissions expansion
+- no Jira-style workflow expansion
+
+Suggested commit message:
+
+- `feat: compact issue work and edit flows`
+
+### Phase 5.9E — Mobile Survival Pass
+
+Status: `Later`
+
+Goal:
+
+Prevent endless stacked scrolling and hidden actions on small screens after the main desktop/layout changes are done.
+
+Scope:
+
+- Dashboard mobile queue-first layout
+- compact mobile headers
+- sticky or persistent issue/form actions where needed
+- filter disclosures/tabs where appropriate
+- validate tap targets, focus order, and readable labels
+
+Explicit exclusions:
+
+- no separate mobile product
+- no bottom navigation redesign unless separately approved
+- no unrelated visual redesign
+
+Suggested commit message:
+
+- `feat: improve compact mobile work flows`
+
+### Phase 5.9F — Final Compact UX Audit
+
+Status: `Later`
+
+Goal:
+
+Verify Phase 5.9 is complete enough to enter Phase 6.
+
+Scope:
+
+- repeat first-60-seconds test
+- repeat Manager / Project Manager / User workflow traces
+- repeat desktop / tablet / mobile checks
+- verify no scope creep
+- verify docs match implementation reality
+
+Acceptance criteria:
+
+- no P0 findings remain
+- P1 findings are fixed or explicitly accepted as MVP debt
+- Dashboard is action-first
+- route return context is clear
+- first viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail
+- mobile survival pass is complete
+- build / typecheck / lint pass
+
+Suggested commit message:
+
+- `docs: verify compact ux readiness`
 
 ---
 

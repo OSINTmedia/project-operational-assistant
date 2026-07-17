@@ -247,7 +247,7 @@ export function TeamsPage() {
                                 to={`/issues/${issue.id}`}
                                 state={createIssueNavigationState({
                                   source: 'teams',
-                                  label: 'Team Workspace',
+                                  label: `Team Workspace: ${team.name}`,
                                   path: '/teams',
                                   backLabel: 'Back to Team Workspace',
                                 })}
@@ -297,7 +297,7 @@ export function TeamsPage() {
                               to={`/issues/${issue.id}`}
                               state={createIssueNavigationState({
                                 source: 'teams',
-                                label: 'Team Workspace',
+                                label: `Team Workspace: ${team.name}`,
                                 path: '/teams',
                                 backLabel: 'Back to Team Workspace',
                               })}

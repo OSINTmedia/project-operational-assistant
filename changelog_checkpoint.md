@@ -2,15 +2,17 @@
 
 ## Current Phase
 
-Phase 5.8 — App Experience Refinement Before Final QA: `In progress`
+Phase 5.9 — Compact Assistant UX and Actionability Refinement: `In progress`
 
 Completed micro-phase:
 
 - `Phase 5.8E — Responsive Interaction and Working-layout Pass`
+- `Phase 5.9 planning sync — design_review_V2.md and APP_EXPERIENCE_PLAN.md define the corrective UX roadmap`
+- `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete
 
 Next concrete micro-phase:
 
-- `Phase 5.8F — Final App Experience Audit`
+- `Phase 5.9A2 — Compact AppShell and Header Compression`
 
 ## Documentation Trust Order
 
@@ -18,8 +20,8 @@ Use the project docs in this order when deciding what is current and what should
 
 1. `changelog_checkpoint.md` for the live handoff, latest completed micro-phase, and next concrete micro-phase
 2. `BUILD_PLAN.md` for roadmap order, scope boundaries, and acceptance criteria
-3. `APP_EXPERIENCE_PLAN.md` for Phase 5.8 execution details while Phase 5.8 is active
-4. `design_review.md` for Phase 5.8 UX findings and severity while Phase 5.8 is active
+3. `APP_EXPERIENCE_PLAN.md` for the active Phase 5.9 corrective UX execution plan
+4. `design_review_V2.md` for the current compact assistant UX, navigation, and actionability diagnosis
 5. `DEVELOPMENT_NOTES.md` for meaningful implementation decisions and trade-offs
 6. frozen docs in `docs/` for product and technical context only
 7. `README.md` for public portfolio presentation only, not implementation guidance
@@ -30,8 +32,9 @@ Use the project docs in this order when deciding what is current and what should
 - Older completed sections in `BUILD_PLAN.md` still contain some historical micro-phase `Planned` labels. Treat those as historical plan artifacts, not active next-step guidance.
 - Frozen docs intentionally remain broader than the live implementation state. They describe product intent and constraints, not the live completion checkpoint.
 - `README.md` may summarize progress at a high level, but the live implementation state and next concrete micro-phase must always come from this file first.
-- `Phase 5.8` was added after `Phase 5` because the full app surface revealed a usability and navigation gap that should be addressed before final QA, tests, deployment, and release.
-- `Phase 5.8` is a controlled app-experience refinement phase, not scope creep and not a new product-feature phase.
+- `Phase 5.8` completed the first app-experience refinement sequence through responsive interaction repair.
+- `Phase 5.8F` is no longer the next task. The deeper `design_review_V2.md` audit found remaining P0/P1 navigation, first-viewport, density, and mobile risks, so the project moved into corrective `Phase 5.9` before Phase 6.
+- `Phase 5.9` is a controlled compact UX and actionability refinement phase, not scope creep and not a new product-feature phase.
 
 ## Completed Work
 
@@ -266,26 +269,38 @@ Use the project docs in this order when deciding what is current and what should
 - Improved Issue Detail quick-action wrapping and Create/Edit form tablet layout without introducing collapsible sections, drawers, modals, or new form behavior.
 - Improved Team Workspace issue links and status rows for smaller screens while preserving existing route/state behavior.
 - Kept the responsive pass presentation-only: no new routes, workflow behavior, domain model changes, repository changes, persistence changes, backend, auth, notifications, organization workspace, employee scoring, or drawer/modal framework were introduced.
+- Completed a deeper code-first `design_review_V2.md` audit focused on compact assistant UX, route-hopping, first-viewport usefulness, actionability, visual density, and mobile risk.
+- Updated `APP_EXPERIENCE_PLAN.md` into the active Phase 5.9 corrective UX roadmap.
+- Split the next corrective work so route clarity leads implementation:
+  `Phase 5.9A1 — Route Wayfinding and Return Context`,
+  then `Phase 5.9A2 — Compact AppShell and Header Compression`,
+  followed by Dashboard, Project/Personal, Issue/Form, Mobile, and final audit passes.
+- Kept Phase 5.9 documentation-only planning free of source-code changes, frozen-doc rewrites, backend/auth behavior, notification behavior, organization scope, employee scoring, route removal, or `/personal` removal.
+- Implemented `Phase 5.9A1 — Route Wayfinding and Return Context`.
+- Clarified issue source labels from Dashboard, Personal, Project Detail, and Team Workspace so deep issue routes show more precise return destinations.
+- Strengthened Issue Detail return context with a visible return control, source/project explanation, and edit save/cancel behavior copy.
+- Strengthened Issue Edit return context with visible issue-detail return, source/project explanation, save behavior copy, and clearer cancel/save labels.
+- Clarified Issue Create return behavior so create and cancel target the selected/current project context consistently.
+- Kept 5.9A1 scoped to route/return context only: no AppShell compression, Dashboard recomposition, density pass, mobile survival pass, route removal, `/personal` removal, backend/auth behavior, workflow engine, notification hub, repository changes, persistence changes, or new data model was introduced.
 
 ## Changed Files
 
 Latest implementation/audit slice:
 
 - `src/features/dashboard/DashboardPage.tsx`
-- `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueFormFields.tsx`
-- `src/features/issues/IssueCreatePage.tsx`
 - `src/features/issues/IssueEditPage.tsx`
+- `src/features/issues/IssueCreatePage.tsx`
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
 - `src/features/teams/TeamsPage.tsx`
-- `src/shared/components/Badge.tsx`
-- `src/shared/components/ContextBreadcrumbs.tsx`
+- `APP_EXPERIENCE_PLAN.md`
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md`
 
-Current Phase 5.8 planning context:
+Current Phase 5.9 planning context:
 
-- `design_review.md`
+- `design_review_V2.md`
 - `APP_EXPERIENCE_PLAN.md`
 - `BUILD_PLAN.md`
 
@@ -481,7 +496,7 @@ Full implementation history:
 - Phase 5.8D1 passed build/typecheck/lint, but a manual browser walkthrough across Project Detail issue filters, inline previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
 - Phase 5.8D2 uses one scoped inline preview pattern on Dashboard queue issue cards. It intentionally avoids saved filters, a global issue-list route, a command palette, and a universal drawer/modal framework; users should use inline preview for lightweight Dashboard inspection and the full Issue Detail route for deep work.
 - Phase 5.8D2 passed build/typecheck/lint, but a manual browser walkthrough across Dashboard search/filter, queue previews, full issue links, desktop, tablet, and mobile widths is still recommended before closing the broader Phase 5.8 app-experience work.
-- Phase 5.8E was code-first and source-inspected. Browser screenshot/runtime viewport walkthroughs across 390px, 768px, and desktop are still recommended before closing `Phase 5.8F`.
+- Phase 5.8E was code-first and source-inspected. Browser screenshot/runtime viewport walkthroughs across 390px, 768px, and desktop remain required during the later Phase 5.9 mobile survival/final compact UX audit gate.
 - The existing Vite build chunk-size warning remains non-blocking for the portfolio MVP.
 
 ## Verification Results
@@ -503,6 +518,10 @@ Full implementation history:
 - Phase 5.8D2 implementation verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 - Phase 5.8E implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9A1 implementation verification passed:
+  `npm run build`, `npm run typecheck`, and `npm run lint`.
+- Phase 5.9A1 self-audit verification passed:
   `npm run build`, `npm run typecheck`, and `npm run lint`.
 
 ## Roadmap Update
@@ -553,9 +572,9 @@ Full implementation history:
 - `Phase 5.6 — README Presentation Update` is now complete.
 - `Phase 5.7 — Phase 5 Polish Audit` is now complete.
 - `Phase 5 — Portfolio Polish` is now complete.
-- `Phase 5.8 — App Experience Refinement Before Final QA` is now the active roadmap phase.
+- `Phase 5.8 — App Experience Refinement Before Final QA` is complete through the responsive working-layout pass and has been superseded by the deeper Phase 5.9 corrective UX roadmap.
 - `Phase 5.8A — UX / Navigation Diagnostic and Target Plan` is now complete.
-- `APP_EXPERIENCE_PLAN.md` is the focused execution roadmap for the remaining Phase 5.8 implementation slices.
+- `APP_EXPERIENCE_PLAN.md` is now the focused execution roadmap for Phase 5.9 corrective UX work.
 - `Phase 5.8B — Assistant Home and Role-aware Action Clarity` has been refined into `Phase 5.8B1` and `Phase 5.8B2` before implementation.
 - `Phase 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary` is now complete.
 - `Phase 5.8B2 — AppShell Selected-user Orientation` is now complete.
@@ -564,29 +583,31 @@ Full implementation history:
 - `Phase 5.8D1 — Project Detail Issue Preview / Inline Inspection` is now complete.
 - `Phase 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping` is now complete.
 - `Phase 5.8E — Responsive Interaction and Working-layout Pass` is now complete.
+- `Phase 5.8F — Final App Experience Audit` has been superseded by the deeper Phase 5.9 corrective UX roadmap.
+- `Phase 5.9 — Compact Assistant UX and Actionability Refinement` is now active.
+- `Phase 5.9A1 — Route Wayfinding and Return Context` implementation and self-audit are complete.
+- The next allowed task is `Phase 5.9A2 — Compact AppShell and Header Compression`, not Dashboard recomposition, density passes, mobile survival work, or Phase 6.
 - The full `Phase 2A` to `Phase 2B` transition audit passed against the live repository state.
 - `Phase 4 — Dashboard and Operational Metrics` is now complete.
-- `Phase 6 — Quality and Final Review` remains later, after `Phase 5.8`.
-- The next allowed implementation slice is `Phase 5.8F — Final App Experience Audit`.
+- `Phase 6 — Quality and Final Review` remains later, after Phase 5.9 gate criteria are met.
 
 ## Next Recommended Task
 
-`Phase 5.8` is the current active umbrella phase.
+`Phase 5.9` is the current active umbrella phase.
 
 Next concrete Codex task:
 
-- `Phase 5.8F — Final App Experience Audit`
+- `Phase 5.9A2 — Compact AppShell and Header Compression`
 
 Scope for the next task only:
 
-- run the final app-experience audit for Phase 5.8
-- verify the app feels coherent and assistant-like after the selected-user, context, return-flow, preview, and responsive slices
-- verify role-aware action visibility, `Needs Update`, and `Ready for Confirmation` discoverability remain clear and semantically correct
-- verify reduced navigation friction and responsive usability without adding new feature behavior
-- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, or drawer/modal framework was introduced
-- preserve existing route tree, HashRouter behavior, and GitHub Pages compatibility
+- compress the existing AppShell/topbar/page-header chrome only enough to support wayfinding and first-viewport utility
+- clarify current route/context in the shell without introducing a new navigation framework
+- preserve existing route tree, HashRouter behavior, route-state helper, and GitHub Pages compatibility
+- preserve Dashboard, Personal, Project Detail, Teams, Issue Detail/Edit/Create behavior from 5.9A1
+- verify no backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, broad permissions, route replacement, or drawer/modal framework is introduced
 - preserve `Needs Update` and `Ready for Confirmation` as system labels
-- run `npm run build`, `npm run typecheck`, and `npm run lint`
-- update handoff docs only as needed for audit status and Phase 6 readiness
+- review `npm run build`, `npm run typecheck`, and `npm run lint` results
+- update handoff docs only as needed after the implementation
 
-Do not implement new UI features, deployment work, Phase 6 validation, or final release documentation in the `Phase 5.8F` audit slice.
+Do not implement Dashboard recomposition, Project/Personal density passes, Issue/Form compression, mobile survival work, deployment work, Phase 6 validation, or final release documentation during `Phase 5.9A2`.

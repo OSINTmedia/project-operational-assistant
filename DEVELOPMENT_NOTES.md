@@ -8,6 +8,40 @@ This file captures implementation decisions, trade-offs, lessons learned, proble
 
 ## Decision Log
 
+### 2026-07-17 — Keep Phase 5.9A1 as route-context clarification only
+
+**Context:**
+`Phase 5.9A1` needed to make deep routes answer where the user is, where they came from, how to return, and what happens after edit/save/cancel.
+
+**Decision:**
+Improve the existing React Router state flow and visible link/copy affordances rather than adding a new navigation framework. Dashboard, Personal, Project Detail, and Team Workspace now pass clearer source labels into Issue Detail. Issue Detail and Issue Edit now explain the source/project context and edit save/cancel behavior more explicitly. Issue Create cancel/submit behavior now targets the selected project context consistently.
+
+**Reasoning:**
+The existing `issueNavigationState.ts` helper already provided a bounded source-aware return model. The problem was mostly visible clarity and destination wording, not missing architecture. Small link/copy improvements address the approved wayfinding pain with lower risk than query-string contracts, global navigation history, AppShell changes, or route redesign.
+
+**Alternatives considered:**
+Adding a global navigation stack, moving route context into AppShell, starting Dashboard recomposition, or adding URL query contracts for return state.
+
+**Impact:**
+5.9A1 improves deep-route wayfinding while preserving `HashRouter`, existing routes, `/personal`, local-first boundaries, repository/domain separation, and system-label semantics. No backend, auth, notifications, workflow engine, data model, persistence, repository, or route-tree changes were introduced.
+
+### 2026-07-17 — Promote Phase 5.9 as the active corrective UX roadmap
+
+**Context:**
+`BUILD_PLAN.md`, `changelog_checkpoint.md`, and `README.md` still described `Phase 5.8F — Final App Experience Audit` as the next step because those docs were written before the deeper `design_review_V2.md` audit and the rewritten `APP_EXPERIENCE_PLAN.md`.
+
+**Decision:**
+Treat the core MVP as built and portfolio-polished, then continue with `Phase 5.9 — Compact Assistant UX and Actionability Refinement` before Phase 6. The next implementation slice is `Phase 5.9A1 — Route Wayfinding and Return Context`. `design_review_V2.md` is the current UX diagnosis, and `APP_EXPERIENCE_PLAN.md` is the active Phase 5.9 execution plan.
+
+**Reasoning:**
+The newer review reframed the remaining problem as route-hopping, unclear return context, weak first viewport, static summaries, visual density, and mobile risk. Running a final Phase 5.8 audit would not address those P0/P1 issues. Phase 5.9 keeps the work bounded while aligning docs around the actual next correction.
+
+**Alternatives considered:**
+Proceeding with `Phase 5.8F`, editing only `APP_EXPERIENCE_PLAN.md`, or moving directly to Phase 6.
+
+**Impact:**
+Project documentation now speaks one active roadmap: Phase 5.9 corrective UX work first, Phase 6 later. No source code, frozen docs, backend/auth behavior, notification behavior, workflow engine, data model, route removal, or `/personal` removal was introduced by this documentation sync.
+
 ### 2026-07-15 — Keep Phase 5.8E responsive pass as targeted layout repair
 
 **Context:**

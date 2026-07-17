@@ -1,547 +1,651 @@
-# App Experience Plan — Phase 5.8 Execution Roadmap
+# App Experience Plan - Phase 5.9 Corrective UX Roadmap
+
+Status: active planning document  
+Source diagnosis: `design_review_V2.md`  
+Execution state: `5.9A1 - Route Wayfinding and Return Context` complete; `5.9A2 - Compact AppShell and Header Compression` is next  
+Phase 6 status: blocked until the Phase 6 gate checklist in this document passes
 
 ## 1. Purpose
 
-This file translates `design_review.md` into a practical execution roadmap for `Phase 5.8 — App Experience Refinement Before Final QA`.
+This file turns `design_review_V2.md` into the working execution plan for corrective Phase 5.9.
 
 Document roles:
 
-- `design_review.md` is the diagnosis and inspection act.
-- `APP_EXPERIENCE_PLAN.md` is the execution plan for app-experience reconstruction.
+- `design_review_V2.md` is the audit, diagnosis, and UX evidence record.
+- `APP_EXPERIENCE_PLAN.md` is the implementation roadmap and phase-status tracker.
 - `BUILD_PLAN.md` remains the master roadmap and scope-control source.
 - `changelog_checkpoint.md` remains the live handoff state for the next concrete micro-phase.
+- Frozen docs in `docs/` remain reference material and must not be edited for Phase 5.9 unless separately approved.
 
-This plan is not a product-scope expansion. It organizes already-approved app-experience work into smaller implementation slices so each change can be reviewed, verified, and committed without starting the whole umbrella phase.
+This plan is not a product-scope expansion. It is a controlled correction pass for navigation, wayfinding, first-viewport usefulness, compact layout, and assistant-like actionability.
 
 ## 2. Current Verdict
 
-The accepted design review verdict is:
+Accepted Phase 5.9 verdict:
 
-- The app is functionally complete but not assistant-like yet.
-- The user's complaint is mostly valid.
-- Main friction comes from page hopping, context loss, and weak selected-user action visibility.
-- The route tree is coherent and should be preserved.
-- Missing drawers or modals globally is not inherently the first problem.
-- Drawers, previews, collapsibles, and show/hide patterns should be introduced selectively where they reduce friction without hiding critical context.
+- Phase 6 must not begin yet.
+- The current app is functionally useful but still too heavy and navigation-heavy.
+- The primary weakness is route-hopping and wayfinding, not only visual density.
+- Dashboard still behaves too much like a reporting surface instead of an assistant home.
+- First viewport utility is weak on the main work screens.
+- Mobile risk is high because desktop layouts already stack too much content.
+- `/personal` remains in scope and must not be removed or deprecated without separate explicit approval.
 
-The first priority is not a broad interaction-pattern pass. The first priority is helping the selected demo user understand what matters now.
+The next target is **5.9A2 - Compact AppShell and Header Compression**.
 
-## 3. Phase 5.8 Operating Principles
+## 3. Phase 5.9 Operating Principles
 
-- Assistant-like before decorative.
-- Selected-user next actions before drawers.
-- Context recovery before visual redesign.
-- Scoped inline inspection before route replacement.
-- Mobile usability after interaction changes.
+- Navigation clarity before visual polish.
+- Return context before AppShell redesign.
+- Action queue before charts and static summaries.
+- In-place filtering before route jumps.
+- Preview before full detail when the user is only inspecting.
+- Full route only when the user needs deeper reading or meaningful action.
+- Compact layout without hiding critical context.
+- Mobile survival after major desktop order/layout changes.
 - Preserve MVP scope.
-- Preserve local-first architecture.
 - Preserve `HashRouter` and GitHub Pages static SPA compatibility.
+- Preserve local-first architecture and repository/state/domain boundaries.
 - Keep UI out of persistence internals.
-- Keep data access behind repository/state/domain boundaries.
 - Keep `Needs Update` and `Ready for Confirmation` as system labels, not statuses or tags.
-- No backend, real authentication, notification hub, organization workspace, employee scoring, workflow engine, enterprise permissions, or broad product-scope expansion.
 
-## 4. Refined Phase 5.8 Micro-phase Map
+Not allowed:
 
-### 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary
+- backend
+- real auth
+- notification hub
+- employee scoring
+- workflow engine
+- organization workspace
+- new data model
+- broad AppShell redesign
+- full product redesign
+- brand redesign
+- animation pass
+- Jira/Asana/Trello/CRM/helpdesk drift
+- command palette unless separately approved
+- removing `/personal` without separate explicit approval
+
+## 4. UX Success Metrics
+
+Phase 5.9 is successful only if behavior improves, not merely if spacing gets smaller.
+
+- Dashboard first viewport shows the Operational Queue or its first actionable rows on a standard desktop viewport.
+- Common user workflow reaches the relevant work item in 2-3 route transitions where possible.
+- Issue Detail/Edit always show a visible source-aware return destination.
+- A direct Back/Return control exists on deep work routes; browser back is not the only recovery path.
+- Mobile first viewport is not consumed entirely by headers/cards/filters.
+- Summary cards filter, preview, or route to a precise work surface.
+- Charts do not appear above the main action queue.
+- Dashboard, Personal, Project Detail, and Issue Detail answer: where am I, what matters, what can I do next?
+- Compactness does not remove readable labels, focus visibility, keyboard order, or usable tap targets.
+
+## 5. Route / Filter / Preview / Detail Decision Rule
+
+Use this hierarchy during implementation:
+
+- Use an in-place filter when the user is narrowing an existing list.
+- Use preview or inline inspection when the user is inspecting before deciding.
+- Use full Issue Detail route only for deep reading, broader context, or meaningful action.
+- Use Edit route only when field changes are required.
+- Use Project Detail route when project context is the user's active frame.
+- Do not make every summary card a route jump. A summary card should first try to filter, preview, or focus the current work surface.
+
+## 6. Compactness Guardrail
+
+Do not solve density by hiding everything.
+
+Critical information must remain visible:
+
+- selected demo user / role
+- current route/source context
+- source-aware return destination
+- primary action queue
+- next safe action
+- save/cancel controls on forms
+
+Use collapses, tabs, or disclosures only for secondary information:
+
+- charts
+- long metadata
+- activity history
+- helper copy
+- advanced form fields
+- secondary project/team details
+
+## 7. Sidebar and AppShell Boundary
+
+The sidebar can support wayfinding, but it must not become a second dashboard.
+
+Allowed in sidebar:
+
+- primary navigation
+- current section indication
+- selected demo user / role
+- concise My Work / Needs Update / Ready for Confirmation counters
+- lightweight wayfinding cues
+
+Not allowed in sidebar without separate explicit approval:
+
+- full issue lists
+- complex filters
+- charts
+- project metadata panels
+- command palette behavior
+- large dashboard/reporting blocks
+
+AppShell compression is a support slice. It must not distract from the first priority: route return clarity.
+
+## 8. Phase Status Board
+
+| Phase | Name | Status | Primary risk addressed | Notes |
+|---|---|---|---|---|
+| 5.9A1 | Route Wayfinding and Return Context | Complete | User gets lost across deep routes | Implementation and self-audit passed |
+| 5.9A2 | Compact AppShell and Header Compression | Next | Shell/header duplication pushes work down | Must stay narrow |
+| 5.9B | Dashboard Action-first Recomposition | Pending | Dashboard is report-first, not assistant-first | Depends on A1 route clarity |
+| 5.9C | Project and Personal Density Pass | Pending | Work lists appear too low | Uses patterns proven in Dashboard |
+| 5.9D | Issue Detail and Form Compression | Pending | Issue/work forms feel like long documents | Depends on A1 return context |
+| 5.9E | Mobile Survival Pass | Pending | Endless stacked mobile scrolling | Must happen after main layout changes |
+| 5.9F | Final Compact UX Audit | Pending | Phase 6 readiness uncertainty | Audit-only |
+
+## 9. Phase Dependency Map
+
+- 5.9A1 must happen before Issue Detail/Form compression because return/source behavior affects deep pages.
+- 5.9A2 may happen after or alongside A1, but it must not delay A1.
+- 5.9B must happen before mobile survival because Dashboard order determines mobile stacking.
+- 5.9C and 5.9D should happen after Dashboard because compact work-surface patterns should be proven on the primary assistant home first.
+- 5.9E must happen after the major desktop/layout changes.
+- 5.9F must remain audit-only.
+
+Recommended order:
+
+1. 5.9A1 - Route Wayfinding and Return Context
+2. 5.9A2 - Compact AppShell and Header Compression
+3. 5.9B - Dashboard Action-first Recomposition
+4. 5.9C - Project and Personal Density Pass
+5. 5.9D - Issue Detail and Form Compression
+6. 5.9E - Mobile Survival Pass
+7. 5.9F - Final Compact UX Audit
+
+## 10. Micro-phase Execution Plan
+
+### 5.9A1 - Route Wayfinding and Return Context
 
 Goal:
 
-Make Dashboard answer what matters for the selected demo user now.
+Make every deep work route answer where the user is, where they came from, and how they return.
 
 Scope:
 
-- add a selected-user action summary on Dashboard
-- surface assigned / curated / needs-update / confirmation-needed / blocked / delayed relevant counts where supported by existing data
-- separate "My next actions" from "Workspace risks"
-- keep all data local to existing repositories/hooks
-- no real permissions
+- Improve source-aware return labels on Issue Detail/Edit.
+- Add visible Back/Return controls where current flow relies too much on browser back.
+- Clarify current-location context on Issue Detail, Issue Edit, Issue Create, Project Detail, and Teams.
+- Preserve the existing route model and bounded route-state helper.
+- Clarify Dashboard vs Personal return destinations when opening issues from either surface.
 
 Exclusions:
 
-- no notification system
-- no real auth
-- no workflow engine
-- no employee scoring
-- no broad dashboard redesign
-- no drawer/modal work yet
-
-Acceptance criteria:
-
-- selected user can identify relevant next actions within 10 seconds
-- needs-update and confirmation-needed items are visible without route hunting
-- Dashboard feels more like an assistant home, not only charts
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
+- no AppShell redesign
+- no route removal
+- no `/personal` removal
+- no backend/auth
+- no command palette
+- no global navigation-history framework
 
 Likely files:
 
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/dashboard/useDashboardMetrics.ts`
-- possibly `src/features/personal/usePersonalView.ts` if reusable logic is needed
-- no persistence/domain schema changes unless a tiny read-model helper is justified
-
-Manual test:
-
-- switch Manager / Project Manager / User
-- open Dashboard
-- ask: "what should this user inspect or act on next?"
-- verify `Needs Update` and confirmation-needed work are discoverable without route hunting
-
-Risk level:
-
-- Medium. The change touches the main demo entry point and must not become employee scoring, notifications, or permission behavior.
-
-Suggested commit:
-
-- `feat: add dashboard assistant action summary`
-
-### 5.8B2 — AppShell Selected-user Orientation
-
-Goal:
-
-Improve global orientation so the selected user/role context is visible as operational context, not only demo metadata.
-
-Scope:
-
-- improve shell/topbar selected-user context
-- reduce dominance of generic demo/auth-exclusion copy if it competes with task orientation
-- add compact links or cues to Dashboard/Personal only if clearly useful
-- preserve existing role-switch behavior
-
-Exclusions:
-
-- no real auth
-- no permissions
-- no new user picker unless separately approved
-- no app shell redesign from scratch
+- `src/features/issues/issueNavigationState.ts`
+- `src/features/issues/IssueDetailPage.tsx`
+- `src/features/issues/IssueEditPage.tsx`
+- `src/features/issues/IssueCreatePage.tsx`
+- `src/features/projects/ProjectDetailPage.tsx`
+- `src/features/teams/TeamsPage.tsx`
+- issue links in Dashboard, Personal, Project Detail, and Teams
 
 Acceptance criteria:
 
-- user always knows whose perspective is active
-- shell helps orient the user without becoming noisy
-- mobile shell remains usable
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
+- Issue Detail/Edit always show a visible source-aware return destination.
+- Deep routes expose a semantic Back/Return control.
+- Dashboard -> Issue -> Edit -> return is predictable.
+- Personal -> Issue -> Edit -> return is predictable.
+- Project Detail -> Issue -> Edit -> return is predictable.
+- Teams -> Issue -> return is predictable.
+- No routes are added or removed.
+
+Manual test:
+
+- Manager: Dashboard -> Issue Detail -> Edit -> save/cancel -> return.
+- Project Manager: Projects -> Project Detail -> Issue Detail -> Edit -> return.
+- User: Personal -> confirmation issue -> return.
+- Teams: Teams -> Issue Detail -> return.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `feat: clarify route return context`
+
+Risk level: Medium.
+
+### 5.9A2 - Compact AppShell and Header Compression
+
+Goal:
+
+Reduce repeated shell/page context without turning the sidebar into a second dashboard.
+
+Scope:
+
+- Compact AppShell topbar only where it supports wayfinding.
+- Make selected user/role persistent but concise.
+- Reduce duplicate Dashboard/Personal/page-header context.
+- Move only lightweight counters/context into shell areas.
+
+Exclusions:
+
+- no broad AppShell redesign
+- no sidebar issue lists
+- no sidebar charts
+- no complex sidebar filters
+- no global create issue unless separately approved
 
 Likely files:
 
 - `src/app/layout/AppShell.tsx`
-- `src/features/demo/DemoRoleSwitcher.tsx` if needed
-- `src/shared/constants/navigation.ts` only if labels need adjustment
-
-Manual test:
-
-- switch role from shell
-- confirm current role/user is obvious from every main route
-- verify mobile navigation remains comfortable
-
-Risk level:
-
-- Low/Medium. The slice is mostly presentation/orientation, but the shell is visible everywhere.
-
-Suggested commit:
-
-- `feat: improve selected user orientation`
-
-### 5.8C1 — Breadcrumbs and Context Headers
-
-Goal:
-
-Reduce "where am I?" confusion on Project Detail, Issue Detail, Edit, Create, and Teams.
-
-Scope:
-
-- add or refine contextual headers / breadcrumbs / back labels
-- clarify project / issue / team context
-- keep route model stable
-- no source-aware return logic yet unless tiny and unavoidable
-
-Exclusions:
-
-- no router rewrite
-- no new global issue-list route
-- no drawer/modal implementation
+- `src/shared/constants/navigation.ts`
+- `src/features/demo/DemoRoleSwitcher.tsx`
+- page headers if duplicate context must be reduced
 
 Acceptance criteria:
 
-- major routes explain where the user is
-- back/context actions are predictable
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
+- Current role/user remains visible without consuming the main work area.
+- Topbar/page header does not repeat the same context.
+- Sidebar remains navigation-first.
+- Mobile shell remains usable.
+
+Manual test:
+
+- Switch demo roles.
+- Visit Dashboard, Personal, Projects, Project Detail, Issue Detail, Teams, Demo.
+- Confirm current context is visible and the first work area starts earlier.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `feat: compact app shell orientation`
+
+Risk level: Medium.
+
+### 5.9B - Dashboard Action-first Recomposition
+
+Goal:
+
+Make Dashboard behave like an assistant home rather than a reporting surface.
+
+Scope:
+
+- Move Operational Queue and filters above charts.
+- Convert Assistant Home cards into filters, previews, or precise work-surface routes.
+- Convert Workspace Risk cards into queue filters or top issue previews.
+- Demote charts and metric cards.
+- Preserve existing hooks/repositories/state boundaries.
+
+Exclusions:
+
+- no new data model
+- no backend
+- no notifications
+- no workflow engine
+- no saved dashboard/report system
 
 Likely files:
 
+- `src/features/dashboard/DashboardPage.tsx`
+- `src/features/dashboard/DashboardCharts.tsx`
+- `src/features/dashboard/useDashboardMetrics.ts`
+
+Acceptance criteria:
+
+- Operational Queue or first actionable rows are visible in the first desktop viewport.
+- Charts do not appear above the main action queue.
+- Summary cards either filter, preview, or route to a precise work surface.
+- Dashboard supports action without unnecessary route-hopping.
+
+Manual test:
+
+- Filter blocked/delayed/Needs Update from Dashboard.
+- Open or preview an issue.
+- Return to Dashboard context.
+- Switch role/user and confirm action cards still make sense.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `feat: make dashboard action-first`
+
+Risk level: Medium.
+
+### 5.9C - Project and Personal Density Pass
+
+Goal:
+
+Make work lists visible earlier and reduce duplicate summary blocks.
+
+Scope:
+
+- Personal: prioritize Needs Update, Ready for Confirmation, and assigned/curated work over metric cards.
+- Projects: compact project index and expose risk/action counts inline.
+- Project Detail: show issue queue earlier, make filters a toolbar/disclosure, compact project metadata.
+
+Exclusions:
+
+- no project permissions
+- no team workflow engine
+- no new project data model
+- no removal of `/personal`
+
+Likely files:
+
+- `src/features/personal/PersonalPage.tsx`
+- `src/features/personal/usePersonalView.ts`
+- `src/features/projects/ProjectsPage.tsx`
 - `src/features/projects/ProjectDetailPage.tsx`
+- project hooks
+
+Acceptance criteria:
+
+- Personal makes selected user's next work obvious in under 60 seconds.
+- Project Detail shows issues in the first viewport.
+- Projects remains a compact project chooser, not a reporting dashboard.
+- Dashboard and Personal responsibilities are visually distinct.
+
+Manual test:
+
+- User finds Needs Update and Ready for Confirmation work from Personal.
+- PM finds delayed/blocking project issues from Project Detail.
+- Manager scans Projects without getting pulled into unrelated details.
+
+Verification:
+
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
+
+Suggested commit:
+
+- `feat: compact personal and project work surfaces`
+
+Risk level: Medium.
+
+### 5.9D - Issue Detail and Form Compression
+
+Goal:
+
+Turn Issue Detail/Edit/Create into focused work surfaces.
+
+Scope:
+
+- Issue Detail: title/status/source/action strip first.
+- Compact metadata; collapse or demote long history/dependencies.
+- Create/Edit: required fields first; advanced fields secondary.
+- Keep save/cancel/return controls visible and predictable.
+
+Exclusions:
+
+- no comments
+- no notification subscriptions
+- no workflow automation
+- no permissions
+- no Jira-style expansion
+
+Likely files:
+
 - `src/features/issues/IssueDetailPage.tsx`
 - `src/features/issues/IssueCreatePage.tsx`
 - `src/features/issues/IssueEditPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
-
-Manual test:
-
-- Projects -> Project Detail
-- Project Detail -> Issue Detail
-- Issue Detail -> Edit
-- Teams -> Issue Detail
-- verify each screen explains current context before the user scans the full page
-
-Risk level:
-
-- Medium. Context headers are low-risk, but route labels can become misleading if they imply unsupported navigation state.
-
-Suggested commit:
-
-- `feat: add contextual navigation headers`
-
-### 5.8C2 — Source-aware Return Flow
-
-Goal:
-
-Fix the most confusing route-return behavior, especially Dashboard/Personal/Teams -> Issue Detail -> Edit.
-
-Scope:
-
-- evaluate and implement narrow source-aware return behavior
-- avoid losing Personal/Dashboard/Teams context after edit
-- preserve Project Detail return where project context is the true origin
-- avoid storing complex navigation state globally unless necessary
-
-Exclusions:
-
-- no full router rewrite
-- no global navigation history system
-- no new global issue-list route
-- no workflow engine
+- `src/features/issues/IssueFormFields.tsx`
+- issue hooks
 
 Acceptance criteria:
 
-- Dashboard -> Issue -> Edit does not unexpectedly dump the user into unrelated context
-- Personal -> Issue -> Edit does not unexpectedly dump the user into Project Detail without explanation
-- Teams -> Issue retains team/project context clearly
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
-
-Likely files:
-
-- `src/features/issues/IssueDetailPage.tsx`
-- `src/features/issues/IssueEditPage.tsx`
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/personal/PersonalPage.tsx`
-- `src/features/teams/TeamsPage.tsx`
+- Primary safe action is visible before deep scroll.
+- Metadata/history does not dominate the work surface.
+- Save/cancel/return behavior is clear on desktop and mobile.
+- Form no longer feels like a long admin document for simple edits.
 
 Manual test:
 
-- Dashboard -> Issue Detail -> Edit -> Save
-- Personal -> Issue Detail -> Edit -> Save
-- Teams -> Issue Detail -> Back/Edit
-- Project Detail -> Issue Detail -> Edit -> Save
+- Open Needs Update issue.
+- Identify next safe action.
+- Edit required fields.
+- Save/cancel and return to source context.
 
-Risk level:
+Verification:
 
-- Medium/High. Return-state behavior can be useful, but overbuilding it would drift into a navigation-state framework.
-
-Suggested commit:
-
-- `feat: preserve issue navigation context`
-
-### 5.8D1 — Project Detail Issue Preview / Inline Inspection
-
-Goal:
-
-Reduce route-hopping when inspecting issues from Project Detail.
-
-Scope:
-
-- add one scoped preview/inline inspection pattern for Project Detail issue cards
-- keep full Issue Detail route for deep inspection and activity history
-- preview should be read-oriented or very limited-action only
-- maintain accessibility if drawer/panel is used
-
-Exclusions:
-
-- no universal modal/drawer framework
-- no replacing Issue Detail
-- no complex state machine
-- no new workflow types
-
-Acceptance criteria:
-
-- user can inspect key issue context without leaving Project Detail
-- full Issue Detail remains available
-- keyboard/focus behavior is acceptable if a drawer is used
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
-
-Likely files:
-
-- `src/features/projects/ProjectDetailPage.tsx`
-- `src/features/projects/useProjectDetailView.ts`
-- maybe a small shared component only if justified
-
-Manual test:
-
-- open Project Detail
-- inspect several issues
-- verify project filters/context remain visible or recoverable
-- open full Issue Detail only when deeper inspection is needed
-
-Risk level:
-
-- Medium/High. This is the first possible preview/drawer/inline-inspection slice, so it must stay scoped to Project Detail.
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
 
 Suggested commit:
 
-- `feat: add project issue preview`
+- `feat: compact issue work and edit flows`
 
-### 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping
+Risk level: Medium.
 
-Goal:
-
-Make Dashboard issue inspection faster without forcing every item into Issue Detail.
-
-Scope:
-
-- add scoped dashboard issue preview or expandable details
-- preserve existing links to Issue Detail
-- support selected-user action summary from 5.8B1
-- keep interaction accessible
-
-Exclusions:
-
-- no replacing Dashboard queue with a new global issue list
-- no saved filters
-- no command palette
-- no universal drawer system unless already justified by 5.8D1
-
-Acceptance criteria:
-
-- Dashboard queue supports lightweight issue inspection
-- route-hopping is reduced for common scan behavior
-- full Issue Detail remains available
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
-
-Likely files:
-
-- `src/features/dashboard/DashboardPage.tsx`
-- `src/features/dashboard/useDashboardMetrics.ts`
-- shared preview component if already introduced
-
-Manual test:
-
-- filter/search Dashboard queue
-- preview an issue
-- open full issue only when deep inspection is needed
-- verify the selected-user action summary still reads clearly
-
-Risk level:
-
-- Medium/High. The Dashboard is the entry point, so previews must not overload the page.
-
-Suggested commit:
-
-- `feat: add dashboard issue preview`
-
-### 5.8E — Responsive Interaction and Working-layout Pass
+### 5.9E - Mobile Survival Pass
 
 Goal:
 
-Validate and refine desktop/tablet/mobile usability after 5.8B-5.8D changes.
+Prevent endless stacked scrolling and hidden actions on small screens.
 
 Scope:
 
-- test 390px, 768px, and desktop widths
-- refine Dashboard, Project Detail, Issue Detail, Create/Edit, Teams
-- fix responsive issues exposed by new assistant/context/preview patterns
-- keep changes scoped to usability
+- Dashboard mobile queue-first layout.
+- Compact mobile headers.
+- Sticky or persistent issue/form actions where needed.
+- Filter disclosures/tabs where appropriate.
+- Validate tap targets, focus order, and readable labels.
 
 Exclusions:
 
 - no separate mobile product
+- no native app pattern rewrite
+- no bottom navigation redesign unless separately approved
 - no unrelated visual redesign
-- no new feature behavior
-
-Acceptance criteria:
-
-- major workflows remain usable on mobile/tablet
-- no text overlap
-- actions remain visible and tappable
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
 
 Likely files:
 
 - `src/app/layout/AppShell.tsx`
 - Dashboard feature files
+- Personal feature files
 - Projects feature files
 - Issues feature files
 - Teams feature files
-- shared components introduced in 5.8
+- shared components/CSS touched by earlier phases
+
+Acceptance criteria:
+
+- Dashboard, Personal, Project Detail, Issue Detail, and forms are usable at mobile width.
+- Mobile first viewport is not consumed entirely by headers/cards/filters.
+- Primary action and current context remain discoverable.
+- Compactness does not remove labels or keyboard accessibility.
 
 Manual test:
 
-- role switch
-- dashboard action summary
-- dashboard preview
-- project issue preview
-- issue edit flow
-- quick actions
-- create/edit forms
+- 375px mobile.
+- 768px tablet.
+- desktop.
+- Keyboard tab through nav, filters, issue actions, and forms.
 
-Risk level:
+Verification:
 
-- Medium. Responsive changes should fix friction caused by 5.8, not restart Phase 5 visual polish.
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
 
 Suggested commit:
 
-- `style: refine responsive app experience`
+- `feat: improve compact mobile work flows`
 
-### 5.8F — Final App Experience Audit
+Risk level: Medium-high.
+
+### 5.9F - Final Compact UX Audit
 
 Goal:
 
-Verify app is ready to enter Phase 6.
+Verify the corrected MVP before Phase 6.
 
 Scope:
 
-- repeat role-based walkthroughs
-- repeat viewport checks
-- verify no scope creep
-- verify no backend/auth/notification/org/employee-scoring behavior
-- update handoff docs
+- Repeat first-60-seconds test.
+- Repeat Manager/Project Manager/User workflow traces.
+- Repeat desktop/tablet/mobile checks.
+- Verify no scope creep.
+- Verify docs match implementation reality.
 
 Exclusions:
 
 - no new feature implementation
 - no deployment work
-- no final release docs unless needed for handoff metadata
-
-Acceptance criteria:
-
-- selected user sees next actions quickly
-- Dashboard works as assistant home
-- confirmation/update responsibilities are discoverable
-- list -> detail -> edit -> return flows are predictable
-- route tree remains stable
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass
+- no release/portfolio polish beyond audit findings
 
 Likely files:
 
+- `APP_EXPERIENCE_PLAN.md`
+- `design_review_V2.md` only if findings changed materially
 - `changelog_checkpoint.md`
 - `DEVELOPMENT_NOTES.md` only if a meaningful decision occurred
-- possibly `APP_EXPERIENCE_PLAN.md` if the audit updates the execution record
+
+Acceptance criteria:
+
+- No P0 findings remain.
+- P1 findings are fixed or explicitly accepted as MVP debt.
+- Dashboard is action-first.
+- Route return context is clear.
+- First viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail.
+- Mobile survival pass is complete.
+- Final compact UX audit passes.
 
 Manual test:
 
-- repeat Manager, Project Manager, and User role walkthroughs
-- repeat desktop, tablet, and mobile viewport checks
-- verify scope exclusions from this plan
+- Full Manager workflow.
+- Full Project Manager workflow.
+- Full User workflow.
+- Mobile/tablet/desktop walkthrough.
 
-Risk level:
+Verification:
 
-- Low. This should be an audit and handoff slice, not implementation.
+- `npm run build`
+- `npm run typecheck`
+- `npm run lint`
 
 Suggested commit:
 
-- `chore: audit app experience refinement`
+- `docs: verify compact ux readiness`
 
-## 5. Priority Order
+Risk level: Low. This phase is audit-only.
 
-Recommended execution order:
+## 11. Workflow Verification Matrix
 
-1. 5.8B1 — Dashboard Assistant Home and Selected-user Action Summary
-2. 5.8B2 — AppShell Selected-user Orientation
-3. 5.8C1 — Breadcrumbs and Context Headers
-4. 5.8C2 — Source-aware Return Flow
-5. 5.8D1 — Project Detail Issue Preview / Inline Inspection
-6. 5.8D2 — Dashboard Queue Preview / Reduced Route-hopping
-7. 5.8E — Responsive Interaction and Working-layout Pass
-8. 5.8F — Final App Experience Audit
+Use this matrix after each implementation slice, scaled to the slice risk.
 
-Reasoning:
-
-- Do not start with drawers.
-- First fix selected-user next-action clarity.
-- Then improve global and route-level context recovery.
-- Then reduce route-hopping with scoped preview/inline patterns.
-- Then verify responsive behavior after interaction changes are real.
-
-## 6. Prompt Workflow Templates
-
-Use these templates for each implementation slice by replacing `{MICRO_PHASE}` and `{MICRO_PHASE_SCOPE}` with the approved slice details from this plan.
-
-| Slice | A. Next-step report prompt | B. Implementation approval prompt | C. Self-audit prompt | D. Git checkpoint prompt | E. Commit approval prompt |
-|---|---|---|---|---|---|
-| 5.8B1 | Read `changelog_checkpoint.md`, `BUILD_PLAN.md`, `APP_EXPERIENCE_PLAN.md`, `design_review.md`, and identify `{MICRO_PHASE}` only. Report scope, exclusions, likely files, acceptance criteria, verification commands, and proposed commit. Do not edit files. | Approved. Proceed to `{MICRO_PHASE}` only. Implement selected-user Dashboard action summary, keep data behind hooks/repositories, run build/typecheck/lint, report changes, and do not commit. | Audit `{MICRO_PHASE}` against scope, product constraints, architecture boundaries, system-label semantics, and verification results. Update handoff docs only if needed. Do not commit. | Confirm docs and code match reality. Run `git status`, `git diff --stat`, and targeted diffs. Report changed files, verification, documentation status, and proposed commit. Do not commit. | Approved. Commit and push with the approved message. Report commit hash, branch, and final status. |
-| 5.8B2 | Read live docs and identify `{MICRO_PHASE}` AppShell orientation only. Report shell/demo role scope and exclusions. | Approved. Improve selected-user orientation in shell only. Preserve role switch behavior and avoid auth/permissions. Run verification. | Audit shell orientation, responsive behavior, role context, and scope boundaries. | Prepare checkpoint with targeted diffs and docs status. | Commit/push only after explicit approval. |
-| 5.8C1 | Identify breadcrumb/context-header slice only. Report affected routes and no source-aware return logic unless approved. | Approved. Add contextual headers/back labels only. Preserve routes. Run verification. | Audit route context clarity, no router rewrite, no drawer/modal work. | Prepare checkpoint with changed files and verification. | Commit/push only after explicit approval. |
-| 5.8C2 | Identify source-aware return-flow slice only. Report narrow strategy and risks. | Approved. Implement narrow return behavior for Dashboard/Personal/Teams/Project flows without global history framework. Run verification. | Audit return paths and absence of workflow-engine/router rewrite. | Prepare checkpoint with targeted route diffs. | Commit/push only after explicit approval. |
-| 5.8D1 | Identify Project Detail issue preview slice only. Report preview pattern choice and accessibility risks. | Approved. Add scoped Project Detail preview/inline inspection. Preserve full Issue Detail. Run verification. | Audit preview scope, keyboard/focus behavior, and no universal modal framework. | Prepare checkpoint with changed files and manual test notes. | Commit/push only after explicit approval. |
-| 5.8D2 | Identify Dashboard queue preview slice only. Report dependency on 5.8B1 and any reusable preview code. | Approved. Add scoped Dashboard issue preview/expansion. Preserve full Issue Detail and filters. Run verification. | Audit Dashboard clarity, preview accessibility, and no global issue-list route. | Prepare checkpoint with targeted diffs and verification. | Commit/push only after explicit approval. |
-| 5.8E | Identify responsive working-layout pass only. Report viewport targets and affected screens. | Approved. Fix only responsive issues exposed by Phase 5.8 changes. Run verification. | Audit desktop/tablet/mobile workflows, text overlap, tap targets, and no unrelated redesign. | Prepare checkpoint with style/layout diffs and verification. | Commit/push only after explicit approval. |
-| 5.8F | Identify final app-experience audit only. Report audit checklist and docs likely to update. | Approved. Run final Phase 5.8 audit, update handoff docs if needed, no feature implementation. | Audit the audit output, verification commands, docs freshness, and Phase 6 readiness. | Prepare checkpoint with docs/code status. | Commit/push only after explicit approval. |
-
-## 7. Manual Verification Matrix
-
-Use this matrix after each implementation slice, scaling the depth to the slice risk.
-
-| Role | Dashboard | Personal | Projects | Project Detail | Issue Detail | Edit | Teams | Demo role switch |
+| Role | Dashboard | Personal | Projects | Project Detail | Issue Detail | Edit/Create | Teams | Demo role switch |
 |---|---|---|---|---|---|---|---|---|
-| Manager | Do I know operational risk and what matters now? | Is Personal clearly secondary to operational overview? | Can I scan portfolio health? | Can I recover project context? | Can I inspect without employee-scoring interpretation? | Does save/return make sense? | Can I understand team context? | Does switching Manager context update the work I see? |
-| Project Manager | Do I know my project/work responsibilities? | Do curated/created/assigned groupings help? | Can I find the right project? | Can I inspect and create project issues predictably? | Can I understand owner/curator/status quickly? | Can I return to the expected context? | Can I see group/curator context? | Does the selected PM perspective feel obvious? |
-| User | Do I know what belongs to me? | Can I find assigned, needs-update, and confirmation work? | Are Projects understandable but not required for my next action? | Can I understand issue context if I arrive here? | Can I act or confirm without guessing? | Does edit stay structured and recoverable? | Can I understand team work without getting lost? | Does role switching clearly change my work context? |
+| Manager | Can I identify blocked/delayed/Needs Update work and act? | Is Personal clearly secondary to workspace triage? | Can I scan project risk compactly? | Can I recover project context? | Can I inspect without losing source? | Does save/cancel return predictably? | Is team context secondary and clear? | Does switching Manager perspective update work context? |
+| Project Manager | Can I identify project-specific issues quickly? | Do curated/created/assigned groupings help? | Can I find the right project? | Are project issues visible before heavy scroll? | Can I understand owner/curator/status quickly? | Can I return to project context? | Can I see team context without route confusion? | Does selected PM context remain visible? |
+| User | Can I see what belongs to me? | Can I find assigned, Needs Update, and Ready for Confirmation work? | Are Projects understandable but not required for my next action? | Can I understand issue context if I land here? | Can I act or confirm without guessing? | Does edit stay structured and recoverable? | Can I understand team work without getting lost? | Does role switching clearly change my work? |
 
 Questions for every walkthrough:
 
 - Do I know where I am?
+- Do I know where I came from?
+- Do I know how to return?
 - Do I know what belongs to me?
 - Do I know what needs update?
 - Do I know what needs confirmation?
 - Can I inspect without losing context?
-- Can I return predictably?
+- Can I act without reading the whole page?
 
 Viewport checks:
 
-- Desktop: verify hierarchy, dashboards, routes, and full action surfaces.
-- Tablet: verify wrapping, navigation, filters, and action groups.
-- Mobile: verify nav comfort, filter/search controls, issue cards, forms, quick actions, and no text overlap.
+- Desktop: first viewport utility, work queue priority, route context, action visibility.
+- Tablet: wrapping, filters, nav, action groups.
+- Mobile: nav clarity, first viewport, stacked-card burden, sticky actions, text overlap, tap targets.
 
-## 8. Scope Guardrails
+## 12. Phase 6 Gate Checklist
 
-Do not implement the following in Phase 5.8:
+Phase 6 may begin only when:
 
-- no backend
-- no real auth
-- no notification hub
-- no organization workspace
-- no employee scoring
-- no workflow engine
-- no broad permissions
-- no full redesign
-- no replacing all routes
-- no large component library rewrite
-- no new project/issue data model
-- no command palette unless explicitly approved later
-- no saved report/dashboard system
-- no external integrations
-- no attachments
+- No P0 findings remain.
+- P1 findings are fixed or explicitly accepted as MVP debt.
+- Dashboard is action-first.
+- Route return context is clear on Issue Detail/Edit and other deep routes.
+- First viewport is useful on Dashboard, Personal, Project Detail, and Issue Detail.
+- Mobile survival pass is complete.
+- Summary cards filter, preview, or route to precise work surfaces.
+- Charts do not appear above the main action queue.
+- Final compact UX audit passes.
+- `npm run build`, `npm run typecheck`, and `npm run lint` pass after implementation slices.
+- `APP_EXPERIENCE_PLAN.md`, `changelog_checkpoint.md`, and `DEVELOPMENT_NOTES.md` reflect the final Phase 5.9 state where applicable.
 
-Allowed work:
+If any P0 remains, Phase 6 is blocked. If any P1 remains, it must be explicitly accepted as MVP debt before Phase 6.
 
-- clarify existing data
-- improve selected-user action visibility
-- improve route and context orientation
-- reduce route-hopping where justified
-- use scoped inline/preview/drawer/collapsible patterns only after the relevant slice is approved
-- improve responsive usability caused or exposed by app-experience changes
+## 13. Documentation Rules During Phase 5.9
 
-## 9. Definition of Done for Phase 5.8
+- Update this file when a micro-phase status changes.
+- Update `changelog_checkpoint.md` after implementation/audit handoff work.
+- Update `DEVELOPMENT_NOTES.md` only for meaningful implementation decisions or architecture/product constraints.
+- Do not edit frozen docs in `docs/` unless separately approved.
+- Do not edit README for Phase 5.9 unless separately approved.
+- Do not commit or push without explicit approval.
 
-Phase 5.8 is complete when:
+## 14. Prompt Workflow Templates
 
-- Dashboard behaves like an assistant home.
-- Selected-user next actions are visible.
-- `Needs Update` and confirmation-needed responsibilities are discoverable without route hunting.
-- Context-aware navigation makes major routes understandable.
-- Route-hopping is reduced where justified without replacing the route model.
-- Mobile and tablet workflows remain usable.
-- No product-scope creep was introduced.
-- No backend, real auth, notification hub, organization workspace, employee scoring, workflow engine, or new project/issue data model was added.
-- `Needs Update` and `Ready for Confirmation` remain system labels.
-- `npm run build`, `npm run typecheck`, and `npm run lint` pass for implementation slices.
-- `changelog_checkpoint.md` and `DEVELOPMENT_NOTES.md` reflect the actual final state.
-- The project is ready to enter `Phase 6 — Quality and Final Review`.
+### Next-step report prompt
+
+Read `changelog_checkpoint.md`, `BUILD_PLAN.md`, `APP_EXPERIENCE_PLAN.md`, `design_review_V2.md`, and relevant source files for `{MICRO_PHASE}` only. Report scope, exclusions, likely files, acceptance criteria, verification commands, and proposed commit. Do not edit files.
+
+### Implementation approval prompt
+
+Approved. Proceed to `{MICRO_PHASE}` only. Implement the approved scope, preserve local-first boundaries, avoid MVP scope creep, run verification, report changes, and do not commit.
+
+### Self-audit prompt
+
+Audit `{MICRO_PHASE}` against `design_review_V2.md`, this plan, accessibility, mobile risk, local-first architecture, MVP scope, and verification results. Update handoff docs only if needed. Do not commit.
+
+### Git checkpoint prompt
+
+Run `git status --short`, `git diff --stat`, and targeted diffs for changed files. Report changed files, verification results, docs status, source-code status, and proposed commit. Do not commit.
+
+### Commit approval prompt
+
+Approved. Commit and push with the approved message. Report commit hash, branch, and final status.
+
+## 15. Next Concrete Step
+
+Next phase: **5.9A2 - Compact AppShell and Header Compression**
+
+Recommended implementation prompt:
+
+```text
+Implement Phase 5.9A2 only. Compress AppShell/topbar/page-header chrome enough to support wayfinding and first-viewport utility. Preserve the route tree, HashRouter, /personal, 5.9A1 return behavior, local-first architecture, and MVP scope. Do not implement Dashboard recomposition, Project/Personal density pass, Issue/Form compression, mobile survival pass, backend/auth/notifications/workflow engine, or Phase 6 work. Do not commit or push.
+```
+
+Suggested commit for completed 5.9A1 after checkpoint approval:
+
+```text
+feat: clarify route return context
+```

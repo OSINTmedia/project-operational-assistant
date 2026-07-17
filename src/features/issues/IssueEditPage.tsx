@@ -148,8 +148,13 @@ function IssueEditPageReady({
         ]
   const saveBehaviorDescription =
     returnContext.source === 'project'
-      ? 'Save returns to the current project context after success.'
-      : `Save returns to Issue Detail with ${returnContext.label} preserved as the back path.`
+      ? `Save returns to ${currentProject?.name ?? 'the current project'}; cancel returns to Issue Detail.`
+      : `Save returns to Issue Detail with ${returnContext.label} preserved as the back path; cancel returns to Issue Detail.`
+  const openedFromDescription = sourceReturnContext
+    ? returnContext.source === 'project'
+      ? `Opened from ${returnContext.label}.`
+      : `Opened from ${returnContext.label}; the edited issue still belongs to ${currentProject?.name ?? 'its project'}.`
+    : `Opened directly or without saved source context; ${currentProject?.name ?? 'the current project'} is the fallback return destination.`
   const dependencyTargetOptions = selectedProjectId
     ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
     : []
@@ -271,7 +276,7 @@ function IssueEditPageReady({
         <Link
           to={issueDetailLink}
           state={returnNavigationState}
-          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to issue detail
@@ -287,12 +292,10 @@ function IssueEditPageReady({
               Structured issue editing for the local demo with controlled validation, preserved
               system-label semantics, and repository-backed save behavior.
             </p>
-            {returnContext.source !== 'project' ? (
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Opened from {returnContext.label}. Cancel returns to Issue Detail, and the issue
-                detail back path returns to that source.
-              </p>
-            ) : null}
+            <div className="mt-3 grid gap-1 text-sm leading-6 text-slate-600">
+              <p>{openedFromDescription}</p>
+              <p>{saveBehaviorDescription}</p>
+            </div>
           </div>
 
           <div className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 lg:w-auto">
@@ -399,13 +402,15 @@ function IssueEditPageReady({
               <Link
                 to={issueDetailLink}
                 state={returnNavigationState}
+                aria-label={`Cancel editing ${data.title} and return to issue detail.`}
                 className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
               >
-                Cancel
+                Cancel to issue detail
               </Link>
               <button
                 type="submit"
                 disabled={isSubmitting || Boolean(blockingMessage)}
+                aria-label={`Save changes for ${data.title}. ${saveBehaviorDescription}`}
                 className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
               >
                 {isSubmitting ? 'Saving changes...' : 'Save changes'}

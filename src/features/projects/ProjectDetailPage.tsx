@@ -94,9 +94,9 @@ function ProjectIssueCard({
 }) {
   const issueDetailState = createIssueNavigationState({
     source: 'project',
-    label: projectName,
+    label: `${projectName} issue list`,
     path: `/projects/${projectId}`,
-    backLabel: `Back to ${projectName}`,
+    backLabel: `Back to ${projectName} issues`,
   })
   const previewId = `project-issue-preview-${issue.id}`
   const hasNeedsUpdate = issue.labelNames.includes('Needs Update')
@@ -395,7 +395,7 @@ export function ProjectDetailPage() {
 
         <Link
           to="/projects"
-          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Projects
@@ -418,6 +418,7 @@ export function ProjectDetailPage() {
           <div className="grid w-full gap-3 text-sm text-slate-600 sm:grid-cols-2 lg:w-auto">
             <Link
               to={`/projects/${data.id}/issues/new`}
+              aria-label={`Create issue in ${data.name}`}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:col-span-2"
             >
               <Plus className="h-4 w-4" />

@@ -188,7 +188,7 @@ function DashboardQueueIssueCard({
             to={`/issues/${issue.id}`}
             state={createIssueNavigationState({
               source: 'dashboard',
-              label: 'Dashboard queue',
+              label: 'Dashboard operational queue',
               path: '/dashboard',
               backLabel: 'Back to Dashboard queue',
             })}

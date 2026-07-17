@@ -97,6 +97,7 @@ function IssueCreatePageReady({
   const backLinkTarget = currentProject
     ? `/projects/${currentProject.id}`
     : getBackLink(projectId ?? null)
+  const returnDestinationLabel = currentProject ? currentProject.name : 'Projects'
   const dependencyTargetOptions = selectedProjectId
     ? (data.dependencyTargetOptionsByProjectId[selectedProjectId] ?? [])
     : []
@@ -215,7 +216,7 @@ function IssueCreatePageReady({
 
         <Link
           to={backLinkTarget}
-          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+          className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
         >
           <ArrowLeft className="h-4 w-4" />
           {currentProject ? `Back to ${currentProject.name}` : 'Back to Projects'}
@@ -229,7 +230,8 @@ function IssueCreatePageReady({
             <h2 className="mt-2 text-2xl font-semibold text-slate-950">Create Issue</h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
               Structured issue creation for the local demo. This slice wires the existing create
-              service without expanding into edit mode or Issue Detail behavior.
+              service without expanding into edit mode or Issue Detail behavior. Create and cancel
+              return to {returnDestinationLabel}.
             </p>
           </div>
 
@@ -318,7 +320,7 @@ function IssueCreatePageReady({
               </p>
               <p>
                 <span className="font-medium text-slate-950">Submit behavior:</span> Creates the
-                issue and returns to Project Detail
+                issue and returns to {returnDestinationLabel}
               </p>
             </div>
           </div>
@@ -330,10 +332,11 @@ function IssueCreatePageReady({
             </p>
             <div className="grid w-full gap-3 sm:grid-cols-2 md:w-auto">
               <Link
-                to={getBackLink(projectId ?? null)}
+                to={backLinkTarget}
+                aria-label={`Cancel issue creation and return to ${returnDestinationLabel}.`}
                 className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
               >
-                Cancel
+                Cancel to {returnDestinationLabel}
               </Link>
               <button
                 type="submit"

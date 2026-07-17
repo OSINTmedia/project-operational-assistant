@@ -8,14 +8,14 @@ Portfolio MVP for project-based operational clarity.
 
 `[##################--] 90%`
 
-Current public-demo status: Phase 5 portfolio polish is complete. Phase 5.8 app-experience refinement is active before Phase 6 final quality, deployment setup, live-demo verification, and release readiness.
+Current public-demo status: the core MVP is built and portfolio-polished. Phase 5.9 compact assistant UX refinement is active before Phase 6 final quality, deployment setup, live-demo verification, and release readiness.
 
 - Complete: Phase 0 and 1 - Product scope, planning, and frontend foundation
 - Complete: Phase 2A and 2B - Local-first data model, persistence, seed data, and issue-domain logic
 - Complete: Phase 3 - Main app screens and screen audit
 - Complete: Phase 4 - Dashboard metrics, charts, filters, click-throughs, and audit
 - Complete: Phase 5 - Portfolio polish, public README, and polish audit
-- In progress: Phase 5.8 - App experience refinement before final QA
+- In progress: Phase 5.9 - Compact assistant UX and actionability refinement
 - Upcoming: Phase 6 - Validation, deployment setup, live demo verification, and final release audit
 
 For exact implementation handoff state, use `changelog_checkpoint.md` first and `BUILD_PLAN.md` second. This README is public-facing portfolio context, not the internal work log.
@@ -173,6 +173,8 @@ Planning and handoff documents:
 
 - `BUILD_PLAN.md` - implementation roadmap and micro-phase definitions
 - `changelog_checkpoint.md` - live handoff state and next concrete task
+- `APP_EXPERIENCE_PLAN.md` - active Phase 5.9 compact UX execution plan
+- `design_review_V2.md` - current UX/navigation/actionability diagnosis
 - `DEVELOPMENT_NOTES.md` - decisions, trade-offs, and lessons learned
 - `docs/Portfolio_MVP_V1.md` - frozen product scope
 - `docs/Technical_Planning_v1.md` - frozen technical direction
@@ -193,7 +195,7 @@ Completed:
 
 Remaining:
 
-- Phase 5.8 - app experience refinement before final QA
+- Phase 5.9 - compact assistant UX and actionability refinement
 - Phase 6 - validation, focused tests, GitHub Pages deployment setup, live-demo verification, final scope audit, documentation cleanup, and release tag
 
 ## Lessons Captured

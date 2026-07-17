@@ -229,6 +229,15 @@ export function IssueDetailPage() {
   }
   const returnContext = sourceReturnContext ?? projectReturnContext
   const returnNavigationState = createIssueNavigationState(returnContext)
+  const openedFromDescription = sourceReturnContext
+    ? returnContext.source === 'project'
+      ? `Opened from ${returnContext.label}.`
+      : `Opened from ${returnContext.label}; this issue still belongs to ${data.projectName}.`
+    : `Opened directly or without saved source context; ${data.projectName} is the return destination.`
+  const editBehaviorDescription =
+    returnContext.source === 'project'
+      ? `Edit save returns to ${data.projectName}; cancel returns to this issue detail.`
+      : `Edit save returns to this issue detail with ${returnContext.label} preserved as the back path.`
   const breadcrumbItems =
     returnContext.source === 'project'
       ? [
@@ -357,17 +366,16 @@ export function IssueDetailPage() {
           <div className="min-w-0">
             <Link
               to={returnContext.path}
-              className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <ArrowLeft className="h-4 w-4" />
               {returnContext.backLabel}
             </Link>
 
-            {returnContext.source !== 'project' ? (
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Opened from {returnContext.label}. This issue still belongs to {data.projectName}.
-              </p>
-            ) : null}
+            <div className="mt-3 grid gap-1 text-sm leading-6 text-slate-600">
+              <p>{openedFromDescription}</p>
+              <p>{editBehaviorDescription}</p>
+            </div>
 
             <p className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Issue detail
@@ -387,6 +395,7 @@ export function IssueDetailPage() {
             <Link
               to={`/issues/${data.id}/edit`}
               state={returnNavigationState}
+              aria-label={`Edit issue ${data.title}. Return context: ${returnContext.backLabel}.`}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
             >
               <FilePenLine className="h-4 w-4" />
@@ -437,6 +446,7 @@ export function IssueDetailPage() {
           <Link
             to={`/issues/${data.id}/edit`}
             state={returnNavigationState}
+            aria-label={`Change owner or curator for ${data.title}. Return context: ${returnContext.backLabel}.`}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950 sm:w-auto"
           >
             <FilePenLine className="h-4 w-4" />
